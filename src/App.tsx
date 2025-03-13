@@ -8,6 +8,8 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Projects from "./pages/Projects";
+import About from "./pages/About";
+import Blog from "./pages/Blog";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +23,8 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/projects" element={<Projects />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/blog" element={<Blog />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
