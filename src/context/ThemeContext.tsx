@@ -8,25 +8,35 @@ interface ThemeContextType {
   toggleTheme: () => void;
 }
 
+interface ThemeProviderProps {
+  children: React.ReactNode;
+  defaultTheme?: Theme;
+  storageKey?: string;
+}
+
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
+export const ThemeProvider = ({ 
+  children, 
+  defaultTheme = 'light',
+  storageKey = 'theme'
+}: ThemeProviderProps) => {
   // Initialize theme based on local storage or system preference
   const [theme, setTheme] = useState<Theme>(() => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('theme') as Theme;
+      const saved = localStorage.getItem(storageKey) as Theme;
       if (saved) return saved;
       
       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
-    return 'light';
+    return defaultTheme;
   });
 
   // Toggle theme function
   const toggleTheme = () => {
     setTheme(prev => {
       const newTheme = prev === 'light' ? 'dark' : 'light';
-      localStorage.setItem('theme', newTheme);
+      localStorage.setItem(storageKey, newTheme);
       return newTheme;
     });
   };
