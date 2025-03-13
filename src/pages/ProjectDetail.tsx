@@ -1,4 +1,3 @@
-
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, ExternalLink, Github } from 'lucide-react';
 import NavBar from '@/components/NavBar';
@@ -30,10 +29,11 @@ const projects: Record<string, Project> = {
   'project-3': {
     id: 'project-3',
     title: 'AI Image Generator',
-    description: 'An application that generates images using OpenAI's DALL-E model.',
+    description: "An application that generates images using OpenAI's DALL-E model.",
     imageSrc: '/placeholder.svg',
     tags: ['Next.js', 'OpenAI API', 'Vercel'],
     demoUrl: 'https://example.com',
+    githubUrl: 'https://github.com',
   },
 };
 

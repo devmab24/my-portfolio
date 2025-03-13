@@ -32,7 +32,7 @@ const featuredProjects: Project[] = [
   {
     id: 'project-3',
     title: 'AI Image Generator',
-    description: 'An application that generates images using OpenAI's DALL-E model.',
+    description: "An application that generates images using OpenAI's DALL-E model.",
     imageSrc: '/placeholder.svg',
     tags: ['Next.js', 'OpenAI API', 'Vercel'],
     demoUrl: 'https://example.com',
