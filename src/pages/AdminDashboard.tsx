@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useAdmin } from '@/context/AdminContext';
 import NavBar from '@/components/NavBar';
@@ -6,7 +5,13 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { AreaChart, BarChart, LineChart } from 'recharts';
+import { 
+  AreaChart, Area, 
+  BarChart, Bar, 
+  LineChart, Line, 
+  XAxis, YAxis, 
+  Tooltip 
+} from 'recharts';
 import { 
   LayoutDashboard, 
   Users, 
@@ -21,7 +26,6 @@ import {
   CircleUser
 } from 'lucide-react';
 
-// Sample data for charts
 const trafficData = [
   { name: 'Jan', value: 400 },
   { name: 'Feb', value: 300 },
@@ -50,7 +54,6 @@ const postsByCategory = [
   { name: 'Node.js', value: 4 },
 ];
 
-// Sample blog posts for admin management
 const posts = [
   {
     id: 'post-1',
@@ -86,7 +89,6 @@ const posts = [
   },
 ];
 
-// Sample users
 const users = [
   {
     id: 'user-1',
@@ -111,7 +113,6 @@ const users = [
   },
 ];
 
-// Dashboard components
 const StatCard = ({ icon: Icon, title, value, trend, color = 'primary' }: {
   icon: React.ElementType, 
   title: string, 
@@ -291,7 +292,7 @@ const AdminDashboard = () => {
                           <XAxis dataKey="name" />
                           <YAxis />
                           <Tooltip />
-                          <BarChart.Bar dataKey="value" fill="hsl(var(--primary))" />
+                          <Bar dataKey="value" fill="hsl(var(--primary))" />
                         </BarChart>
                       </CardContent>
                     </Card>
@@ -318,7 +319,7 @@ const AdminDashboard = () => {
                         <XAxis dataKey="name" />
                         <YAxis />
                         <Tooltip />
-                        <LineChart.Line type="monotone" dataKey="value" stroke="hsl(var(--primary))" />
+                        <Line type="monotone" dataKey="value" stroke="hsl(var(--primary))" />
                       </LineChart>
                     </CardContent>
                   </Card>
