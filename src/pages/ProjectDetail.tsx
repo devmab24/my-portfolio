@@ -1,45 +1,79 @@
+
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, ExternalLink, Github } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
 import { Project } from '@/components/ProjectCard';
-
-// Sample projects data (in a real app, this would be fetched from an API)
-const projects: Record<string, Project> = {
-  'project-1': {
-    id: 'project-1',
-    title: 'E-Commerce Platform',
-    description: 'A modern e-commerce platform built with React, Node.js, and MongoDB with full payment integration.',
-    imageSrc: '/placeholder.svg',
-    tags: ['React', 'Node.js', 'MongoDB', 'Stripe'],
-    demoUrl: 'https://example.com',
-    githubUrl: 'https://github.com',
-    featured: true,
-  },
-  'project-2': {
-    id: 'project-2',
-    title: 'Task Management App',
-    description: 'A productivity application for managing tasks and projects with collaborative features.',
-    imageSrc: '/placeholder.svg',
-    tags: ['React', 'Firebase', 'Tailwind CSS'],
-    demoUrl: 'https://example.com',
-    githubUrl: 'https://github.com',
-  },
-  'project-3': {
-    id: 'project-3',
-    title: 'AI Image Generator',
-    description: "An application that generates images using OpenAI's DALL-E model.",
-    imageSrc: '/placeholder.svg',
-    tags: ['Next.js', 'OpenAI API', 'Vercel'],
-    demoUrl: 'https://example.com',
-    githubUrl: 'https://github.com',
-  },
-};
+import { supabase } from '@/integrations/supabase/client';
 
 const ProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const project = id ? projects[id] : null;
+  const [project, setProject] = useState<Project | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const fetchProject = async () => {
+      if (!id) return;
+      
+      try {
+        setIsLoading(true);
+        const { data, error } = await supabase
+          .from('projects')
+          .select('*')
+          .eq('id', id)
+          .single();
+        
+        if (error) {
+          throw error;
+        }
+
+        if (data) {
+          // Transform data to match Project interface
+          const transformedProject: Project = {
+            id: data.id,
+            title: data.title,
+            description: data.description,
+            imageSrc: data.image_url || '/placeholder.svg',
+            tags: data.tags,
+            demoUrl: data.demo_url,
+            githubUrl: data.github_url,
+            featured: data.featured,
+          };
+          
+          setProject(transformedProject);
+        }
+      } catch (error) {
+        console.error('Error fetching project:', error);
+        toast({
+          title: 'Error',
+          description: 'Failed to load project details. Please try again later.',
+          variant: 'destructive',
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProject();
+  }, [id, toast]);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col min-h-screen">
+        <NavBar />
+        <main className="flex-grow pt-24">
+          <div className="container-custom py-24 flex justify-center items-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!project) {
     return (

@@ -1,78 +1,66 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useToast } from '@/hooks/use-toast';
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
 import ProjectCard, { Project } from '@/components/ProjectCard';
-
-// Sample projects data
-const allProjects: Project[] = [
-  {
-    id: 'project-1',
-    title: 'E-Commerce Platform',
-    description: 'A modern e-commerce platform built with React, Node.js, and MongoDB with full payment integration.',
-    imageSrc: '/placeholder.svg',
-    tags: ['React', 'Node.js', 'MongoDB', 'Stripe'],
-    demoUrl: 'https://example.com',
-    githubUrl: 'https://github.com',
-    featured: true,
-  },
-  {
-    id: 'project-2',
-    title: 'Task Management App',
-    description: 'A productivity application for managing tasks and projects with collaborative features.',
-    imageSrc: '/placeholder.svg',
-    tags: ['React', 'Firebase', 'Tailwind CSS'],
-    demoUrl: 'https://example.com',
-    githubUrl: 'https://github.com',
-  },
-  {
-    id: 'project-3',
-    title: 'AI Image Generator',
-    description: "An application that generates images using OpenAI's DALL-E model.",
-    imageSrc: '/placeholder.svg',
-    tags: ['Next.js', 'OpenAI API', 'Vercel'],
-    demoUrl: 'https://example.com',
-    githubUrl: 'https://github.com',
-  },
-  {
-    id: 'project-4',
-    title: 'Personal Finance Dashboard',
-    description: 'A dashboard for tracking personal finances, investments, and budget planning.',
-    imageSrc: '/placeholder.svg',
-    tags: ['React', 'D3.js', 'Firebase'],
-    githubUrl: 'https://github.com',
-  },
-  {
-    id: 'project-5',
-    title: 'Recipe Sharing Platform',
-    description: 'A platform for food enthusiasts to share and discover recipes from around the world.',
-    imageSrc: '/placeholder.svg',
-    tags: ['Vue.js', 'Express', 'PostgreSQL'],
-    demoUrl: 'https://example.com',
-    githubUrl: 'https://github.com',
-  },
-  {
-    id: 'project-6',
-    title: 'Real-time Chat Application',
-    description: 'A real-time chat application with features like message reactions, threads, and file sharing.',
-    imageSrc: '/placeholder.svg',
-    tags: ['React', 'Socket.io', 'Express'],
-    githubUrl: 'https://github.com',
-  },
-];
-
-// Extract unique tags for filter
-const allTags = Array.from(
-  new Set(allProjects.flatMap(project => project.tags))
-).sort();
+import { supabase } from '@/integrations/supabase/client';
 
 const Projects = () => {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const { toast } = useToast();
+
+  // Extract unique tags for filter
+  const allTags = Array.from(
+    new Set(projects.flatMap(project => project.tags))
+  ).sort();
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        setIsLoading(true);
+        const { data, error } = await supabase
+          .from('projects')
+          .select('*');
+        
+        if (error) {
+          throw error;
+        }
+
+        // Transform data to match Project interface
+        const transformedProjects: Project[] = data.map((item: any) => ({
+          id: item.id,
+          title: item.title,
+          description: item.description,
+          imageSrc: item.image_url || '/placeholder.svg',
+          tags: item.tags,
+          demoUrl: item.demo_url,
+          githubUrl: item.github_url,
+          featured: item.featured,
+        }));
+
+        setProjects(transformedProjects);
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+        toast({
+          title: 'Error',
+          description: 'Failed to load projects. Please try again later.',
+          variant: 'destructive',
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, [toast]);
 
   // Filter projects based on selected tag and search query
-  const filteredProjects = allProjects.filter(project => {
+  const filteredProjects = projects.filter(project => {
     const matchesTag = selectedTag ? project.tags.includes(selectedTag) : true;
     const matchesSearch = project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           project.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -134,7 +122,11 @@ const Projects = () => {
             </AnimatedSection>
             
             <AnimatedSection delay={300}>
-              {filteredProjects.length > 0 ? (
+              {isLoading ? (
+                <div className="flex justify-center items-center py-20">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                </div>
+              ) : filteredProjects.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filteredProjects.map(project => (
                     <ProjectCard key={project.id} project={project} />
