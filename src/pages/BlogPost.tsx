@@ -82,9 +82,11 @@ const BlogPost = () => {
     // In a real app, this would be an API call
     const fetchPost = () => {
       setLoading(true);
+      console.log("Looking for blog post with ID:", id);
       const foundPost = allPosts.find(post => post.id === id);
       
       if (foundPost) {
+        console.log("Found post:", foundPost);
         setPost(foundPost);
       } else {
         console.error(`Post with id ${id} not found`);
