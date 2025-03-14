@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Shield } from 'lucide-react';
@@ -6,13 +5,19 @@ import { cn } from '@/lib/utils';
 import ThemeToggle from './ThemeToggle';
 import { useAdmin } from '@/context/AdminContext';
 
+type NavLink = {
+  name: string;
+  path: string;
+  icon?: React.ReactNode;
+}
+
 const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const { isAdmin } = useAdmin();
 
-  const navLinks = [
+  const navLinks: NavLink[] = [
     { name: 'Home', path: '/' },
     { name: 'Projects', path: '/projects' },
     { name: 'About', path: '/about' },
@@ -20,7 +25,6 @@ const NavBar = () => {
     { name: 'Contact', path: '/contact' },
   ];
 
-  // Add admin dashboard link if user is admin
   const links = isAdmin 
     ? [...navLinks, { name: 'Admin', path: '/admin/dashboard', icon: <Shield className="h-4 w-4 mr-1" /> }] 
     : navLinks;
@@ -35,7 +39,6 @@ const NavBar = () => {
   }, []);
 
   useEffect(() => {
-    // Close mobile menu when route changes
     setIsOpen(false);
   }, [location]);
 
@@ -57,7 +60,6 @@ const NavBar = () => {
           <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" aria-hidden="true"></span>
         </Link>
 
-        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8">
           {links.map((link) => (
             <Link
@@ -82,7 +84,6 @@ const NavBar = () => {
           <ThemeToggle />
         </div>
 
-        {/* Mobile Navigation Toggle */}
         <div className="flex md:hidden items-center space-x-4">
           <ThemeToggle />
           <button
@@ -95,7 +96,6 @@ const NavBar = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation Menu */}
       <div
         className={cn(
           'fixed inset-0 bg-background/95 backdrop-blur-sm z-40 transform transition-transform duration-300 ease-in-out md:hidden',

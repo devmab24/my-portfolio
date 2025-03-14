@@ -7,6 +7,7 @@ import AnimatedSection from '@/components/AnimatedSection';
 import { Calendar, Clock, Tag, User } from 'lucide-react';
 import { BlogPost as BlogPostType } from '@/components/BlogCard';
 import { Button } from '@/components/ui/button';
+import CommentSection from '@/components/CommentSection';
 
 // Sample blog posts data - in a real app, this would come from an API
 const allPosts: BlogPostType[] = [
@@ -205,6 +206,11 @@ const BlogPost = () => {
                   </span>
                 ))}
               </div>
+            </div>
+            
+            {/* Comment Section */}
+            <div className="mt-10">
+              <CommentSection blogPostId={post.id} />
             </div>
           </AnimatedSection>
         </div>
