@@ -1,22 +1,29 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Shield } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import ThemeToggle from './ThemeToggle';
-
-const navLinks = [
-  { name: 'Home', path: '/' },
-  { name: 'Projects', path: '/projects' },
-  { name: 'About', path: '/about' },
-  { name: 'Blog', path: '/blog' },
-  { name: 'Contact', path: '/contact' },
-];
+import { useAdmin } from '@/context/AdminContext';
 
 const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { isAdmin } = useAdmin();
+
+  const navLinks = [
+    { name: 'Home', path: '/' },
+    { name: 'Projects', path: '/projects' },
+    { name: 'About', path: '/about' },
+    { name: 'Blog', path: '/blog' },
+    { name: 'Contact', path: '/contact' },
+  ];
+
+  // Add admin dashboard link if user is admin
+  const links = isAdmin 
+    ? [...navLinks, { name: 'Admin', path: '/admin/dashboard', icon: <Shield className="h-4 w-4 mr-1" /> }] 
+    : navLinks;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -52,15 +59,16 @@ const NavBar = () => {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8">
-          {navLinks.map((link) => (
+          {links.map((link) => (
             <Link
               key={link.path}
               to={link.path}
               className={cn(
-                'relative py-1 transition-colors duration-300 hover:text-primary group',
+                'relative py-1 transition-colors duration-300 hover:text-primary group flex items-center',
                 location.pathname === link.path ? 'text-primary' : ''
               )}
             >
+              {link.icon && link.icon}
               {link.name}
               <span
                 className={cn(
@@ -95,15 +103,16 @@ const NavBar = () => {
         )}
       >
         <div className="flex flex-col items-center justify-center h-full space-y-8 text-lg">
-          {navLinks.map((link) => (
+          {links.map((link) => (
             <Link
               key={link.path}
               to={link.path}
               className={cn(
-                'relative py-1 transition-colors duration-300 hover:text-primary',
+                'relative py-1 transition-colors duration-300 hover:text-primary flex items-center',
                 location.pathname === link.path ? 'text-primary' : ''
               )}
             >
+              {link.icon && link.icon}
               {link.name}
             </Link>
           ))}
