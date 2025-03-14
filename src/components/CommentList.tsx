@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Comment } from "@/types/comment";
 import CommentItem from "./CommentItem";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface CommentListProps {
   blogPostId: string;
@@ -15,26 +16,37 @@ const CommentList = ({ blogPostId, refreshTrigger }: CommentListProps) => {
   const { toast } = useToast();
 
   useEffect(() => {
-    const fetchComments = () => {
+    const fetchComments = async () => {
       setIsLoading(true);
       
       try {
-        // In a real app, this would be an API call to get comments
-        // For now, we'll use localStorage
-        const allCommentsStr = localStorage.getItem("blog-comments") || "[]";
-        const allComments: Comment[] = JSON.parse(allCommentsStr);
+        // Fetch comments from Supabase
+        const { data, error } = await supabase
+          .from('comments')
+          .select(`
+            id,
+            content,
+            created_at,
+            author_id,
+            profiles(username, avatar_url)
+          `)
+          .eq('blog_post_id', blogPostId)
+          .order('created_at', { ascending: false });
         
-        // Filter comments for this blog post
-        const postComments = allComments.filter(
-          (comment) => comment.blogPostId === blogPostId
-        );
+        if (error) throw error;
         
-        // Sort by date, newest first
-        postComments.sort((a, b) => 
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
+        // Transform the data to match our Comment interface
+        const transformedComments: Comment[] = data.map((comment: any) => ({
+          id: comment.id,
+          blogPostId,
+          author: comment.profiles?.username || 'Anonymous',
+          content: comment.content,
+          createdAt: comment.created_at,
+          avatar: comment.profiles?.avatar_url,
+          author_id: comment.author_id
+        }));
         
-        setComments(postComments);
+        setComments(transformedComments);
       } catch (error) {
         console.error("Error fetching comments:", error);
         toast({
@@ -46,8 +58,27 @@ const CommentList = ({ blogPostId, refreshTrigger }: CommentListProps) => {
         setIsLoading(false);
       }
     };
-
+    
     fetchComments();
+    
+    // Set up real-time subscription for comments
+    const channel = supabase
+      .channel('public:comments')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'comments',
+        filter: `blog_post_id=eq.${blogPostId}`
+      }, () => {
+        // Refresh comments when changes occur
+        fetchComments();
+      })
+      .subscribe();
+    
+    // Clean up subscription
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [blogPostId, refreshTrigger, toast]);
 
   if (isLoading) {

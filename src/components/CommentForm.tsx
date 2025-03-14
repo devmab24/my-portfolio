@@ -1,11 +1,12 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { MessageSquare } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface CommentFormProps {
   blogPostId: string;
@@ -16,15 +17,49 @@ const CommentForm = ({ blogPostId, onSubmitSuccess }: CommentFormProps) => {
   const [author, setAuthor] = useState("");
   const [content, setContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [user, setUser] = useState<any>(null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    // Check if user is logged in
+    const checkUser = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session?.user) {
+        setUser(data.session.user);
+        
+        // Fetch user profile
+        const { data: profileData } = await supabase
+          .from('profiles')
+          .select('username')
+          .eq('id', data.session.user.id)
+          .single();
+          
+        if (profileData) {
+          setAuthor(profileData.username);
+        }
+      }
+    };
+    
+    checkUser();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!author.trim() || !content.trim()) {
+    if (!content.trim()) {
       toast({
         title: "Required fields",
-        description: "Please fill in all fields",
+        description: "Please enter a comment",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // Check if user is logged in
+    if (!user) {
+      toast({
+        title: "Authentication required",
+        description: "Please log in to add a comment",
         variant: "destructive"
       });
       return;
@@ -33,28 +68,18 @@ const CommentForm = ({ blogPostId, onSubmitSuccess }: CommentFormProps) => {
     setIsSubmitting(true);
     
     try {
-      // In a real app, this would be an API call to save the comment
-      // For now, we'll simulate adding a comment to localStorage
-      const newComment = {
-        id: crypto.randomUUID(),
-        blogPostId,
-        author,
-        content,
-        createdAt: new Date().toISOString(),
-      };
+      // Add comment to Supabase
+      const { error } = await supabase
+        .from('comments')
+        .insert({
+          blog_post_id: blogPostId,
+          author_id: user.id,
+          content
+        });
       
-      // Get existing comments from localStorage
-      const existingCommentsStr = localStorage.getItem("blog-comments") || "[]";
-      const existingComments = JSON.parse(existingCommentsStr);
-      
-      // Add new comment
-      const updatedComments = [...existingComments, newComment];
-      
-      // Save back to localStorage
-      localStorage.setItem("blog-comments", JSON.stringify(updatedComments));
+      if (error) throw error;
       
       // Reset form
-      setAuthor("");
       setContent("");
       
       toast({
@@ -75,35 +100,49 @@ const CommentForm = ({ blogPostId, onSubmitSuccess }: CommentFormProps) => {
     }
   };
 
+  const handleLogin = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        redirectTo: window.location.href
+      }
+    });
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="name">Name</Label>
-        <Input
-          id="name"
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
-          placeholder="Your name"
-          required
-        />
-      </div>
-      
-      <div className="space-y-2">
-        <Label htmlFor="comment">Comment</Label>
-        <Textarea
-          id="comment"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="Share your thoughts about this post..."
-          className="min-h-[120px]"
-          required
-        />
-      </div>
-      
-      <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
-        <MessageSquare className="mr-2 h-4 w-4" />
-        {isSubmitting ? "Submitting..." : "Post Comment"}
-      </Button>
+      {!user ? (
+        <div className="text-center py-4">
+          <p className="text-muted-foreground mb-2">Please log in to comment</p>
+          <Button type="button" onClick={handleLogin} className="w-full sm:w-auto">
+            Log in with GitHub
+          </Button>
+        </div>
+      ) : (
+        <>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-sm font-medium">Posting as:</span>
+            <span className="text-sm">{author || user.email}</span>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="comment">Comment</Label>
+            <Textarea
+              id="comment"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              placeholder="Share your thoughts about this post..."
+              className="min-h-[120px]"
+              required
+            />
+          </div>
+          
+          <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
+            <MessageSquare className="mr-2 h-4 w-4" />
+            {isSubmitting ? "Submitting..." : "Post Comment"}
+          </Button>
+        </>
+      )}
     </form>
   );
 };

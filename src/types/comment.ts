@@ -6,4 +6,5 @@ export interface Comment {
   content: string;
   createdAt: string;
   avatar?: string;
+  author_id?: string; // Add this for compatibility with Supabase
 }
