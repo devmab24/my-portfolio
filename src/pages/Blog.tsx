@@ -14,23 +14,24 @@ const Blog = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
-  // Extract unique categories for filter
-  const allCategories = Array.from(
-    new Set(posts.map(post => post.category))
-  ).sort();
-
   useEffect(() => {
     const fetchBlogPosts = async () => {
       try {
         setIsLoading(true);
+        console.log('Fetching blog posts...');
+        
         const { data, error } = await supabase
           .from('blog_posts')
           .select('*, post_categories(name)')
+          .eq('published', true)
           .order('created_at', { ascending: false });
         
         if (error) {
+          console.error('Error fetching blog posts:', error);
           throw error;
         }
+
+        console.log('Fetched blog posts:', data);
 
         // Transform data to match BlogPost interface
         const transformedPosts: BlogPost[] = data.map((item: any) => ({
@@ -43,12 +44,13 @@ const Blog = () => {
             day: 'numeric',
           }),
           author: 'John Doe', // This would ideally come from a profiles table
-          category: item.post_categories?.name || 'Uncategorized',
+          category: item.post_categories?.name || item.category || 'Uncategorized',
           tags: item.tags || [],
           readTime: `${Math.ceil(item.content.length / 1000)} min`,
           imageUrl: item.image_url,
         }));
 
+        console.log('Transformed posts:', transformedPosts);
         setPosts(transformedPosts);
       } catch (error) {
         console.error('Error fetching blog posts:', error);
@@ -64,6 +66,11 @@ const Blog = () => {
 
     fetchBlogPosts();
   }, [toast]);
+
+  // Extract unique categories for filter
+  const allCategories = Array.from(
+    new Set(posts.map(post => post.category))
+  ).sort();
 
   // Filter posts based on selected category and search query
   const filteredPosts = posts.filter(post => {

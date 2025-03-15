@@ -50,7 +50,7 @@ const BlogPost = () => {
               day: 'numeric',
             }),
             author: 'John Doe', // This would ideally come from a profiles table
-            category: data.post_categories?.name || 'Uncategorized',
+            category: data.post_categories?.name || data.category || 'Uncategorized',
             tags: data.tags || [],
             readTime: `${Math.ceil(data.content.length / 1000)} min`,
             imageUrl: data.image_url,
