@@ -11,7 +11,7 @@ export type Database = {
     Tables: {
       blog_posts: {
         Row: {
-          author_id: string
+          author_id: string | null
           category: string
           category_id: string | null
           content: string
@@ -26,7 +26,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
-          author_id: string
+          author_id?: string | null
           category: string
           category_id?: string | null
           content: string
@@ -41,7 +41,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
-          author_id?: string
+          author_id?: string | null
           category?: string
           category_id?: string | null
           content?: string
@@ -67,7 +67,7 @@ export type Database = {
       }
       comments: {
         Row: {
-          author_id: string
+          author_id: string | null
           blog_post_id: string
           content: string
           created_at: string
@@ -75,7 +75,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
-          author_id: string
+          author_id?: string | null
           blog_post_id: string
           content: string
           created_at?: string
@@ -83,7 +83,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
-          author_id?: string
+          author_id?: string | null
           blog_post_id?: string
           content?: string
           created_at?: string

@@ -2,7 +2,7 @@
 export interface Comment {
   id: string;
   blogPostId: string;
-  author: string;
+  author?: string;
   content: string;
   createdAt: string;
   avatar?: string;

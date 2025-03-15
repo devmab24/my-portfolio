@@ -39,7 +39,7 @@ const CommentList = ({ blogPostId, refreshTrigger }: CommentListProps) => {
         const transformedComments: Comment[] = data.map((comment: any) => ({
           id: comment.id,
           blogPostId,
-          author: comment.profiles?.username || 'Anonymous',
+          author: comment.profiles?.username || null,
           content: comment.content,
           createdAt: comment.created_at,
           avatar: comment.profiles?.avatar_url,

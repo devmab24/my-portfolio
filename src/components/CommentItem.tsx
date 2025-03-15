@@ -8,25 +8,30 @@ interface CommentItemProps {
 }
 
 const CommentItem = ({ comment }: CommentItemProps) => {
-  // Get initials from author name for avatar fallback
+  // Get initials from author name for avatar fallback or use "AN" for anonymous
   const getInitials = (name: string) => {
     return name
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase();
+      ? name
+          .split(" ")
+          .map((n) => n[0])
+          .join("")
+          .toUpperCase()
+      : "AN";
   };
+
+  // Use a default "Anonymous" name if no author specified
+  const authorName = comment.author || "Anonymous";
 
   return (
     <div className="flex gap-4 py-4">
       <Avatar>
-        <AvatarImage src={comment.avatar} alt={comment.author} />
-        <AvatarFallback>{getInitials(comment.author)}</AvatarFallback>
+        <AvatarImage src={comment.avatar} alt={authorName} />
+        <AvatarFallback>{getInitials(authorName)}</AvatarFallback>
       </Avatar>
       
       <div className="flex-1">
         <div className="flex items-center gap-2 mb-1">
-          <h4 className="font-medium">{comment.author}</h4>
+          <h4 className="font-medium">{authorName}</h4>
           <span className="text-xs text-muted-foreground">
             {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
           </span>
