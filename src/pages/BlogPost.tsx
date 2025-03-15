@@ -8,96 +8,73 @@ import { Calendar, Clock, Tag, User } from 'lucide-react';
 import { BlogPost as BlogPostType } from '@/components/BlogCard';
 import { Button } from '@/components/ui/button';
 import CommentSection from '@/components/CommentSection';
-
-// Sample blog posts data - in a real app, this would come from an API
-const allPosts: BlogPostType[] = [
-  {
-    id: 'post-1',
-    title: 'Building Scalable React Applications',
-    excerpt: 'Learn how to structure and build React applications that scale well as your project grows.',
-    date: 'Mar 15, 2023',
-    author: 'John Doe',
-    category: 'React',
-    tags: ['React', 'Architecture', 'JavaScript'],
-    readTime: '5 min',
-  },
-  {
-    id: 'post-2',
-    title: 'The Future of Web Development',
-    excerpt: 'Exploring emerging technologies and trends that will shape the future of web development.',
-    date: 'Feb 28, 2023',
-    author: 'John Doe',
-    category: 'Web',
-    tags: ['Future', 'Trends', 'Technology'],
-    readTime: '7 min',
-  },
-  {
-    id: 'post-3',
-    title: 'Optimizing Database Performance',
-    excerpt: 'Tips and techniques for improving the performance of your database queries and structure.',
-    date: 'Feb 15, 2023',
-    author: 'John Doe',
-    category: 'Database',
-    tags: ['MongoDB', 'PostgreSQL', 'Performance'],
-    readTime: '6 min',
-  },
-  {
-    id: 'post-4',
-    title: 'Getting Started with TypeScript',
-    excerpt: 'A beginner-friendly guide to using TypeScript in your JavaScript projects.',
-    date: 'Jan 22, 2023',
-    author: 'John Doe',
-    category: 'TypeScript',
-    tags: ['TypeScript', 'JavaScript', 'Beginner'],
-    readTime: '8 min',
-  },
-  {
-    id: 'post-5',
-    title: 'Serverless Architecture Explained',
-    excerpt: 'Understanding the benefits and challenges of serverless architecture for modern applications.',
-    date: 'Jan 10, 2023',
-    author: 'John Doe',
-    category: 'Architecture',
-    tags: ['Serverless', 'AWS', 'Azure'],
-    readTime: '6 min',
-  },
-  {
-    id: 'post-6',
-    title: 'Mastering CSS Grid Layout',
-    excerpt: 'Deep dive into CSS Grid Layout and how to use it to create complex web layouts with ease.',
-    date: 'Dec 28, 2022',
-    author: 'John Doe',
-    category: 'CSS',
-    tags: ['CSS', 'Layout', 'Design'],
-    readTime: '5 min',
-  },
-];
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const BlogPost = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [post, setPost] = useState<BlogPostType | null>(null);
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
-    // In a real app, this would be an API call
-    const fetchPost = () => {
-      setLoading(true);
-      console.log("Looking for blog post with ID:", id);
-      const foundPost = allPosts.find(post => post.id === id);
-      
-      if (foundPost) {
-        console.log("Found post:", foundPost);
-        setPost(foundPost);
-      } else {
-        console.error(`Post with id ${id} not found`);
+    const fetchPost = async () => {
+      if (!id) return;
+
+      try {
+        setLoading(true);
+        console.log("Looking for blog post with ID:", id);
+        
+        const { data, error } = await supabase
+          .from('blog_posts')
+          .select('*, post_categories(name)')
+          .eq('id', id)
+          .single();
+        
+        if (error) {
+          console.error('Error fetching blog post:', error);
+          throw error;
+        }
+
+        if (data) {
+          console.log("Found post:", data);
+          
+          const formattedPost: BlogPostType = {
+            id: data.id,
+            title: data.title,
+            excerpt: data.excerpt,
+            date: new Date(data.created_at).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+            }),
+            author: 'John Doe', // This would ideally come from a profiles table
+            category: data.post_categories?.name || 'Uncategorized',
+            tags: data.tags || [],
+            readTime: `${Math.ceil(data.content.length / 1000)} min`,
+            imageUrl: data.image_url,
+            content: data.content, // Add content to BlogPostType for display
+          };
+          
+          setPost(formattedPost);
+        } else {
+          console.error(`Post with id ${id} not found`);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        toast({
+          title: 'Error',
+          description: 'Failed to load blog post. Please try again later.',
+          variant: 'destructive',
+        });
+      } finally {
+        setLoading(false);
       }
-      
-      setLoading(false);
     };
 
     fetchPost();
-  }, [id]);
+  }, [id, toast]);
 
   if (loading) {
     return (
@@ -165,35 +142,27 @@ const BlogPost = () => {
               </div>
             </div>
             
-            {/* Cover Image Placeholder */}
-            <div className="aspect-video bg-muted rounded-lg mb-8 flex items-center justify-center">
-              <span className="text-4xl">📝</span>
-            </div>
+            {/* Cover Image */}
+            {post.imageUrl ? (
+              <div className="aspect-video bg-muted rounded-lg mb-8 overflow-hidden">
+                <img 
+                  src={post.imageUrl} 
+                  alt={post.title} 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ) : (
+              <div className="aspect-video bg-muted rounded-lg mb-8 flex items-center justify-center">
+                <span className="text-4xl">📝</span>
+              </div>
+            )}
             
             {/* Content */}
             <div className="prose max-w-none">
               <p className="lead text-lg mb-6">{post.excerpt}</p>
               
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              </p>
-              
-              <p>
-                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-              
-              <h2>Key Takeaways</h2>
-              
-              <ul>
-                <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit</li>
-                <li>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
-                <li>Ut enim ad minim veniam, quis nostrud exercitation ullamco</li>
-                <li>Duis aute irure dolor in reprehenderit in voluptate velit</li>
-              </ul>
-              
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              </p>
+              {/* Display actual content from the database */}
+              <div dangerouslySetInnerHTML={{ __html: post.content || '' }} />
             </div>
             
             {/* Tags */}

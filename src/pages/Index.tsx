@@ -1,4 +1,5 @@
 
+import { useState, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Hero from '@/components/Hero';
@@ -7,8 +8,10 @@ import ProjectCard, { Project } from '@/components/ProjectCard';
 import BlogCard, { BlogPost } from '@/components/BlogCard';
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
-// Sample data
+// Sample data for featured projects
 const featuredProjects: Project[] = [
   {
     id: 'project-1',
@@ -40,30 +43,58 @@ const featuredProjects: Project[] = [
   },
 ];
 
-const recentPosts: BlogPost[] = [
-  {
-    id: 'post-1',
-    title: 'Building Scalable React Applications',
-    excerpt: 'Learn how to structure and build React applications that scale well as your project grows.',
-    date: 'Mar 15, 2023',
-    author: 'John Doe',
-    category: 'React',
-    tags: ['React', 'Architecture', 'JavaScript'],
-    readTime: '5 min',
-  },
-  {
-    id: 'post-2',
-    title: 'The Future of Web Development',
-    excerpt: 'Exploring emerging technologies and trends that will shape the future of web development.',
-    date: 'Feb 28, 2023',
-    author: 'John Doe',
-    category: 'Web',
-    tags: ['Future', 'Trends', 'Technology'],
-    readTime: '7 min',
-  },
-];
-
 const Index = () => {
+  const [recentPosts, setRecentPosts] = useState<BlogPost[]>([]);
+  const [isLoadingPosts, setIsLoadingPosts] = useState(true);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const fetchRecentPosts = async () => {
+      try {
+        setIsLoadingPosts(true);
+        const { data, error } = await supabase
+          .from('blog_posts')
+          .select('*, post_categories(name)')
+          .order('created_at', { ascending: false })
+          .limit(2);
+        
+        if (error) {
+          throw error;
+        }
+
+        // Transform data to match BlogPost interface
+        const transformedPosts: BlogPost[] = data.map((item: any) => ({
+          id: item.id,
+          title: item.title,
+          excerpt: item.excerpt,
+          date: new Date(item.created_at).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+          }),
+          author: 'John Doe', // This would ideally come from a profiles table
+          category: item.post_categories?.name || 'Uncategorized',
+          tags: item.tags || [],
+          readTime: `${Math.ceil(item.content.length / 1000)} min`,
+          imageUrl: item.image_url,
+        }));
+
+        setRecentPosts(transformedPosts);
+      } catch (error) {
+        console.error('Error fetching recent posts:', error);
+        toast({
+          title: 'Error',
+          description: 'Failed to load blog posts. Please try again later.',
+          variant: 'destructive',
+        });
+      } finally {
+        setIsLoadingPosts(false);
+      }
+    };
+
+    fetchRecentPosts();
+  }, [toast]);
+
   return (
     <div className="flex flex-col min-h-screen">
       <NavBar />
@@ -143,11 +174,21 @@ const Index = () => {
             </AnimatedSection>
             
             <AnimatedSection delay={200}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {recentPosts.map((post) => (
-                  <BlogCard key={post.id} post={post} />
-                ))}
-              </div>
+              {isLoadingPosts ? (
+                <div className="flex justify-center items-center py-20">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                </div>
+              ) : recentPosts.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {recentPosts.map((post) => (
+                    <BlogCard key={post.id} post={post} />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <p className="text-muted-foreground">No blog posts found. Check back later!</p>
+                </div>
+              )}
               
               <div className="mt-12 text-center">
                 <Link 

@@ -1,85 +1,72 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
 import BlogCard, { BlogPost } from '@/components/BlogCard';
-
-// Sample blog posts data
-const allPosts: BlogPost[] = [
-  {
-    id: 'post-1',
-    title: 'Building Scalable React Applications',
-    excerpt: 'Learn how to structure and build React applications that scale well as your project grows.',
-    date: 'Mar 15, 2023',
-    author: 'John Doe',
-    category: 'React',
-    tags: ['React', 'Architecture', 'JavaScript'],
-    readTime: '5 min',
-  },
-  {
-    id: 'post-2',
-    title: 'The Future of Web Development',
-    excerpt: 'Exploring emerging technologies and trends that will shape the future of web development.',
-    date: 'Feb 28, 2023',
-    author: 'John Doe',
-    category: 'Web',
-    tags: ['Future', 'Trends', 'Technology'],
-    readTime: '7 min',
-  },
-  {
-    id: 'post-3',
-    title: 'Optimizing Database Performance',
-    excerpt: 'Tips and techniques for improving the performance of your database queries and structure.',
-    date: 'Feb 15, 2023',
-    author: 'John Doe',
-    category: 'Database',
-    tags: ['MongoDB', 'PostgreSQL', 'Performance'],
-    readTime: '6 min',
-  },
-  {
-    id: 'post-4',
-    title: 'Getting Started with TypeScript',
-    excerpt: 'A beginner-friendly guide to using TypeScript in your JavaScript projects.',
-    date: 'Jan 22, 2023',
-    author: 'John Doe',
-    category: 'TypeScript',
-    tags: ['TypeScript', 'JavaScript', 'Beginner'],
-    readTime: '8 min',
-  },
-  {
-    id: 'post-5',
-    title: 'Serverless Architecture Explained',
-    excerpt: 'Understanding the benefits and challenges of serverless architecture for modern applications.',
-    date: 'Jan 10, 2023',
-    author: 'John Doe',
-    category: 'Architecture',
-    tags: ['Serverless', 'AWS', 'Azure'],
-    readTime: '6 min',
-  },
-  {
-    id: 'post-6',
-    title: 'Mastering CSS Grid Layout',
-    excerpt: 'Deep dive into CSS Grid Layout and how to use it to create complex web layouts with ease.',
-    date: 'Dec 28, 2022',
-    author: 'John Doe',
-    category: 'CSS',
-    tags: ['CSS', 'Layout', 'Design'],
-    readTime: '5 min',
-  },
-];
-
-// Extract unique categories for filter
-const allCategories = Array.from(
-  new Set(allPosts.map(post => post.category))
-).sort();
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const Blog = () => {
+  const [posts, setPosts] = useState<BlogPost[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
+
+  // Extract unique categories for filter
+  const allCategories = Array.from(
+    new Set(posts.map(post => post.category))
+  ).sort();
+
+  useEffect(() => {
+    const fetchBlogPosts = async () => {
+      try {
+        setIsLoading(true);
+        const { data, error } = await supabase
+          .from('blog_posts')
+          .select('*, post_categories(name)')
+          .order('created_at', { ascending: false });
+        
+        if (error) {
+          throw error;
+        }
+
+        // Transform data to match BlogPost interface
+        const transformedPosts: BlogPost[] = data.map((item: any) => ({
+          id: item.id,
+          title: item.title,
+          excerpt: item.excerpt,
+          date: new Date(item.created_at).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+          }),
+          author: 'John Doe', // This would ideally come from a profiles table
+          category: item.post_categories?.name || 'Uncategorized',
+          tags: item.tags || [],
+          readTime: `${Math.ceil(item.content.length / 1000)} min`,
+          imageUrl: item.image_url,
+        }));
+
+        setPosts(transformedPosts);
+      } catch (error) {
+        console.error('Error fetching blog posts:', error);
+        toast({
+          title: 'Error',
+          description: 'Failed to load blog posts. Please try again later.',
+          variant: 'destructive',
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchBlogPosts();
+  }, [toast]);
 
   // Filter posts based on selected category and search query
-  const filteredPosts = allPosts.filter(post => {
+  const filteredPosts = posts.filter(post => {
     const matchesCategory = selectedCategory ? post.category === selectedCategory : true;
     const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -142,7 +129,11 @@ const Blog = () => {
             </AnimatedSection>
             
             <AnimatedSection delay={300}>
-              {filteredPosts.length > 0 ? (
+              {isLoading ? (
+                <div className="flex justify-center items-center py-20">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                </div>
+              ) : filteredPosts.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filteredPosts.map((post, index) => (
                     <BlogCard 

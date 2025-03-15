@@ -13,12 +13,14 @@ export type Database = {
         Row: {
           author_id: string
           category: string
+          category_id: string | null
           content: string
           created_at: string
           excerpt: string
           id: string
           image_url: string | null
           published: boolean
+          status: string
           tags: string[]
           title: string
           updated_at: string
@@ -26,12 +28,14 @@ export type Database = {
         Insert: {
           author_id: string
           category: string
+          category_id?: string | null
           content: string
           created_at?: string
           excerpt: string
           id?: string
           image_url?: string | null
           published?: boolean
+          status?: string
           tags?: string[]
           title: string
           updated_at?: string
@@ -39,17 +43,27 @@ export type Database = {
         Update: {
           author_id?: string
           category?: string
+          category_id?: string | null
           content?: string
           created_at?: string
           excerpt?: string
           id?: string
           image_url?: string | null
           published?: boolean
+          status?: string
           tags?: string[]
           title?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "blog_posts_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "post_categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       comments: {
         Row: {
@@ -85,6 +99,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      post_categories: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          post_count: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          post_count?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          post_count?: number
+          updated_at?: string
+        }
+        Relationships: []
       }
       profiles: {
         Row: {
@@ -146,6 +184,63 @@ export type Database = {
           tags?: string[]
           title?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      user_growth: {
+        Row: {
+          active_users: number
+          created_at: string
+          date: string
+          id: string
+          new_users: number
+          total_users: number
+        }
+        Insert: {
+          active_users?: number
+          created_at?: string
+          date: string
+          id?: string
+          new_users?: number
+          total_users?: number
+        }
+        Update: {
+          active_users?: number
+          created_at?: string
+          date?: string
+          id?: string
+          new_users?: number
+          total_users?: number
+        }
+        Relationships: []
+      }
+      web_traffic: {
+        Row: {
+          avg_session_duration: number
+          bounce_rate: number
+          created_at: string
+          date: string
+          id: string
+          page_views: number
+          unique_visitors: number
+        }
+        Insert: {
+          avg_session_duration?: number
+          bounce_rate?: number
+          created_at?: string
+          date: string
+          id?: string
+          page_views?: number
+          unique_visitors?: number
+        }
+        Update: {
+          avg_session_duration?: number
+          bounce_rate?: number
+          created_at?: string
+          date?: string
+          id?: string
+          page_views?: number
+          unique_visitors?: number
         }
         Relationships: []
       }

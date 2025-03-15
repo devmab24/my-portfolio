@@ -13,6 +13,7 @@ export interface BlogPost {
   category: string;
   tags: string[];
   readTime: string;
+  content?: string; // Optional content for blog post detail page
 }
 
 interface BlogCardProps {
@@ -34,9 +35,17 @@ const BlogCard = ({ post, className, featured = false }: BlogCardProps) => {
         <div className="flex flex-col h-full">
           {/* Image Section */}
           <div className="relative h-48 overflow-hidden">
-            <div className="h-full flex items-center justify-center bg-muted">
-              <span className="text-4xl">📝</span>
-            </div>
+            {post.imageUrl ? (
+              <img 
+                src={post.imageUrl} 
+                alt={post.title}
+                className="w-full h-full object-cover transition-transform group-hover:scale-105"
+              />
+            ) : (
+              <div className="h-full flex items-center justify-center bg-muted">
+                <span className="text-4xl">📝</span>
+              </div>
+            )}
           </div>
           
           {/* Content Section */}
