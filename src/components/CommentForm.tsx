@@ -103,9 +103,9 @@ const CommentForm = ({ blogPostId, onSubmitSuccess }: CommentFormProps) => {
   const handleLogin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'github',
-      // options: {
-      //   redirectTo: window.location.href
-      // }
+      options: {
+        redirectTo: process.env.NEXT_PUBLIC_SUPABASE_REDIRECT_URL || "https://devmab.vercel.app"
+      }
     })
   };
 
