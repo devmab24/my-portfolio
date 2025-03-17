@@ -26,13 +26,11 @@ const NavBar = () => {
     { name: 'Contact', path: '/contact' },
   ];
 
-  // Always add Admin Login, but change it to Dashboard if logged in
-  const adminLink = isAdmin 
-    ? { name: 'Admin', path: '/admin/dashboard', icon: <Shield className="h-4 w-4 mr-1" /> }
-    : { name: 'Admin Login', path: '/admin/login', icon: <Shield className="h-4 w-4 mr-1" /> };
+  // Only add Admin link if the user is logged in as admin
+  const links = isAdmin 
+    ? [...navLinks, { name: 'Admin', path: '/admin/dashboard', icon: <Shield className="h-4 w-4 mr-1" /> }]
+    : navLinks;
     
-  const links = [...navLinks, adminLink];
-
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
