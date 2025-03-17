@@ -2,8 +2,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { MessageSquare } from "lucide-react";
 import { supabase } from "@/hooks/supabase/client";
@@ -55,29 +53,24 @@ const CommentForm = ({ blogPostId, onSubmitSuccess }: CommentFormProps) => {
       return;
     }
     
-    // Check if user is logged in
-    if (!user) {
-      toast({
-        title: "Authentication required",
-        description: "Please log in to add a comment",
-        variant: "destructive"
-      });
-      return;
-    }
-    
     setIsSubmitting(true);
     
     try {
-      // Add comment to Supabase
+      // Add comment to Supabase - submit with author_id if user is logged in
+      const commentData = {
+        blog_post_id: blogPostId,
+        content: content.trim(),
+        author_id: user?.id || null
+      };
+
       const { error } = await supabase
         .from('comments')
-        .insert({
-          blog_post_id: blogPostId,
-          author_id: user.id,
-          content
-        });
+        .insert(commentData);
       
-      if (error) throw error;
+      if (error) {
+        console.error("Error details:", error);
+        throw error;
+      }
       
       // Reset form
       setContent("");
@@ -106,7 +99,7 @@ const CommentForm = ({ blogPostId, onSubmitSuccess }: CommentFormProps) => {
       options: {
         redirectTo: process.env.NEXT_PUBLIC_SUPABASE_REDIRECT_URL || "https://devmab.vercel.app"
       }
-    })
+    });
   };
 
   return (
@@ -126,9 +119,7 @@ const CommentForm = ({ blogPostId, onSubmitSuccess }: CommentFormProps) => {
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="comment">Comment</Label>
             <Textarea
-              id="comment"
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="Share your thoughts about this post..."

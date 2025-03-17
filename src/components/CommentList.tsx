@@ -33,13 +33,16 @@ const CommentList = ({ blogPostId, refreshTrigger }: CommentListProps) => {
           .eq('blog_post_id', blogPostId)
           .order('created_at', { ascending: false });
         
-        if (error) throw error;
+        if (error) {
+          console.error("Error fetching comments:", error);
+          throw error;
+        }
         
         // Transform the data to match our Comment interface
         const transformedComments: Comment[] = data.map((comment: any) => ({
           id: comment.id,
           blogPostId,
-          author: comment.profiles?.username || null,
+          author: comment.profiles?.username || "Anonymous", // Default to "Anonymous" if no username
           content: comment.content,
           createdAt: comment.created_at,
           avatar: comment.profiles?.avatar_url,
