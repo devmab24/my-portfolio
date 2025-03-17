@@ -4,6 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/components/ui/use-toast';
 import { supabase } from '@/hooks/supabase/client';
 
+interface AdminUser {
+  id: string;
+  username: string;
+  password_hash: string;
+  created_at: string;
+  updated_at: string;
+}
+
 interface AdminContextType {
   isAdmin: boolean;
   login: (username: string, password: string) => Promise<boolean>;
@@ -40,7 +48,7 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
   // Verify against the admin_users table in Supabase
   const login = async (username: string, password: string): Promise<boolean> => {
     try {
-      // Query the admin_users table
+      // Query the admin_users table with a custom query
       const { data, error } = await supabase
         .from('admin_users')
         .select('*')
@@ -57,9 +65,12 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
         return false;
       }
       
+      // Type assertion to help TypeScript understand the shape
+      const adminUser = data as AdminUser;
+      
       // Simple password check (for demo purposes only)
       // In a real app, you'd use proper password hashing
-      if (data && data.password_hash === password) {
+      if (adminUser && adminUser.password_hash === password) {
         setIsAdmin(true);
         localStorage.setItem('isAdmin', 'true');
         toast({
