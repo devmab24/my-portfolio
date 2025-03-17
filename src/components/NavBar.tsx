@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Shield } from 'lucide-react';
@@ -25,9 +26,12 @@ const NavBar = () => {
     { name: 'Contact', path: '/contact' },
   ];
 
-  const links = isAdmin 
-    ? [...navLinks, { name: 'Admin', path: '/admin/dashboard', icon: <Shield className="h-4 w-4 mr-1" /> }] 
-    : navLinks;
+  // Always add Admin Login, but change it to Dashboard if logged in
+  const adminLink = isAdmin 
+    ? { name: 'Admin Dashboard', path: '/admin/dashboard', icon: <Shield className="h-4 w-4 mr-1" /> }
+    : { name: 'Admin Login', path: '/admin/login', icon: <Shield className="h-4 w-4 mr-1" /> };
+    
+  const links = [...navLinks, adminLink];
 
   useEffect(() => {
     const handleScroll = () => {
