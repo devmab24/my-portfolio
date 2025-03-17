@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { MessageSquare } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/hooks/supabase/client";
 
 interface CommentFormProps {
   blogPostId: string;
@@ -103,10 +103,10 @@ const CommentForm = ({ blogPostId, onSubmitSuccess }: CommentFormProps) => {
   const handleLogin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'github',
-      options: {
-        redirectTo: window.location.href
-      }
-    });
+      // options: {
+      //   redirectTo: window.location.href
+      // }
+    })
   };
 
   return (

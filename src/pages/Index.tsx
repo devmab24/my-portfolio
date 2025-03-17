@@ -8,7 +8,7 @@ import ProjectCard, { Project } from '@/components/ProjectCard';
 import BlogCard, { BlogPost } from '@/components/BlogCard';
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from '@/hooks/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 // Sample data for featured projects

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Comment } from "@/types/comment";
 import CommentItem from "./CommentItem";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/hooks/supabase/client";
 
 interface CommentListProps {
   blogPostId: string;

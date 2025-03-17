@@ -4,7 +4,7 @@ import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
 import BlogCard, { BlogPost } from '@/components/BlogCard';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from '@/hooks/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 const Blog = () => {

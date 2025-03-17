@@ -8,7 +8,7 @@ import { Calendar, Clock, Tag, User } from 'lucide-react';
 import { BlogPost as BlogPostType } from '@/components/BlogCard';
 import { Button } from '@/components/ui/button';
 import CommentSection from '@/components/CommentSection';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from '@/hooks/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 const BlogPost = () => {

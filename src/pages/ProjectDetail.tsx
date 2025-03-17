@@ -7,7 +7,7 @@ import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
 import { Project } from '@/components/ProjectCard';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from '@/hooks/supabase/client';
 
 const ProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
