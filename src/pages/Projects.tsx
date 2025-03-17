@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
 import ProjectCard, { Project } from '@/components/ProjectCard';
 import { supabase } from '@/hooks/supabase/client';
+import { Helmet } from 'react-helmet-async';
 
 const Projects = () => {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -68,91 +69,97 @@ const Projects = () => {
   });
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <NavBar />
-      
-      <main className="flex-grow pt-24">
-        <section className="section-spacing">
-          <div className="container-custom">
-            <AnimatedSection className="space-y-4 mb-12 text-center">
-              <h1 className="text-4xl md:text-5xl font-bold">Projects</h1>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                A showcase of my technical projects and software development work.
-              </p>
-            </AnimatedSection>
-            
-            <AnimatedSection delay={200} className="mb-8 space-y-6">
-              {/* Search Input */}
-              <div className="max-w-md mx-auto">
-                <input
-                  type="text"
-                  placeholder="Search projects..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-4 py-2 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-                />
-              </div>
+    <>
+      <Helmet>
+        <title>devmab | Projects</title>
+        <meta name="description" content="Projects page" />
+      </Helmet>
+      <div className="flex flex-col min-h-screen">
+        <NavBar />
+        
+        <main className="flex-grow pt-24">
+          <section className="section-spacing">
+            <div className="container-custom">
+              <AnimatedSection className="space-y-4 mb-12 text-center">
+                <h1 className="text-4xl md:text-5xl font-bold">Projects</h1>
+                <p className="text-muted-foreground max-w-2xl mx-auto">
+                  A showcase of my technical projects and software development work.
+                </p>
+              </AnimatedSection>
               
-              {/* Filter Tags */}
-              <div className="flex flex-wrap justify-center gap-2">
-                <button
-                  onClick={() => setSelectedTag(null)}
-                  className={`px-3 py-1 text-sm rounded-full transition-colors ${
-                    selectedTag === null
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
-                  }`}
-                >
-                  All
-                </button>
-                {allTags.map(tag => (
+              <AnimatedSection delay={200} className="mb-8 space-y-6">
+                {/* Search Input */}
+                <div className="max-w-md mx-auto">
+                  <input
+                    type="text"
+                    placeholder="Search projects..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full px-4 py-2 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                  />
+                </div>
+                
+                {/* Filter Tags */}
+                <div className="flex flex-wrap justify-center gap-2">
                   <button
-                    key={tag}
-                    onClick={() => setSelectedTag(tag)}
+                    onClick={() => setSelectedTag(null)}
                     className={`px-3 py-1 text-sm rounded-full transition-colors ${
-                      selectedTag === tag
+                      selectedTag === null
                         ? 'bg-primary text-primary-foreground'
                         : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
                     }`}
                   >
-                    {tag}
+                    All
                   </button>
-                ))}
-              </div>
-            </AnimatedSection>
-            
-            <AnimatedSection delay={300}>
-              {isLoading ? (
-                <div className="flex justify-center items-center py-20">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-                </div>
-              ) : filteredProjects.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredProjects.map(project => (
-                    <ProjectCard key={project.id} project={project} />
+                  {allTags.map(tag => (
+                    <button
+                      key={tag}
+                      onClick={() => setSelectedTag(tag)}
+                      className={`px-3 py-1 text-sm rounded-full transition-colors ${
+                        selectedTag === tag
+                          ? 'bg-primary text-primary-foreground'
+                          : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+                      }`}
+                    >
+                      {tag}
+                    </button>
                   ))}
                 </div>
-              ) : (
-                <div className="text-center py-12">
-                  <p className="text-muted-foreground">No projects match your search criteria.</p>
-                  <button
-                    onClick={() => {
-                      setSelectedTag(null);
-                      setSearchQuery('');
-                    }}
-                    className="mt-4 text-primary hover:underline"
-                  >
-                    Clear filters
-                  </button>
-                </div>
-              )}
-            </AnimatedSection>
-          </div>
-        </section>
-      </main>
-      
-      <Footer />
-    </div>
+              </AnimatedSection>
+              
+              <AnimatedSection delay={300}>
+                {isLoading ? (
+                  <div className="flex justify-center items-center py-20">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                  </div>
+                ) : filteredProjects.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredProjects.map(project => (
+                      <ProjectCard key={project.id} project={project} />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <p className="text-muted-foreground">No projects match your search criteria.</p>
+                    <button
+                      onClick={() => {
+                        setSelectedTag(null);
+                        setSearchQuery('');
+                      }}
+                      className="mt-4 text-primary hover:underline"
+                    >
+                      Clear filters
+                    </button>
+                  </div>
+                )}
+              </AnimatedSection>
+            </div>
+          </section>
+        </main>
+        
+        <Footer />
+      </div>
+    </>
   );
 };
 
