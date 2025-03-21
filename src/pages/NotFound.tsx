@@ -1,10 +1,12 @@
 
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const NotFound = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [countdown, setCountdown] = useState(3);
 
   useEffect(() => {
     console.error(
@@ -12,6 +14,21 @@ const NotFound = () => {
       location.pathname
     );
   }, [location.pathname]);
+
+  useEffect(() => {
+    const redirectTimer = setTimeout(() => {
+      navigate('/');
+    }, 3000);
+
+    const countdownInterval = setInterval(() => {
+      setCountdown((prev) => prev - 1);
+    }, 1000);
+
+    return () => {
+      clearTimeout(redirectTimer);
+      clearInterval(countdownInterval);
+    };
+  }, [navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
@@ -24,6 +41,9 @@ const NotFound = () => {
           <span className="text-sm italic mt-2 block">
             Path: {location.pathname}
           </span>
+        </p>
+        <p className="text-sm text-muted-foreground mb-4">
+          Redirecting to home page in {countdown} seconds...
         </p>
         <Link to="/" className="bg-primary text-primary-foreground px-6 py-2 rounded-md hover:bg-primary/90 transition-colors inline-block">
           Return to Home

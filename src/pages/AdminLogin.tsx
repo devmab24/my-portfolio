@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAdmin } from '@/context/AdminContext';
 import { Button } from '@/components/ui/button';
@@ -17,11 +17,12 @@ const AdminLogin = () => {
   const { login, isAdmin } = useAdmin();
   const navigate = useNavigate();
 
-  // If already logged in, redirect to dashboard
-  if (isAdmin) {
-    navigate('/admin/dashboard');
-    return null;
-  }
+  // Check if already logged in
+  useEffect(() => {
+    if (isAdmin) {
+      navigate('/admin/dashboard');
+    }
+  }, [isAdmin, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,6 +37,11 @@ const AdminLogin = () => {
       setIsLoading(false);
     }
   };
+
+  // Don't render the login form if already logged in
+  if (isAdmin) {
+    return null;
+  }
 
   return (
     <>
