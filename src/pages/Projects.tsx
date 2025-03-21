@@ -18,7 +18,7 @@ const Projects = () => {
   // Extract unique tags for filter
   const allTags = Array.from(
     new Set(projects.flatMap(project => project.tags))
-  ).sort();
+  ).sort(); 
 
   useEffect(() => {
     const fetchProjects = async () => {

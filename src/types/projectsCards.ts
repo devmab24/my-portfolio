@@ -1,4 +1,4 @@
-export interface Project {
+export interface Projects {
     id: string;
     title: string;
     description: string;
@@ -10,6 +10,6 @@ export interface Project {
 }
   
 export interface ProjectCardProps {
-    project: Project;
+    project: Projects;
     className?: string;
 }
