@@ -19,7 +19,13 @@ interface ProjectCardProps {
   className?: string;
 }
 
+
 const ProjectCard = ({ project, className }: ProjectCardProps) => {
+  const imageSrc =
+  project.title === "AI Image Generator"
+    ? "/ai-imageGenerator.webp"
+    : project.imageSrc;
+    
   return (
     <article 
       className={cn(
@@ -44,9 +50,9 @@ const ProjectCard = ({ project, className }: ProjectCardProps) => {
                 <Github className="h-4 w-4" />
               </a>
             )}
-            {project.demoUrl && (
+            {project.imageSrc && (
               <a 
-                href={project.demoUrl}
+                href={project.imageSrc}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 rounded-full bg-background/80 backdrop-blur-sm hover:bg-primary hover:text-primary-foreground transition-colors"
