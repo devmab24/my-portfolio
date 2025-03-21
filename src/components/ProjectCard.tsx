@@ -68,7 +68,7 @@ const ProjectCard = ({ project, className }: ProjectCardProps) => {
           <img 
             src={imageSrc} 
             alt={project.title} 
-            className="object-cover w-full h-full"
+            className="w-full h-full object-cover object-center rounded-lg"
             loading="lazy"
           />
         </div>
