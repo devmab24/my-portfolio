@@ -1,31 +1,14 @@
-
 import { ExternalLink, Github } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-
-export interface Project {
-  id: string;
-  title: string;
-  description: string;
-  imageSrc: string;
-  tags: string[];
-  demoUrl?: string;
-  githubUrl?: string;
-  featured?: boolean;
-}
-
-interface ProjectCardProps {
-  project: Project;
-  className?: string;
-}
+import { ProjectCardProps } from '@/types/projectsCards';
 
 const SUPABASE_BUCKET_URL = "https://lemachbekmdprrdtthem.supabase.co/storage/v1/object/public/project-images";
 
 const ProjectCard = ({ project, className }: ProjectCardProps) => {
-  // Ensure correct image URL formatting
   const imageSrc = project.imageSrc
-    ? `${SUPABASE_BUCKET_URL}/${project.imageSrc.replace(/^\/+/, '')}`
-    : "/default-placeholder.png"; // Fallback image
+  ? `${SUPABASE_BUCKET_URL}/${project.imageSrc.replace(/^\/+/, '')}`
+  : "/default-placeholder.png"; // Fallback image
 
   return (
     <article 
@@ -51,9 +34,9 @@ const ProjectCard = ({ project, className }: ProjectCardProps) => {
                 <Github className="h-4 w-4" />
               </a>
             )}
-            {project.demoUrl && (
+            {project.imageSrc && (
               <a 
-                href={project.demoUrl}
+                href={project.imageSrc}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 rounded-full bg-background/80 backdrop-blur-sm hover:bg-primary hover:text-primary-foreground transition-colors"
@@ -64,13 +47,22 @@ const ProjectCard = ({ project, className }: ProjectCardProps) => {
               </a>
             )}
           </div>
-          {/* Display dynamic project image */}
-          <img 
-            src={imageSrc} 
-            alt={project.title} 
-            className="w-full h-full object-cover object-center rounded-lg"
-            loading="lazy"
-          />
+          <div className="h-full flex items-center justify-center bg-muted">
+            {/* Display dynamic project image conditionally */}
+            {imageSrc ? (
+              <img 
+                src={imageSrc} 
+                alt={project.title} 
+                className="w-full h-full object-cover object-center rounded-lg"
+                loading="lazy"
+              />
+            ) : (
+              <div className="flex items-center justify-center w-full h-full bg-muted">
+                <span className="text-4xl">🖥️</span>
+              </div>
+            )}
+
+          </div>
         </div>
         
         <div className="p-4 space-y-3">
@@ -98,7 +90,6 @@ const ProjectCard = ({ project, className }: ProjectCardProps) => {
   );
 };
 
-// const SUPABASE_BUCKET_URL = "https://lemachbekmdprrdtthem.supabase.co/storage/v1/object/public/project-images";
 
 // const ProjectCard = ({ project, className }: ProjectCardProps) => {
 //   // Ensure correct image URL formatting
@@ -130,9 +121,9 @@ const ProjectCard = ({ project, className }: ProjectCardProps) => {
 //                 <Github className="h-4 w-4" />
 //               </a>
 //             )}
-//             {project.imageSrc && (
+//             {project.demoUrl && (
 //               <a 
-//                 href={project.imageSrc}
+//                 href={project.demoUrl}
 //                 target="_blank"
 //                 rel="noopener noreferrer"
 //                 className="p-2 rounded-full bg-background/80 backdrop-blur-sm hover:bg-primary hover:text-primary-foreground transition-colors"
@@ -143,9 +134,13 @@ const ProjectCard = ({ project, className }: ProjectCardProps) => {
 //               </a>
 //             )}
 //           </div>
-//           <div className="h-full flex items-center justify-center bg-muted">
-//             <span className="text-4xl">🖥️</span>
-//           </div>
+//           {/* Display dynamic project image */}
+//           <img 
+//             src={imageSrc} 
+//             alt={project.title} 
+//             className="w-full h-full object-cover object-center rounded-lg"
+//             loading="lazy"
+//           />
 //         </div>
         
 //         <div className="p-4 space-y-3">
