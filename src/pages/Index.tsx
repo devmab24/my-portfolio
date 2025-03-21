@@ -29,7 +29,7 @@ const featuredProjects: Project[] = [
     id: 'project-2',
     title: 'AI Image Generator',
     description: 'A productivity application for managing tasks and projects with collaborative features.',
-    imageSrc: '/ai-image_generator.jpeg',
+    imageSrc: '/tasks_management.png',
     tags: ['React', 'Firebase', 'Tailwind CSS'],
     demoUrl: 'https://imaginate-ai-phi.vercel.app',
     githubUrl: 'https://github.com',
