@@ -21,7 +21,7 @@ const featuredProjects: Project[] = [
     description: 'A modern e-commerce platform built with React, Node.js, and MongoDB with full payment integration.',
     imageSrc: '/E-commerce_platform.png',
     tags: ['React', 'Node.js', 'MongoDB', 'Stripe'],
-    demoUrl: 'checkoutly.vercel.app',
+    demoUrl: 'https://checkoutly.vercel.app',
     githubUrl: 'https://github.com',
     featured: true,
   },
@@ -31,7 +31,7 @@ const featuredProjects: Project[] = [
     description: 'A productivity application for managing tasks and projects with collaborative features.',
     imageSrc: '/ai-image_generator.jpeg',
     tags: ['React', 'Firebase', 'Tailwind CSS'],
-    demoUrl: 'imaginate-ai-phi.vercel.app',
+    demoUrl: 'https://imaginate-ai-phi.vercel.app',
     githubUrl: 'https://github.com',
   },
   {

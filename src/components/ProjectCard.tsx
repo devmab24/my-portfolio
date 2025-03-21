@@ -34,9 +34,9 @@ const ProjectCard = ({ project, className }: ProjectCardProps) => {
                 <Github className="h-4 w-4" />
               </a>
             )}
-            {project.imageSrc && (
+            {project.demoUrl && (
               <a 
-                href={project.imageSrc}
+                href={project.demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 rounded-full bg-background/80 backdrop-blur-sm hover:bg-primary hover:text-primary-foreground transition-colors"
@@ -121,18 +121,18 @@ const ProjectCard = ({ project, className }: ProjectCardProps) => {
 //                 <Github className="h-4 w-4" />
 //               </a>
 //             )}
-//             {project.demoUrl && (
-//               <a 
-//                 href={project.demoUrl}
-//                 target="_blank"
-//                 rel="noopener noreferrer"
-//                 className="p-2 rounded-full bg-background/80 backdrop-blur-sm hover:bg-primary hover:text-primary-foreground transition-colors"
-//                 onClick={(e) => e.stopPropagation()}
-//                 aria-label="View live demo"
-//               >
-//                 <ExternalLink className="h-4 w-4" />
-//               </a>
-//             )}
+            // {project.demoUrl && (
+            //   <a 
+            //     href={project.demoUrl}
+            //     target="_blank"
+            //     rel="noopener noreferrer"
+            //     className="p-2 rounded-full bg-background/80 backdrop-blur-sm hover:bg-primary hover:text-primary-foreground transition-colors"
+            //     onClick={(e) => e.stopPropagation()}
+            //     aria-label="View live demo"
+            //   >
+            //     <ExternalLink className="h-4 w-4" />
+            //   </a>
+            // )}
 //           </div>
 //           {/* Display dynamic project image */}
 //           <img 
