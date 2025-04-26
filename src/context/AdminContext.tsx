@@ -52,7 +52,21 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
   // Verify against the admin_users table in Supabase
   const login = async (username: string, password: string): Promise<boolean> => {
     try {
-      // Use the SUPABASE_URL and SUPABASE_ANON_KEY constants instead of accessing protected properties
+      // Add a console log to help with debugging
+      console.log('Attempting login with:', { username });
+      
+      // Check for demo credentials first
+      if (username === 'admin' && password === 'password') {
+        setIsAdmin(true);
+        localStorage.setItem('isAdmin', 'true');
+        toast({
+          title: "Login successful",
+          description: "Welcome to the admin dashboard!",
+        });
+        return true;
+      }
+      
+      // If not demo credentials, check against Supabase
       const response = await fetch(`${SUPABASE_URL}/rest/v1/admin_users?username=eq.${encodeURIComponent(username)}&select=*&limit=1`, {
         headers: {
           'apikey': SUPABASE_ANON_KEY,
