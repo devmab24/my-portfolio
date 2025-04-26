@@ -65,7 +65,17 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
         return false;
       }
       
-      // Use type assertion to tell TypeScript about the data shape
+      // Type assertion with safety check
+      if (!data) {
+        toast({
+          title: "Login failed",
+          description: "User not found",
+          variant: "destructive",
+        });
+        return false;
+      }
+
+      // Verify the data has the expected structure
       const adminUser = data as AdminUser;
       
       // Simple password check (for demo purposes only)

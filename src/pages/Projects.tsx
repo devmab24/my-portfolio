@@ -4,7 +4,8 @@ import { useToast } from '@/hooks/use-toast';
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
-import ProjectCard, { Project } from '@/components/ProjectCard';
+import ProjectCard from '@/components/ProjectCard';
+import { Project } from '@/types/project';
 import { supabase } from '@/hooks/supabase/client';
 import { Helmet } from 'react-helmet-async';
 
