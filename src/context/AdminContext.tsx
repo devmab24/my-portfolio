@@ -1,8 +1,12 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/hooks/supabase/client';
+
+// Hardcoded values for Supabase URL, matching what's in the client.ts file
+const SUPABASE_URL = 'https://lemachbekmdprrdtthem.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxlbWFjaGJla21kcHJyZHR0aGVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE4NzQyODMsImV4cCI6MjA1NzQ1MDI4M30.VPjDwj0lDRORYcgIyTFfasV5sU30Ipxs2NuiY7UxWIw';
 
 interface AdminUser {
   id: string;
@@ -48,11 +52,11 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
   // Verify against the admin_users table in Supabase
   const login = async (username: string, password: string): Promise<boolean> => {
     try {
-      // Use a more generic approach to query the table that's not in the TypeScript definitions
-      const response = await fetch(`${supabase.supabaseUrl}/rest/v1/admin_users?username=eq.${encodeURIComponent(username)}&select=*&limit=1`, {
+      // Use the SUPABASE_URL and SUPABASE_ANON_KEY constants instead of accessing protected properties
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/admin_users?username=eq.${encodeURIComponent(username)}&select=*&limit=1`, {
         headers: {
-          'apikey': supabase.supabaseKey,
-          'Authorization': `Bearer ${supabase.supabaseKey}`
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
         }
       });
       
