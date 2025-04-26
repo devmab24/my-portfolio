@@ -48,7 +48,8 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
   // Verify against the admin_users table in Supabase
   const login = async (username: string, password: string): Promise<boolean> => {
     try {
-      // Query the admin_users table with a custom query
+      // Query the admin_users table directly without type checking
+      // This bypasses the TypeScript issue related to missing table in types
       const { data, error } = await supabase
         .from('admin_users')
         .select('*')
@@ -75,8 +76,14 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
         return false;
       }
 
-      // Verify the data has the expected structure
-      const adminUser = data as AdminUser;
+      // Convert to AdminUser type with safer type handling
+      const adminUser = {
+        id: data.id,
+        username: data.username,
+        password_hash: data.password_hash,
+        created_at: data.created_at,
+        updated_at: data.updated_at
+      } as AdminUser;
       
       // Simple password check (for demo purposes only)
       // In a real app, you'd use proper password hashing
