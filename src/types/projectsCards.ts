@@ -1,13 +1,7 @@
-export interface Projects {
-    id: string;
-    title: string;
-    description: string;
-    imageSrc: string;
-    tags: string[];
-    demoUrl?: string;
-    githubUrl?: string;
-    featured?: boolean;
-}
+
+import { Project } from './project';
+
+export interface Projects extends Project {}
   
 export interface ProjectCardProps {
     project: Projects;

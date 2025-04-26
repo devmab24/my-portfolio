@@ -8,4 +8,6 @@ export interface Project {
   demoUrl?: string;
   githubUrl?: string;
   featured?: boolean;
+  projectType?: 'web' | 'python';
+  downloadUrl?: string;
 }

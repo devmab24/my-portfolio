@@ -8,6 +8,7 @@ import ProjectCard from '@/components/ProjectCard';
 import { Project } from '@/types/project';
 import { supabase } from '@/hooks/supabase/client';
 import { Helmet } from 'react-helmet-async';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Projects = () => {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -19,7 +20,7 @@ const Projects = () => {
   // Extract unique tags for filter
   const allTags = Array.from(
     new Set(projects.flatMap(project => project.tags))
-  ).sort(); 
+  ).sort();
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -43,6 +44,8 @@ const Projects = () => {
           demoUrl: item.demo_url,
           githubUrl: item.github_url,
           featured: item.featured,
+          projectType: item.project_type || 'web',
+          downloadUrl: item.download_url,
         }));
 
         setProjects(transformedProjects);
@@ -61,13 +64,16 @@ const Projects = () => {
     fetchProjects();
   }, [toast]);
 
-  // Filter projects based on selected tag and search query
-  const filteredProjects = projects.filter(project => {
-    const matchesTag = selectedTag ? project.tags.includes(selectedTag) : true;
-    const matchesSearch = project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  // Filter projects based on selected tag, search query, and project type
+  const getFilteredProjects = (type: 'web' | 'python') => {
+    return projects.filter(project => {
+      const matchesTag = selectedTag ? project.tags.includes(selectedTag) : true;
+      const matchesSearch = project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           project.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesTag && matchesSearch;
-  });
+      const matchesType = project.projectType === type;
+      return matchesTag && matchesSearch && matchesType;
+    });
+  };
 
   return (
     <>
@@ -129,30 +135,66 @@ const Projects = () => {
               </AnimatedSection>
               
               <AnimatedSection delay={300}>
-                {isLoading ? (
-                  <div className="flex justify-center items-center py-20">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-                  </div>
-                ) : filteredProjects.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredProjects.map(project => (
-                      <ProjectCard key={project.id} project={project} />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-12">
-                    <p className="text-muted-foreground">No projects match your search criteria.</p>
-                    <button
-                      onClick={() => {
-                        setSelectedTag(null);
-                        setSearchQuery('');
-                      }}
-                      className="mt-4 text-primary hover:underline"
-                    >
-                      Clear filters
-                    </button>
-                  </div>
-                )}
+                <Tabs defaultValue="web" className="w-full">
+                  <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8">
+                    <TabsTrigger value="web">Web Projects</TabsTrigger>
+                    <TabsTrigger value="python">Python Scripts</TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="web">
+                    {isLoading ? (
+                      <div className="flex justify-center items-center py-20">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                      </div>
+                    ) : getFilteredProjects('web').length > 0 ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {getFilteredProjects('web').map(project => (
+                          <ProjectCard key={project.id} project={project} />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-12">
+                        <p className="text-muted-foreground">No web projects match your search criteria.</p>
+                        <button
+                          onClick={() => {
+                            setSelectedTag(null);
+                            setSearchQuery('');
+                          }}
+                          className="mt-4 text-primary hover:underline"
+                        >
+                          Clear filters
+                        </button>
+                      </div>
+                    )}
+                  </TabsContent>
+
+                  <TabsContent value="python">
+                    {isLoading ? (
+                      <div className="flex justify-center items-center py-20">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                      </div>
+                    ) : getFilteredProjects('python').length > 0 ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {getFilteredProjects('python').map(project => (
+                          <ProjectCard key={project.id} project={project} />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-12">
+                        <p className="text-muted-foreground">No Python scripts match your search criteria.</p>
+                        <button
+                          onClick={() => {
+                            setSelectedTag(null);
+                            setSearchQuery('');
+                          }}
+                          className="mt-4 text-primary hover:underline"
+                        >
+                          Clear filters
+                        </button>
+                      </div>
+                    )}
+                  </TabsContent>
+                </Tabs>
               </AnimatedSection>
             </div>
           </section>
