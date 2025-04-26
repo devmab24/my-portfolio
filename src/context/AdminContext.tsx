@@ -48,16 +48,16 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
   // Verify against the admin_users table in Supabase
   const login = async (username: string, password: string): Promise<boolean> => {
     try {
-      // Query the admin_users table directly without type checking
-      // This bypasses the TypeScript issue related to missing table in types
-      const { data, error } = await supabase
-        .from('admin_users')
-        .select('*')
-        .eq('username', username)
-        .single();
+      // Use a more generic approach to query the table that's not in the TypeScript definitions
+      const response = await fetch(`${supabase.supabaseUrl}/rest/v1/admin_users?username=eq.${encodeURIComponent(username)}&select=*&limit=1`, {
+        headers: {
+          'apikey': supabase.supabaseKey,
+          'Authorization': `Bearer ${supabase.supabaseKey}`
+        }
+      });
       
-      if (error) {
-        console.error('Error fetching admin user:', error);
+      if (!response.ok) {
+        console.error('Error fetching admin user:', response.statusText);
         toast({
           title: "Login failed",
           description: "Unable to verify credentials",
@@ -66,8 +66,9 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
         return false;
       }
       
-      // Type assertion with safety check
-      if (!data) {
+      const data = await response.json();
+      
+      if (!data || data.length === 0) {
         toast({
           title: "Login failed",
           description: "User not found",
@@ -76,14 +77,7 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
         return false;
       }
 
-      // Convert to AdminUser type with safer type handling
-      const adminUser = {
-        id: data.id,
-        username: data.username,
-        password_hash: data.password_hash,
-        created_at: data.created_at,
-        updated_at: data.updated_at
-      } as AdminUser;
+      const adminUser: AdminUser = data[0];
       
       // Simple password check (for demo purposes only)
       // In a real app, you'd use proper password hashing
