@@ -65,7 +65,7 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
         return false;
       }
       
-      // Type assertion to help TypeScript understand the shape
+      // Use type assertion to tell TypeScript about the data shape
       const adminUser = data as AdminUser;
       
       // Simple password check (for demo purposes only)
