@@ -184,10 +184,12 @@ export type Database = {
           created_at: string
           demo_url: string | null
           description: string
+          download_url: string | null
           featured: boolean | null
           github_url: string | null
           id: string
           image_url: string | null
+          project_type: string
           tags: string[]
           title: string
           updated_at: string
@@ -196,10 +198,12 @@ export type Database = {
           created_at?: string
           demo_url?: string | null
           description: string
+          download_url?: string | null
           featured?: boolean | null
           github_url?: string | null
           id?: string
           image_url?: string | null
+          project_type?: string
           tags?: string[]
           title: string
           updated_at?: string
@@ -208,10 +212,12 @@ export type Database = {
           created_at?: string
           demo_url?: string | null
           description?: string
+          download_url?: string | null
           featured?: boolean | null
           github_url?: string | null
           id?: string
           image_url?: string | null
+          project_type?: string
           tags?: string[]
           title?: string
           updated_at?: string
