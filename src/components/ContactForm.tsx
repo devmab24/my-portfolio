@@ -24,12 +24,20 @@ const ContactForm = () => {
     setIsSubmitting(true);
     
     try {
-      // Explicitly type the table name as any to bypass type checking temporarily
-      const { error } = await supabase
-        .from('contact_submissions' as any)
-        .insert([formData]);
+      console.log("Submitting form data:", formData);
+      
+      // Ensure we're using the correct table name matching what was created in SQL
+      const { error, data } = await supabase
+        .from('contact_submissions')
+        .insert([formData])
+        .select();
 
-      if (error) throw error;
+      console.log("Supabase response:", { error, data });
+
+      if (error) {
+        console.error("Supabase error details:", error);
+        throw error;
+      }
 
       toast({
         title: "Message sent!",
