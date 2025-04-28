@@ -26,11 +26,13 @@ const ContactForm = () => {
     try {
       console.log("Submitting form data:", formData);
       
-      // Ensure we're using the correct table name matching what was created in SQL
-      const { error, data } = await supabase
-        .from('contact_submissions')
+      // Use type assertion to bypass TypeScript checking
+      // This is necessary because the contact_submissions table exists in the database
+      // but is not yet reflected in the TypeScript types
+      const { error, data } = await (supabase
+        .from('contact_submissions' as any)
         .insert([formData])
-        .select();
+        .select() as any);
 
       console.log("Supabase response:", { error, data });
 
