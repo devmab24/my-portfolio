@@ -1,5 +1,4 @@
-
-import { Download, BookOpen, Briefcase, Award, ChevronRight } from 'lucide-react';
+import { Download, BookOpen, Briefcase, Award, ChevronRight, BarChart3, Brain } from 'lucide-react';
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
@@ -22,13 +21,13 @@ const About = () => {
               <AnimatedSection className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div className="space-y-6">
                   <div className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
-                    About Me
+                    Full-Stack Developer & Data Scientist
                   </div>
                   <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
                     Passionate about creating <span className="animated-gradient-text">meaningful experiences</span>
                   </h1>
                   <p className="text-muted-foreground">
-                    I'm a software developer with a passion for creating elegant solutions to complex problems. With expertise in full-stack development, I build applications that are not only functional but also user-friendly and visually appealing.
+                    I'm a software developer and data scientist with a passion for creating elegant solutions to complex problems. With expertise in full-stack development, machine learning, and data analytics, I build applications that are not only functional but also intelligent, user-friendly, and visually appealing.
                   </p>
                   
                   <div className="pt-4">
@@ -218,7 +217,7 @@ const About = () => {
                 <div className="space-y-6">
                   <h2 className="text-3xl md:text-4xl font-bold">Technical Skills</h2>
                   <p className="text-muted-foreground">
-                    With expertise in both frontend and backend technologies, I bring a comprehensive skill set to every project.
+                    With expertise in both frontend and backend technologies, plus data science and machine learning, I bring a comprehensive skill set to every project.
                   </p>
                   
                   <div className="space-y-4">
@@ -236,11 +235,33 @@ const About = () => {
                     {/* Skill Bar */}
                     <div className="space-y-2">
                       <div className="flex justify-between">
+                        <span className="font-medium">Python & Data Science</span>
+                        <span className="text-muted-foreground">92%</span>
+                      </div>
+                      <div className="h-2 bg-secondary rounded-full">
+                        <div className="h-full bg-primary rounded-full" style={{ width: '92%' }}></div>
+                      </div>
+                    </div>
+                    
+                    {/* Skill Bar */}
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
                         <span className="font-medium">React & React Native</span>
                         <span className="text-muted-foreground">90%</span>
                       </div>
                       <div className="h-2 bg-secondary rounded-full">
                         <div className="h-full bg-primary rounded-full" style={{ width: '90%' }}></div>
+                      </div>
+                    </div>
+                    
+                    {/* Skill Bar */}
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span className="font-medium">Machine Learning & AI</span>
+                        <span className="text-muted-foreground">88%</span>
+                      </div>
+                      <div className="h-2 bg-secondary rounded-full">
+                        <div className="h-full bg-primary rounded-full" style={{ width: '88%' }}></div>
                       </div>
                     </div>
                     
@@ -271,7 +292,7 @@ const About = () => {
                 <div className="space-y-6">
                   <h2 className="text-3xl md:text-4xl font-bold">Tools & Technologies</h2>
                   <p className="text-muted-foreground">
-                    I stay up-to-date with the latest tools and technologies to deliver modern solutions.
+                    I stay up-to-date with the latest tools and technologies to deliver modern solutions across web development and data science.
                   </p>
                   
                   <div className="grid grid-cols-2 gap-4">
@@ -315,6 +336,56 @@ const About = () => {
                         <li className="flex items-center">
                           <ChevronRight className="h-3 w-3 mr-1" />
                           Serverless Functions
+                        </li>
+                      </ul>
+                    </div>
+                    
+                    <div className="p-4 rounded-lg bg-card border border-border/40 space-y-2 hover-card-animation">
+                      <h3 className="font-medium flex items-center">
+                        <BarChart3 className="h-4 w-4 mr-2" />
+                        Data Science
+                      </h3>
+                      <ul className="space-y-1 text-sm text-muted-foreground">
+                        <li className="flex items-center">
+                          <ChevronRight className="h-3 w-3 mr-1" />
+                          Pandas, NumPy
+                        </li>
+                        <li className="flex items-center">
+                          <ChevronRight className="h-3 w-3 mr-1" />
+                          Matplotlib, Seaborn
+                        </li>
+                        <li className="flex items-center">
+                          <ChevronRight className="h-3 w-3 mr-1" />
+                          Jupyter, Google Colab
+                        </li>
+                        <li className="flex items-center">
+                          <ChevronRight className="h-3 w-3 mr-1" />
+                          SQL, Apache Spark
+                        </li>
+                      </ul>
+                    </div>
+                    
+                    <div className="p-4 rounded-lg bg-card border border-border/40 space-y-2 hover-card-animation">
+                      <h3 className="font-medium flex items-center">
+                        <Brain className="h-4 w-4 mr-2" />
+                        Machine Learning
+                      </h3>
+                      <ul className="space-y-1 text-sm text-muted-foreground">
+                        <li className="flex items-center">
+                          <ChevronRight className="h-3 w-3 mr-1" />
+                          Scikit-learn, TensorFlow
+                        </li>
+                        <li className="flex items-center">
+                          <ChevronRight className="h-3 w-3 mr-1" />
+                          PyTorch, Keras
+                        </li>
+                        <li className="flex items-center">
+                          <ChevronRight className="h-3 w-3 mr-1" />
+                          OpenCV, NLTK
+                        </li>
+                        <li className="flex items-center">
+                          <ChevronRight className="h-3 w-3 mr-1" />
+                          MLflow, Hugging Face
                         </li>
                       </ul>
                     </div>

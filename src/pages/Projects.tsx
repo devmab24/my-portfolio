@@ -66,7 +66,7 @@ const Projects = () => {
   }, [toast]);
 
   // Filter projects based on selected tag, search query, and project type
-  const getFilteredProjects = (type: 'web' | 'python') => {
+  const getFilteredProjects = (type: 'web' | 'python' | 'datascience') => {
     return projects.filter(project => {
       const matchesTag = selectedTag ? project.tags.includes(selectedTag) : true;
       const matchesSearch = project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -91,7 +91,7 @@ const Projects = () => {
               <AnimatedSection className="space-y-4 mb-12 text-center">
                 <h1 className="text-4xl md:text-5xl font-bold">Projects</h1>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
-                  A showcase of my technical projects and software development work.
+                  A showcase of my technical projects spanning web development, data science, machine learning, and software automation.
                 </p>
               </AnimatedSection>
               
@@ -137,8 +137,9 @@ const Projects = () => {
               
               <AnimatedSection delay={300}>
                 <Tabs defaultValue="web" className="w-full">
-                  <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8">
+                  <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 mb-8">
                     <TabsTrigger value="web">Web Projects</TabsTrigger>
+                    <TabsTrigger value="datascience">Data Science & ML</TabsTrigger>
                     <TabsTrigger value="python">Python Scripts</TabsTrigger>
                   </TabsList>
 
@@ -156,6 +157,46 @@ const Projects = () => {
                     ) : (
                       <div className="text-center py-12">
                         <p className="text-muted-foreground">No web projects match your search criteria.</p>
+                        <button
+                          onClick={() => {
+                            setSelectedTag(null);
+                            setSearchQuery('');
+                          }}
+                          className="mt-4 text-primary hover:underline"
+                        >
+                          Clear filters
+                        </button>
+                      </div>
+                    )}
+                  </TabsContent>
+
+                  <TabsContent value="datascience">
+                    {isLoading ? (
+                      <div className="flex justify-center items-center py-20">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                      </div>
+                    ) : getFilteredProjects('datascience').length > 0 ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {getFilteredProjects('datascience').map(project => (
+                          <ProjectCard key={project.id} project={project} />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-12">
+                        <div className="space-y-4">
+                          <div className="text-6xl">🧠</div>
+                          <h3 className="text-xl font-semibold">Data Science & ML Projects Coming Soon</h3>
+                          <p className="text-muted-foreground max-w-md mx-auto">
+                            I'm currently working on exciting data science and machine learning projects. 
+                            Check back soon to see predictive models, data visualizations, and AI-powered applications.
+                          </p>
+                          <div className="flex flex-wrap justify-center gap-2 pt-4">
+                            <span className="px-3 py-1 text-xs rounded-full bg-primary/10 text-primary">Machine Learning</span>
+                            <span className="px-3 py-1 text-xs rounded-full bg-primary/10 text-primary">Data Analysis</span>
+                            <span className="px-3 py-1 text-xs rounded-full bg-primary/10 text-primary">Predictive Modeling</span>
+                            <span className="px-3 py-1 text-xs rounded-full bg-primary/10 text-primary">Deep Learning</span>
+                          </div>
+                        </div>
                         <button
                           onClick={() => {
                             setSelectedTag(null);

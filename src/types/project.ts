@@ -8,6 +8,6 @@ export interface Project {
   demoUrl?: string;
   githubUrl?: string;
   featured?: boolean;
-  projectType?: 'web' | 'python';
+  projectType?: 'web' | 'python' | 'datascience';
   downloadUrl?: string;
 }
