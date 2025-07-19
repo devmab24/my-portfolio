@@ -49,8 +49,8 @@ const Hero = () => {
         <AnimatedSection delay={300} animation="fade-in">
           <div className="relative aspect-square max-w-md mx-auto lg:max-w-none">
             <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 blur-2xl -z-10"></div>
-            <div className="glass-card rounded-2xl border border-border/40 shadow-xl overflow-hidden p-1 bg-zinc-900">
-              <div className="bg-muted rounded-xl h-full w-full flex items-center justify-center aspect-square bg-zinc-800">
+            <div className="glass-card rounded-2xl border border-border/40 shadow-xl overflow-hidden p-1 ">
+              <div className="bg-muted rounded-xl h-full w-full flex items-center justify-center aspect-square">
 {/*                 <span className="text-5xl">👨‍💻</span> */}
                 <img
                   src="/self_bg.png"
