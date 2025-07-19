@@ -34,7 +34,7 @@ const Footer = () => {
             <h3 className="text-lg font-semibold">Connect</h3>
             <div className="flex space-x-4">
               <a 
-                href="https://github.com" 
+                href="https://github.com/devmab24/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="p-2 rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
@@ -43,7 +43,7 @@ const Footer = () => {
                 <Github className="h-5 w-5" />
               </a>
               <a 
-                href="https://linkedin.com" 
+                href="https://linkedin.com/in/devmab/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="p-2 rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
@@ -52,7 +52,7 @@ const Footer = () => {
                 <Linkedin className="h-5 w-5" />
               </a>
               <a 
-                href="https://twitter.com" 
+                href="https://twitter.com/devmab24" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="p-2 rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
@@ -61,7 +61,7 @@ const Footer = () => {
                 <Twitter className="h-5 w-5" />
               </a>
               <a 
-                href="mailto:contact@example.com"
+                href="mailto:talk2muhammadbello@gmail.com"
                 className="p-2 rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
                 aria-label="Email"
               >
