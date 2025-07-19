@@ -3,7 +3,7 @@
 
 > A modern, responsive portfolio website showcasing my expertise in web development, data science, and machine learning.
 
-**Live Demo**: [https://lovable.dev/projects/08441523-dbe0-40b8-8835-ab99d7cd9566](https://lovable.dev/projects/08441523-dbe0-40b8-8835-ab99d7cd9566)
+**Live Demo**: https://devmab.vercel.app/
 
 ## 👨‍💻 About Me
 
@@ -115,31 +115,22 @@ This portfolio is built using modern web technologies:
 - ✅ **Admin Dashboard** - Content management system
 - ✅ **Blog System** - Thought leadership and tutorials
 
-## 🎯 Deployment Options
 
-### Quick Deploy with Lovable
-1. Open [Lovable](https://lovable.dev/projects/08441523-dbe0-40b8-8835-ab99d7cd9566)
-2. Click on **Share → Publish**
-3. Your site goes live instantly!
-
-### Custom Domain Deployment
-For custom domains, I recommend:
-- **Netlify** - [Custom domains guide](https://docs.lovable.dev/tips-tricks/custom-domain/)
-- **Vercel** - Connect your GitHub repo for automatic deployments
-- **GitHub Pages** - Free hosting for open-source projects
-
+### 🎯 Domain Deployment
+- **Vercel**
+- 
 ## 📫 Let's Connect
 
 I'm always interested in discussing new opportunities, collaborations, or just talking about technology!
 
-- 💼 **LinkedIn**: [Your LinkedIn Profile]
-- 🐙 **GitHub**: [Your GitHub Profile]
-- 📧 **Email**: [Your Email]
-- 🌐 **Portfolio**: [Your Live Portfolio URL]
+- 💼 **LinkedIn**: https://linkedin.com/in/devmab/
+- 🐙 **GitHub**: https://github.com/devmab24/
+- 📧 **Email**: talk2muhammadbello@gmail.com
+- 🌐 **Portfolio**: https://devmab.vercel.app/
 
 ## 📊 GitHub Stats
 
-![Your GitHub Stats](https://github-readme-stats.vercel.app/api?username=yourusername&show_icons=true&theme=radical)
+![Your GitHub Stats](https://github-readme-stats.vercel.app/api?username=devmab24&show_icons=true&theme=radical)
 
 ## 🏆 Achievements
 
