@@ -51,7 +51,12 @@ const Hero = () => {
             <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 blur-2xl -z-10"></div>
             <div className="glass-card rounded-2xl border border-border/40 shadow-xl overflow-hidden p-1">
               <div className="bg-muted rounded-xl h-full w-full flex items-center justify-center aspect-square">
-                <span className="text-5xl">👨‍💻</span>
+{/*                 <span className="text-5xl">👨‍💻</span> */}
+                <img
+                  src="/self_pic.png"
+                  alt="My Photo"
+                  className="rounded-xl object-cover w-full h-full"
+                />
               </div>
             </div>
           </div>
