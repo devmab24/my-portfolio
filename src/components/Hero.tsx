@@ -55,7 +55,7 @@ const Hero = () => {
                 <img
                   src="/photo_bg.png"
                   alt="My Photo"
-                  className="rounded-xl object-cover w-full h-full"
+                  className="rounded-xl object-cover w-md h-md"
                 />
               </div>
             </div>
