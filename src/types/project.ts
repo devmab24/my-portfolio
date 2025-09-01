@@ -12,4 +12,6 @@ export interface Project {
   downloadUrl?: string;
   challenges?: string;
   key_feature?: string[];
+  timeline: string;
+  role: string;
 }

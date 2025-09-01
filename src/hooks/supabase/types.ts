@@ -162,6 +162,8 @@ export type Database = {
           updated_at: string
           challenges: string
           key_feature: string[]
+          timeline: string
+          role: string
         }
         Insert: {
           created_at?: string
@@ -176,6 +178,8 @@ export type Database = {
           updated_at?: string
           challenges?: string
           key_feature?: string[]
+          timeline: string
+          role: string
         }
         Update: {
           created_at?: string
@@ -190,6 +194,8 @@ export type Database = {
           updated_at?: string
           challenges?: string
           key_feature?: string[]
+          timeline: string
+          role: string
         }
         Relationships: []
       }

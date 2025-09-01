@@ -45,6 +45,8 @@ const ProjectDetail = () => {
             featured: data.featured,
             challenges: data.challenges,
             key_feature: data.key_feature,
+            timeline: data.timeline,
+            role: data.role,
           };
           
           setProject(transformedProject);
@@ -157,8 +159,8 @@ const ProjectDetail = () => {
             <AnimatedSection delay={200} className="mb-12">
               <div className="rounded-xl overflow-hidden border border-border/40 shadow-lg">
                 <div className="aspect-video bg-muted flex items-center justify-center">
-                  {/* <span className="text-6xl">🖥️</span> */}
-                  <img src={project.imageSrc} alt="project image URL" />
+                  <span className="text-6xl">🖥️</span>
+                  {/* <img src={project.imageSrc} alt="project image URL" /> */}
                 </div>
               </div>
             </AnimatedSection>
@@ -212,12 +214,18 @@ const ProjectDetail = () => {
                   <div className="space-y-4">
                     <div>
                       <h4 className="text-sm font-medium text-muted-foreground">Timeline</h4>
-                      <p>3 months</p>
+                      {project.timeline
+                        ? project.timeline
+                        : "3 months"
+                      }
                     </div>
                     
                     <div>
                       <h4 className="text-sm font-medium text-muted-foreground">Role</h4>
-                      <p>Full-stack Developer</p>
+                      {project.role
+                        ? project.role
+                        : "Full-stack Developer"
+                      }
                     </div>
                     
                     <div>
