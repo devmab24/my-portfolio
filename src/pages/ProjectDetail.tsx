@@ -43,7 +43,8 @@ const ProjectDetail = () => {
             demoUrl: data.demo_url,
             githubUrl: data.github_url,
             featured: data.featured,
-            challenges: data.challenges
+            challenges: data.challenges,
+            key_feature: data.key_feature,
           };
           
           setProject(transformedProject);
@@ -170,9 +171,6 @@ const ProjectDetail = () => {
                   <p className="text-muted-foreground">
                     {project.description}
                   </p>
-                  {/* <p className="text-muted-foreground mt-4">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, urna eu tincidunt consectetur, nisi nunc pretium nisi, eget ultrices nisi nunc eu nisi. Sed euismod, urna eu tincidunt consectetur, nisi nunc pretium nisi, eget ultrices nisi nunc eu nisi.
-                  </p> */}
                 </section>
                 
                 <section>
@@ -182,19 +180,28 @@ const ProjectDetail = () => {
                       ? project.challenges
                       : "One of the main challenges was integrating third-party APIs with inconsistent documentation. To address this, I created custom middleware that standardized API responses and improved error handling. Another challenge was ensuring responsive design across devices, which I solved using Tailwind’s utility classes and extensive cross-browser testing."}
                   </p>
-                  {/* <p className="text-muted-foreground">
-                    One of the main challenges was integrating third-party APIs with inconsistent documentation. To address this, I created custom middleware that standardized API responses and improved error handling. Another challenge was ensuring responsive design across devices, which I solved using Tailwind’s utility classes and extensive cross-browser testing.
-                  </p> */}
                 </section>
                 
                 <section>
                   <h2 className="text-2xl font-semibold mb-4">Key Features</h2>
                   <ul className="list-disc list-inside space-y-2 text-muted-foreground">
-                    <li>Feature one with detailed explanation</li>
-                    <li>Feature two with detailed explanation</li>
-                    <li>Feature three with detailed explanation</li>
-                    <li>Feature four with detailed explanation</li>
+                    {(project.key_feature && project.key_feature.length > 0
+                      ? project.key_feature
+                      : [
+                          "Authentication & Authorization: Secure login and role-based access using NextAuth.js",
+                          "Real-time Data Fetching: Server-side rendering (SSR) and incremental static regeneration (ISR) for up-to-date dashboards.",
+                          "Database Integration: PostgreSQL as the main data store with optimized queries for analytics",
+                          "API Layer: REST/GraphQL endpoints built on Next.js API routes",
+                          "Interactive Dashboards: Data visualization with charts (Recharts/D3.js) for KPIs and metrics.",
+                          "Deployment & Hosting: Continuous deployment and scaling on Vercel.",
+                          "Responsive UI: Built with Tailwind CSS for seamless desktop and mobile experience.",
+                          "Error Handling & Logging: Centralized error tracking and API monitoring."
+                        ]
+                    ).map((feature, index) => (
+                      <li key={index}>{feature}</li>
+                    ))}
                   </ul>
+
                 </section>
               </div>
               

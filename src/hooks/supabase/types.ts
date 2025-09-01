@@ -161,6 +161,7 @@ export type Database = {
           title: string
           updated_at: string
           challenges: string
+          key_feature: string[]
         }
         Insert: {
           created_at?: string
@@ -174,6 +175,7 @@ export type Database = {
           title: string
           updated_at?: string
           challenges?: string
+          key_feature?: string[]
         }
         Update: {
           created_at?: string
@@ -187,6 +189,7 @@ export type Database = {
           title?: string
           updated_at?: string
           challenges?: string
+          key_feature?: string[]
         }
         Relationships: []
       }
