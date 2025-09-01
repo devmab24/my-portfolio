@@ -9,7 +9,7 @@ import { Project } from '@/types/project';
 import { supabase } from '@/hooks/supabase/client';
 import { Helmet } from 'react-helmet-async';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
+ 
 const Projects = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
