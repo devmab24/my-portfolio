@@ -43,6 +43,7 @@ const ProjectDetail = () => {
             demoUrl: data.demo_url,
             githubUrl: data.github_url,
             featured: data.featured,
+            challenges: data.challenges
           };
           
           setProject(transformedProject);
@@ -155,7 +156,8 @@ const ProjectDetail = () => {
             <AnimatedSection delay={200} className="mb-12">
               <div className="rounded-xl overflow-hidden border border-border/40 shadow-lg">
                 <div className="aspect-video bg-muted flex items-center justify-center">
-                  <span className="text-6xl">🖥️</span>
+                  {/* <span className="text-6xl">🖥️</span> */}
+                  <img src={project.imageSrc} alt="project image URL" />
                 </div>
               </div>
             </AnimatedSection>
@@ -168,16 +170,21 @@ const ProjectDetail = () => {
                   <p className="text-muted-foreground">
                     {project.description}
                   </p>
-                  <p className="text-muted-foreground mt-4">
+                  {/* <p className="text-muted-foreground mt-4">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, urna eu tincidunt consectetur, nisi nunc pretium nisi, eget ultrices nisi nunc eu nisi. Sed euismod, urna eu tincidunt consectetur, nisi nunc pretium nisi, eget ultrices nisi nunc eu nisi.
-                  </p>
+                  </p> */}
                 </section>
                 
                 <section>
                   <h2 className="text-2xl font-semibold mb-4">Challenges & Solutions</h2>
                   <p className="text-muted-foreground">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, urna eu tincidunt consectetur, nisi nunc pretium nisi, eget ultrices nisi nunc eu nisi. Sed euismod, urna eu tincidunt consectetur, nisi nunc pretium nisi, eget ultrices nisi nunc eu nisi.
+                    {project.challenges
+                      ? project.challenges
+                      : "One of the main challenges was integrating third-party APIs with inconsistent documentation. To address this, I created custom middleware that standardized API responses and improved error handling. Another challenge was ensuring responsive design across devices, which I solved using Tailwind’s utility classes and extensive cross-browser testing."}
                   </p>
+                  {/* <p className="text-muted-foreground">
+                    One of the main challenges was integrating third-party APIs with inconsistent documentation. To address this, I created custom middleware that standardized API responses and improved error handling. Another challenge was ensuring responsive design across devices, which I solved using Tailwind’s utility classes and extensive cross-browser testing.
+                  </p> */}
                 </section>
                 
                 <section>

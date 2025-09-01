@@ -160,6 +160,7 @@ export type Database = {
           tags: string[]
           title: string
           updated_at: string
+          challenges: string
         }
         Insert: {
           created_at?: string
@@ -172,6 +173,7 @@ export type Database = {
           tags?: string[]
           title: string
           updated_at?: string
+          challenges?: string
         }
         Update: {
           created_at?: string
@@ -184,6 +186,7 @@ export type Database = {
           tags?: string[]
           title?: string
           updated_at?: string
+          challenges?: string
         }
         Relationships: []
       }

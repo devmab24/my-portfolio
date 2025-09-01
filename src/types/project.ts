@@ -10,4 +10,5 @@ export interface Project {
   featured?: boolean;
   projectType?: 'web' | 'python' | 'datascience';
   downloadUrl?: string;
+  challenges?: string
 }
