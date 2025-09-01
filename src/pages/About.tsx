@@ -49,7 +49,7 @@ const About = () => {
                       <img
                         src="/photo_bg.png"
                         alt="My Photo"
-                        className="rounded-xl object-cover w-full h-full"
+                        className="rounded-xl object-cover w-md h-md"
                       />
                     </div>
                   </div>
@@ -79,7 +79,7 @@ const About = () => {
                     <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-card p-6 rounded-lg shadow-sm border border-border/40 hover-card-animation">
                       <div className="flex flex-col space-y-1 mb-2">
                         <h3 className="text-xl font-semibold">Software Engineer</h3>
-                        <span className="text-muted-foreground">https://munademy.com/</span>
+                        <span className="text-muted-foreground">Munademy/</span>
                         <span className="text-sm text-muted-foreground">2024 - Present</span>
                       </div>
                       
