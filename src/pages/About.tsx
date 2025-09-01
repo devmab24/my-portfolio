@@ -45,9 +45,9 @@ const About = () => {
                   <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 blur-2xl -z-10"></div>
                   <div className="glass-card rounded-2xl border border-border/40 shadow-xl overflow-hidden p-1">
                     <div className="bg-muted rounded-xl h-full w-full flex items-center justify-center aspect-square">
-{/*                       <span className="text-6xl">👨‍💻</span> */}
+                      {/*<span className="text-6xl">👨‍💻</span> */}
                       <img
-                        src="/self_bg.png"
+                        src="/photo_bg.png"
                         alt="My Photo"
                         className="rounded-xl object-cover w-full h-full"
                       />
@@ -78,13 +78,13 @@ const About = () => {
                     
                     <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-card p-6 rounded-lg shadow-sm border border-border/40 hover-card-animation">
                       <div className="flex flex-col space-y-1 mb-2">
-                        <h3 className="text-xl font-semibold">Senior Software Engineer</h3>
-                        <span className="text-muted-foreground">Company Name Inc.</span>
-                        <span className="text-sm text-muted-foreground">2022 - Present</span>
+                        <h3 className="text-xl font-semibold">Software Engineer</h3>
+                        <span className="text-muted-foreground">https://munademy.com/</span>
+                        <span className="text-sm text-muted-foreground">2024 - Present</span>
                       </div>
                       
                       <p className="text-muted-foreground">
-                        Led the development of a microservices architecture for a high-traffic e-commerce platform. Implemented CI/CD pipelines and improved website performance by 40%.
+                        Providing Software Solutions for businesses. Implementing CI/CD pipelines and improving website performance by 40%.
                       </p>
                     </div>
                   </div>
@@ -98,8 +98,8 @@ const About = () => {
                     <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-card p-6 rounded-lg shadow-sm border border-border/40 hover-card-animation">
                       <div className="flex flex-col space-y-1 mb-2">
                         <h3 className="text-xl font-semibold">Full-Stack Developer</h3>
-                        <span className="text-muted-foreground">Tech Solutions Ltd.</span>
-                        <span className="text-sm text-muted-foreground">2020 - 2022</span>
+                        <span className="text-muted-foreground">Self Thought</span>
+                        <span className="text-sm text-muted-foreground">2023 - 2024</span>
                       </div>
                       
                       <p className="text-muted-foreground">
@@ -117,8 +117,8 @@ const About = () => {
                     <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-card p-6 rounded-lg shadow-sm border border-border/40 hover-card-animation">
                       <div className="flex flex-col space-y-1 mb-2">
                         <h3 className="text-xl font-semibold">Junior Web Developer</h3>
-                        <span className="text-muted-foreground">Digital Agency</span>
-                        <span className="text-sm text-muted-foreground">2018 - 2020</span>
+                        <span className="text-muted-foreground">CodeWithJamil.org</span>
+                        <span className="text-sm text-muted-foreground">2021 - 2023</span>
                       </div>
                       
                       <p className="text-muted-foreground">
@@ -143,6 +143,24 @@ const About = () => {
               
               <AnimatedSection delay={200}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  
+                  {/* Certification Card */}
+                  <div className="bg-card p-6 rounded-lg shadow-sm border border-border/40 hover-card-animation">
+                    <div className="flex items-start gap-4">
+                      <div className="p-2 rounded-full bg-primary/10 text-primary">
+                        <Award className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-semibold">Applied Data Science and Machine Learning</h3>
+                        <p className="text-muted-foreground">WorldQuant University</p>
+                        <p className="text-sm text-muted-foreground mt-1">2025</p>
+                        <p className="text-muted-foreground mt-4">
+                          Completed a comprehensive program in Applied Data Science and Machine Learning, using tools like Jupyter, Pandas, Scikit-learn, Matplotlib, Numpy and many more.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Education Card */}
                   <div className="bg-card p-6 rounded-lg shadow-sm border border-border/40 hover-card-animation">
                     <div className="flex items-start gap-4">
@@ -150,11 +168,11 @@ const About = () => {
                         <BookOpen className="h-5 w-5" />
                       </div>
                       <div>
-                        <h3 className="text-xl font-semibold">Bachelor of Science in Computer Science</h3>
-                        <p className="text-muted-foreground">University Name</p>
-                        <p className="text-sm text-muted-foreground mt-1">2014 - 2018</p>
+                        <h3 className="text-xl font-semibold">Bachelor of Technology in Computer Science</h3>
+                        <p className="text-muted-foreground">Modibbo Adama University of Technology, Yola</p>
+                        <p className="text-sm text-muted-foreground mt-1">2017 - 2022</p>
                         <p className="text-muted-foreground mt-4">
-                          Studied algorithms, data structures, software engineering principles, and web development fundamentals.
+                          Studied Computer Science where I mastered algorithms, data structures, software engineering principles, and web development fundamentals.
                         </p>
                       </div>
                     </div>
@@ -167,28 +185,12 @@ const About = () => {
                         <Award className="h-5 w-5" />
                       </div>
                       <div>
-                        <h3 className="text-xl font-semibold">AWS Certified Solutions Architect</h3>
-                        <p className="text-muted-foreground">Amazon Web Services</p>
-                        <p className="text-sm text-muted-foreground mt-1">2021</p>
+                        <h3 className="text-xl font-semibold">Appplied Software Engineering</h3>
+                        <p className="text-muted-foreground">Coursera.org</p>
+                        <p className="text-sm text-muted-foreground mt-1">^2022</p>
                         <p className="text-muted-foreground mt-4">
-                          Validated ability to design and implement distributed systems on AWS, including deploying applications, data storage, and securing infrastructure.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Certification Card */}
-                  <div className="bg-card p-6 rounded-lg shadow-sm border border-border/40 hover-card-animation">
-                    <div className="flex items-start gap-4">
-                      <div className="p-2 rounded-full bg-primary/10 text-primary">
-                        <Award className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-semibold">Professional Scrum Master I</h3>
-                        <p className="text-muted-foreground">Scrum.org</p>
-                        <p className="text-sm text-muted-foreground mt-1">2020</p>
-                        <p className="text-muted-foreground mt-4">
-                          Certified in facilitating Scrum processes and events, and understanding the application of agile methodologies in software development.
+                          Nitda Career Ready Professional. I Validated ability to design and implement distributed systems, including deploying applications, data storage, and securing infrastructure.
+                          Certified in facilitating and understanding the application of agile methodologies in software development.
                         </p>
                       </div>
                     </div>
@@ -310,7 +312,7 @@ const About = () => {
                         </li>
                         <li className="flex items-center">
                           <ChevronRight className="h-3 w-3 mr-1" />
-                          Next.js, Gatsby
+                          Next.js, Flask, FastAPI
                         </li>
                         <li className="flex items-center">
                           <ChevronRight className="h-3 w-3 mr-1" />
