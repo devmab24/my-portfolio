@@ -116,9 +116,9 @@ const About = () => {
                     
                     <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-card p-6 rounded-lg shadow-sm border border-border/40 hover-card-animation">
                       <div className="flex flex-col space-y-1 mb-2">
-                        <h3 className="text-xl font-semibold">Junior Web Developer</h3>
+                        <h3 className="text-xl font-semibold">Frontend Developer</h3>
                         <span className="text-muted-foreground">CodeWithJamil.org</span>
-                        <span className="text-sm text-muted-foreground">2021 - 2023</span>
+                        <span className="text-sm text-muted-foreground">2022 - 2023</span>
                       </div>
                       
                       <p className="text-muted-foreground">
