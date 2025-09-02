@@ -32,7 +32,7 @@ const About = () => {
                   
                   <div className="pt-4">
                     <a 
-                      href="#" 
+                      href="/Muhammad_Ayuba_Bello_CV.pdf" download 
                       className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground rounded-md font-medium transition-all hover:brightness-110 active:translate-y-0.5"
                     >
                       Download Resume
