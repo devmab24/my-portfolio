@@ -141,7 +141,7 @@ const Projects = () => {
                     <TabsTrigger value="web">Web Projects</TabsTrigger>
                     <TabsTrigger value="datascience">Data Science & ML</TabsTrigger>
                     <TabsTrigger value="python">Python Scripts</TabsTrigger>
-                    <TabsTrigger value="python">Open Source Contributions</TabsTrigger>
+                    <TabsTrigger value="opensource">Open Source Contributions</TabsTrigger>
                   </TabsList>
 
                   <TabsContent value="web">
