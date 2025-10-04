@@ -8,7 +8,7 @@ export interface Project {
   demoUrl?: string;
   githubUrl?: string;
   featured?: boolean;
-  projectType?: 'web' | 'python' | 'datascience';
+  projectType?: 'web' | 'python' | 'datascience' |  'opensource';
   downloadUrl?: string;
   challenges?: string;
   key_feature?: string[];
