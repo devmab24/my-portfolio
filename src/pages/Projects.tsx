@@ -66,7 +66,7 @@ const Projects = () => {
   }, [toast]);
 
   // Filter projects based on selected tag, search query, and project type
-  const getFilteredProjects = (type: 'web' | 'python' | 'datascience') => {
+  const getFilteredProjects = (type: 'web' | 'python' | 'datascience' | 'opensource') => {
     return projects.filter(project => {
       const matchesTag = selectedTag ? project.tags.includes(selectedTag) : true;
       const matchesSearch = project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -224,6 +224,33 @@ const Projects = () => {
                     ) : (
                       <div className="text-center py-12">
                         <p className="text-muted-foreground">No Python scripts match your search criteria.</p>
+                        <button
+                          onClick={() => {
+                            setSelectedTag(null);
+                            setSearchQuery('');
+                          }}
+                          className="mt-4 text-primary hover:underline"
+                        >
+                          Clear filters
+                        </button>
+                      </div>
+                    )}
+                  </TabsContent>
+
+                 <TabsContent value="opensource">
+                    {isLoading ? (
+                      <div className="flex justify-center items-center py-20">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                      </div>
+                    ) : getFilteredProjects('opensource').length > 0 ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {getFilteredProjects('python').map(project => (
+                          <ProjectCard key={project.id} project={project} />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-12">
+                        <p className="text-muted-foreground">No Open Source contributions found.</p>
                         <button
                           onClick={() => {
                             setSelectedTag(null);
