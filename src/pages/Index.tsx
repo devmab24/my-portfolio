@@ -25,6 +25,8 @@ const featuredProjects: Project[] = [
     demoUrl: 'https://checkoutly.vercel.app',
     githubUrl: 'https://github.com',
     featured: true,
+    timeline: '3 months',
+    role: 'Full Stack Developer',
   },
   {
     id: 'project-2',
@@ -34,6 +36,8 @@ const featuredProjects: Project[] = [
     tags: ['React', 'Firebase', 'Tailwind CSS'],
     demoUrl: 'https://imaginate-ai-phi.vercel.app',
     githubUrl: 'https://github.com',
+    timeline: '2 months',
+    role: 'Frontend Developer',
   },
   {
     id: 'project-3',
@@ -43,6 +47,8 @@ const featuredProjects: Project[] = [
     tags: ['Next.js', 'OpenAI API', 'Vercel'],
     demoUrl: 'https://example.com',
     githubUrl: 'https://github.com',
+    timeline: '1 month',
+    role: 'Frontend Developer',
   },
 ];
 
