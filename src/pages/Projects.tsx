@@ -139,7 +139,7 @@ const Projects = () => {
               
               <AnimatedSection delay={300}>
                 <Tabs defaultValue="web" className="w-full">
-                  <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 mb-8">
+                  <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-2 md:grid-cols-4 mb-8">
                     <TabsTrigger value="web">Web Projects</TabsTrigger>
                     <TabsTrigger value="datascience">Data Science & ML</TabsTrigger>
                     <TabsTrigger value="python">Python Scripts</TabsTrigger>
