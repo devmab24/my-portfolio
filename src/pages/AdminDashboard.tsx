@@ -23,9 +23,12 @@ import {
   MessageSquare,
   BarChart3,
   Calendar,
-  CircleUser
+  CircleUser,
+  FolderKanban
 } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import { ProjectsManager } from '@/components/admin/ProjectsManager';
+import { BlogPostsManager } from '@/components/admin/BlogPostsManager';
 
 const trafficData = [
   { name: 'Jan', value: 400 },
@@ -174,6 +177,14 @@ const AdminDashboard = () => {
                     >
                       <LayoutDashboard className="mr-2 h-4 w-4" />
                       Overview
+                    </Button>
+                    <Button 
+                      variant={activeTab === 'projects' ? 'secondary' : 'ghost'} 
+                      className="w-full justify-start" 
+                      onClick={() => setActiveTab('projects')}
+                    >
+                      <FolderKanban className="mr-2 h-4 w-4" />
+                      Projects
                     </Button>
                     <Button 
                       variant={activeTab === 'posts' ? 'secondary' : 'ghost'} 
@@ -332,65 +343,9 @@ const AdminDashboard = () => {
                   </div>
                 )}
                 
-                {activeTab === 'posts' && (
-                  <div>
-                    <div className="flex justify-between items-center mb-6">
-                      <h1 className="text-3xl font-bold">Manage Posts</h1>
-                      <Button>
-                        <FileText className="mr-2 h-4 w-4" />
-                        New Post
-                      </Button>
-                    </div>
-                    
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Blog Posts</CardTitle>
-                        <CardDescription>Manage and publish your content</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="overflow-x-auto">
-                          <table className="w-full">
-                            <thead>
-                              <tr className="border-b">
-                                <th className="py-3 px-4 text-left font-medium">Title</th>
-                                <th className="py-3 px-4 text-left font-medium">Date</th>
-                                <th className="py-3 px-4 text-left font-medium">Status</th>
-                                <th className="py-3 px-4 text-left font-medium">Views</th>
-                                <th className="py-3 px-4 text-left font-medium">Comments</th>
-                                <th className="py-3 px-4 text-left font-medium">Actions</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {posts.map((post) => (
-                                <tr key={post.id} className="border-b">
-                                  <td className="py-3 px-4">{post.title}</td>
-                                  <td className="py-3 px-4">{post.date}</td>
-                                  <td className="py-3 px-4">
-                                    <span className={`px-2 py-1 rounded-full text-xs ${
-                                      post.status === 'Published' 
-                                        ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' 
-                                        : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
-                                    }`}>
-                                      {post.status}
-                                    </span>
-                                  </td>
-                                  <td className="py-3 px-4">{post.views.toLocaleString()}</td>
-                                  <td className="py-3 px-4">{post.comments}</td>
-                                  <td className="py-3 px-4">
-                                    <div className="flex space-x-2">
-                                      <Button variant="ghost" size="sm">Edit</Button>
-                                      <Button variant="ghost" size="sm" className="text-destructive">Delete</Button>
-                                    </div>
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                )}
+                {activeTab === 'projects' && <ProjectsManager />}
+                
+                {activeTab === 'posts' && <BlogPostsManager />}
                 
                 {activeTab === 'users' && (
                   <div>
