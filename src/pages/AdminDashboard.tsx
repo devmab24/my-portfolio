@@ -24,11 +24,13 @@ import {
   BarChart3,
   Calendar,
   CircleUser,
-  FolderKanban
+  FolderKanban,
+  Mail
 } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { ProjectsManager } from '@/components/admin/ProjectsManager';
 import { BlogPostsManager } from '@/components/admin/BlogPostsManager';
+import ContactSubmissionsManager from '@/components/admin/ContactSubmissionsManager';
 
 const trafficData = [
   { name: 'Jan', value: 400 },
@@ -195,6 +197,14 @@ const AdminDashboard = () => {
                       Posts
                     </Button>
                     <Button 
+                      variant={activeTab === 'contact' ? 'secondary' : 'ghost'} 
+                      className="w-full justify-start" 
+                      onClick={() => setActiveTab('contact')}
+                    >
+                      <Mail className="mr-2 h-4 w-4" />
+                      Contact
+                    </Button>
+                    <Button 
                       variant={activeTab === 'users' ? 'secondary' : 'ghost'} 
                       className="w-full justify-start" 
                       onClick={() => setActiveTab('users')}
@@ -346,6 +356,8 @@ const AdminDashboard = () => {
                 {activeTab === 'projects' && <ProjectsManager />}
                 
                 {activeTab === 'posts' && <BlogPostsManager />}
+                
+                {activeTab === 'contact' && <ContactSubmissionsManager />}
                 
                 {activeTab === 'users' && (
                   <div>
