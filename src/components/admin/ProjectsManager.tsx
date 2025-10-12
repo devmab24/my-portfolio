@@ -84,21 +84,27 @@ export const ProjectsManager = () => {
           .update(formData)
           .eq('id', editingProject.id);
 
-        if (error) throw error;
+        if (error) {
+          console.error('Update error:', error);
+          throw error;
+        }
         toast.success('Project updated successfully');
       } else {
         const { error } = await supabase
           .from('projects')
           .insert([formData]);
 
-        if (error) throw error;
+        if (error) {
+          console.error('Insert error:', error);
+          throw error;
+        }
         toast.success('Project created successfully');
       }
 
+      await fetchProjects();
       setDialogOpen(false);
       setEditingProject(null);
       setFormData(emptyProject);
-      fetchProjects();
     } catch (error) {
       console.error('Error saving project:', error);
       toast.error('Failed to save project');

@@ -24,20 +24,12 @@ const ContactForm = () => {
     setIsSubmitting(true);
     
     try {
-      console.log("Submitting form data:", formData);
-      
-      // Use type assertion to bypass TypeScript checking
-      // This is necessary because the contact_submissions table exists in the database
-      // but is not yet reflected in the TypeScript types
-      const { error, data } = await (supabase
+      const { error } = await supabase
         .from('contact_submissions' as any)
-        .insert([formData])
-        .select() as any);
-
-      console.log("Supabase response:", { error, data });
+        .insert([formData]);
 
       if (error) {
-        console.error("Supabase error details:", error);
+        console.error("Supabase error:", error);
         throw error;
       }
 

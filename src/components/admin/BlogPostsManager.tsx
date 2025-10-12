@@ -75,21 +75,27 @@ export const BlogPostsManager = () => {
           .update(formData)
           .eq('id', editingPost.id);
 
-        if (error) throw error;
+        if (error) {
+          console.error('Update error:', error);
+          throw error;
+        }
         toast.success('Post updated successfully');
       } else {
         const { error } = await supabase
           .from('blog_posts')
           .insert([formData]);
 
-        if (error) throw error;
+        if (error) {
+          console.error('Insert error:', error);
+          throw error;
+        }
         toast.success('Post created successfully');
       }
 
+      await fetchPosts();
       setDialogOpen(false);
       setEditingPost(null);
       setFormData(emptyPost);
-      fetchPosts();
     } catch (error) {
       console.error('Error saving post:', error);
       toast.error('Failed to save post');
