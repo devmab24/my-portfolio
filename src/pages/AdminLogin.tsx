@@ -105,7 +105,7 @@ const AdminLogin = () => {
                 </Button>
               </CardFooter>
             </form>
-            <div className="p-6 pt-0 text-center text-sm">
+            {/* <div className="p-6 pt-0 text-center text-sm">
               <p className="text-muted-foreground">
                 For demo purposes, use:
                 <br />
@@ -113,7 +113,7 @@ const AdminLogin = () => {
                 <br />
                 Password: <strong>password</strong>
               </p>
-            </div>
+            </div> */}
           </Card>
         </main>
         
