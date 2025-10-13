@@ -54,7 +54,15 @@ export const BlogPostsManager = () => {
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching posts:', error);
+        if (error.message.includes('row-level security') || error.code === 'PGRST301') {
+          toast.error('Authentication Required: You need to be logged in as an admin to manage blog posts.');
+        } else {
+          throw error;
+        }
+        return;
+      }
       setPosts(data || []);
     } catch (error) {
       console.error('Error fetching posts:', error);

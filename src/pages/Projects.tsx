@@ -68,7 +68,7 @@ const Projects = () => {
   }, [toast]);
 
   // Filter projects based on selected tag, search query, and project type
-  const getFilteredProjects = (type: 'web' | 'python' | 'datascience' | 'opensource') => {
+  const getFilteredProjects = (type: 'web' | 'python' | 'datascience' | 'opensource' | 'competition') => {
     return projects.filter(project => {
       const matchesTag = selectedTag ? project.tags.includes(selectedTag) : true;
       const matchesSearch = project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -139,11 +139,12 @@ const Projects = () => {
               
               <AnimatedSection delay={300}>
                 <Tabs defaultValue="web" className="w-full">
-                  <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-2 md:grid-cols-4 mb-8">
+                  <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-2 md:grid-cols-5 mb-8">
                     <TabsTrigger value="web">Web Projects</TabsTrigger>
                     <TabsTrigger value="datascience">Data Science & ML</TabsTrigger>
                     <TabsTrigger value="python">Python Scripts</TabsTrigger>
-                    <TabsTrigger value="opensource">Open Source Contributions</TabsTrigger>
+                    <TabsTrigger value="opensource">Open Source</TabsTrigger>
+                    <TabsTrigger value="competition">Competitions</TabsTrigger>
                   </TabsList>
 
                   <TabsContent value="web">
@@ -254,6 +255,33 @@ const Projects = () => {
                     ) : (
                       <div className="text-center py-12">
                         <p className="text-muted-foreground">No Open Source contributions found.</p>
+                        <button
+                          onClick={() => {
+                            setSelectedTag(null);
+                            setSearchQuery('');
+                          }}
+                          className="mt-4 text-primary hover:underline"
+                        >
+                          Clear filters
+                        </button>
+                      </div>
+                    )}
+                  </TabsContent>
+
+                  <TabsContent value="competition">
+                    {isLoading ? (
+                      <div className="flex justify-center items-center py-20">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                      </div>
+                    ) : getFilteredProjects('competition').length > 0 ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {getFilteredProjects('competition').map(project => (
+                          <ProjectCard key={project.id} project={project} />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-12">
+                        <p className="text-muted-foreground">No competition projects found.</p>
                         <button
                           onClick={() => {
                             setSelectedTag(null);

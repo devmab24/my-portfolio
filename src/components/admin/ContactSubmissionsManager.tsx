@@ -49,7 +49,19 @@ const ContactSubmissionsManager = () => {
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching submissions:', error);
+        if (error.message.includes('row-level security') || error.code === 'PGRST301') {
+          toast({
+            title: 'Authentication Required',
+            description: 'You need to be logged in as an admin to view contact submissions.',
+            variant: 'destructive',
+          });
+        } else {
+          throw error;
+        }
+        return;
+      }
       setSubmissions(data || []);
     } catch (error) {
       console.error('Error fetching submissions:', error);

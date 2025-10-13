@@ -252,6 +252,87 @@ const ProjectDetail = () => {
                       </section>
                     </TabsContent>
                   </Tabs>
+                ) : projectType === 'competition' ? (
+                  <Tabs defaultValue="overview" className="w-full">
+                    <TabsList className="grid w-full grid-cols-3">
+                      <TabsTrigger value="overview">Competition Details</TabsTrigger>
+                      <TabsTrigger value="approach">Approach & Solution</TabsTrigger>
+                      <TabsTrigger value="results">Results & Learnings</TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="overview" className="space-y-6">
+                      <section>
+                        <h2 className="text-2xl font-semibold mb-4">Competition Overview</h2>
+                        <p className="text-muted-foreground mb-4">{project.description}</p>
+                        <div className="grid grid-cols-2 gap-4 mt-6">
+                          <div className="p-4 rounded-lg border border-border/40 bg-card">
+                            <div className="text-sm text-muted-foreground mb-1">Platform</div>
+                            <div className="font-semibold">Kaggle / LeetCode / CodeForces</div>
+                          </div>
+                          <div className="p-4 rounded-lg border border-border/40 bg-card">
+                            <div className="text-sm text-muted-foreground mb-1">Total Participants</div>
+                            <div className="font-semibold">2,500+ teams</div>
+                          </div>
+                          <div className="p-4 rounded-lg border border-border/40 bg-card">
+                            <div className="text-sm text-muted-foreground mb-1">Final Rank</div>
+                            <div className="font-semibold text-primary">Top 5%</div>
+                          </div>
+                          <div className="p-4 rounded-lg border border-border/40 bg-card">
+                            <div className="text-sm text-muted-foreground mb-1">Duration</div>
+                            <div className="font-semibold">{project.timeline || "2 months"}</div>
+                          </div>
+                        </div>
+                      </section>
+                    </TabsContent>
+                    
+                    <TabsContent value="approach" className="space-y-6">
+                      <section>
+                        <h2 className="text-2xl font-semibold mb-4">Technical Approach</h2>
+                        <p className="text-muted-foreground mb-4">
+                          {project.challenges || "Developed an ensemble model combining gradient boosting and neural networks, with extensive feature engineering and cross-validation strategies."}
+                        </p>
+                        <div className="space-y-3">
+                          <h3 className="font-medium">Key Techniques:</h3>
+                          <ul className="list-disc list-inside space-y-2 text-muted-foreground">
+                            {(project.key_feature && project.key_feature.length > 0
+                              ? project.key_feature
+                              : [
+                                  "Feature engineering with domain-specific transformations",
+                                  "Ensemble methods combining XGBoost, LightGBM, and Neural Networks",
+                                  "Advanced hyperparameter tuning using Bayesian optimization",
+                                  "Cross-validation strategy to prevent overfitting"
+                                ]
+                            ).map((feature, index) => (
+                              <li key={index}>{feature}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </section>
+                    </TabsContent>
+                    
+                    <TabsContent value="results" className="space-y-6">
+                      <section>
+                        <h2 className="text-2xl font-semibold mb-4">Results & Impact</h2>
+                        <div className="space-y-4">
+                          <div className="p-4 rounded-lg border border-primary/20 bg-primary/5">
+                            <div className="text-3xl font-bold text-primary mb-2">🏆 Achievement</div>
+                            <p className="text-muted-foreground">
+                              Achieved top 5% ranking out of 2,500+ participants, demonstrating strong problem-solving and ML expertise.
+                            </p>
+                          </div>
+                          <div>
+                            <h3 className="font-medium mb-3">Key Learnings:</h3>
+                            <ul className="space-y-2 text-muted-foreground">
+                              <li>✓ Advanced understanding of model ensembling and stacking techniques</li>
+                              <li>✓ Importance of exploratory data analysis in feature creation</li>
+                              <li>✓ Efficient workflow management for iterative experimentation</li>
+                              <li>✓ Practical experience with production-level model optimization</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </section>
+                    </TabsContent>
+                  </Tabs>
                 ) : (
                   <>
                     <section>
