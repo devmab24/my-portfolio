@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { ProjectCardProps } from '@/types/projectsCards';
 import { Button } from '@/components/ui/button';
 
-const SUPABASE_BUCKET_URL = "https://lemachbekmdprrdtthem.supabase.co/storage/v1/object/public/project-images";
+const SUPABASE_BUCKET_URL = "/project-images";
 
 const ProjectCard = ({ project, className }: ProjectCardProps) => {
   const imageSrc = project.imageSrc

@@ -67,15 +67,14 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
       }
       
       // If not demo credentials, check against Supabase
-      const response = await fetch(`${SUPABASE_URL}/rest/v1/admin_users?username=eq.${encodeURIComponent(username)}&select=*&limit=1`, {
-        headers: {
-          'apikey': SUPABASE_ANON_KEY,
-          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-        }
-      });
+      const { data, error } = await supabase
+        .from('admin_users')
+        .select('*')
+        .eq('username', username)
+        .limit(1);
       
-      if (!response.ok) {
-        console.error('Error fetching admin user:', response.statusText);
+      if (error) {
+        console.error('Error fetching admin user:', error);
         toast({
           title: "Login failed",
           description: "Unable to verify credentials",
@@ -83,8 +82,6 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
         });
         return false;
       }
-      
-      const data = await response.json();
       
       if (!data || data.length === 0) {
         toast({

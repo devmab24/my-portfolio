@@ -162,7 +162,17 @@ const ProjectDetail = () => {
             <AnimatedSection delay={200} className="mb-12">
               <div className="rounded-xl overflow-hidden border border-border/40 shadow-lg">
                 <div className="aspect-video bg-muted flex items-center justify-center">
-                  <span className="text-6xl">🖥️</span>
+                  {project.imageSrc && project.imageSrc !== '/placeholder.svg' ? (
+                    <img 
+                      src={project.imageSrc.startsWith('http') || project.imageSrc.startsWith('/') 
+                        ? project.imageSrc 
+                        : `/project-images/${project.imageSrc}`} 
+                      alt={project.title} 
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-6xl">🖥️</span>
+                  )}
                 </div>
               </div>
             </AnimatedSection>

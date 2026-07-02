@@ -1,0 +1,58 @@
+[
+  {
+    "id": "ead56f57-c15d-4cf7-bc4f-6993a8f7a2a4",
+    "date": "2023-01-01",
+    "new_users": 45,
+    "total_users": 1045,
+    "active_users": 680,
+    "created_at": "2025-03-15 10:24:05.096097+00"
+  },
+  {
+    "id": "652abc98-2e42-4d39-bb07-e8ee21a6570e",
+    "date": "2023-02-01",
+    "new_users": 65,
+    "total_users": 1110,
+    "active_users": 710,
+    "created_at": "2025-03-15 10:24:05.096097+00"
+  },
+  {
+    "id": "db54511b-a828-4ae8-9e85-110cbcb11b44",
+    "date": "2023-03-01",
+    "new_users": 52,
+    "total_users": 1162,
+    "active_users": 725,
+    "created_at": "2025-03-15 10:24:05.096097+00"
+  },
+  {
+    "id": "79e6ed3a-5226-454e-a11d-f5b98145f1d4",
+    "date": "2023-04-01",
+    "new_users": 78,
+    "total_users": 1240,
+    "active_users": 760,
+    "created_at": "2025-03-15 10:24:05.096097+00"
+  },
+  {
+    "id": "d45783e3-425e-4212-8903-719d45e95a39",
+    "date": "2023-05-01",
+    "new_users": 86,
+    "total_users": 1326,
+    "active_users": 810,
+    "created_at": "2025-03-15 10:24:05.096097+00"
+  },
+  {
+    "id": "eb47135c-9488-408a-b3f1-bf45e351dc36",
+    "date": "2023-06-01",
+    "new_users": 94,
+    "total_users": 1420,
+    "active_users": 860,
+    "created_at": "2025-03-15 10:24:05.096097+00"
+  },
+  {
+    "id": "6933721e-d8a1-4cc0-99b4-6a1eb8a64351",
+    "date": "2023-07-01",
+    "new_users": 110,
+    "total_users": 1530,
+    "active_users": 920,
+    "created_at": "2025-03-15 10:24:05.096097+00"
+  }
+]

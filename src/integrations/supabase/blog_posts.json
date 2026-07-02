@@ -1,0 +1,78 @@
+[
+  {
+    "id": "468acbe4-8ea9-4ca2-b765-bb29bf96e79b",
+    "title": "Building Scalable React Applications",
+    "excerpt": "Learn how to architect large-scale React applications that can grow with your business needs.",
+    "content": "<p>React has become the go-to library for building modern user interfaces. But as your application grows, you need to think about architecture...</p><p>In this article, we will explore patterns and practices that help you maintain a clean and scalable codebase even as your application grows in complexity.</p><h2>Component Organization</h2><p>One of the first challenges in a growing React application is organizing your components. There are several approaches:</p><ul><li>By feature/domain</li><li>By component type (containers/presentational)</li><li>By route</li></ul><p>Each approach has its merits, but organizing by feature often scales best for larger applications.</p>",
+    "author_id": null,
+    "category": "React",
+    "tags": [
+      "react",
+      "architecture",
+      "frontend"
+    ],
+    "image_url": "https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    "created_at": "2025-03-15 10:40:04.587519+00",
+    "updated_at": "2025-03-15 10:40:04.587519+00",
+    "published": true,
+    "category_id": "885843d6-f264-47b3-8926-df66643312ef",
+    "status": "published"
+  },
+  {
+    "id": "2cb43730-1487-47f4-9e5b-3779e7ae0b14",
+    "title": "The Future of Web Development",
+    "excerpt": "Exploring upcoming technologies and methodologies that will shape how we build web applications.",
+    "content": "<p>The web development landscape is constantly evolving. From new JavaScript frameworks to innovative approaches to styling, the pace of change is relentless.</p><p>In this article, we look at some of the most promising technologies and methodologies that are likely to gain widespread adoption in the coming years.</p><h2>Web Assembly</h2><p>WebAssembly (Wasm) allows code written in languages like C, C++, and Rust to run in the browser at near-native speed. This opens up possibilities for bringing desktop-quality applications to the web.</p><h2>Edge Computing</h2><p>Moving computation closer to where it's needed can dramatically improve performance for users around the world. Edge functions are becoming an essential part of modern web architecture.</p>",
+    "author_id": null,
+    "category": "JavaScript",
+    "tags": [
+      "webdev",
+      "future",
+      "javascript"
+    ],
+    "image_url": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&auto=format&fit=crop&w=1352&q=80",
+    "created_at": "2025-03-15 10:40:04.587519+00",
+    "updated_at": "2025-03-15 10:40:04.587519+00",
+    "published": true,
+    "category_id": "dd50bf53-9669-4cb0-a01b-9bc4b7fcb9ea",
+    "status": "published"
+  },
+  {
+    "id": "5a7d17b7-60c1-4074-92f9-bbe233d56e9f",
+    "title": "Getting Started with TypeScript",
+    "excerpt": "A beginner-friendly introduction to TypeScript and how it can improve your JavaScript projects.",
+    "content": "<p>TypeScript has gained enormous popularity in recent years, and for good reason. It adds static typing to JavaScript, helping catch errors early and improving developer productivity.</p><p>In this guide, we'll walk through setting up TypeScript in a new project and cover the fundamental concepts you need to know.</p><h2>What is TypeScript?</h2><p>TypeScript is a superset of JavaScript that adds static type definitions. These types are checked at compile time, catching potential errors before your code even runs.</p><h2>Setting Up TypeScript</h2><p>Getting started with TypeScript is straightforward:</p><pre><code>npm install -g typescript\\\\ntsc --init</code></pre><p>This creates a tsconfig.json file that controls how TypeScript compiles your code.</p>",
+    "author_id": null,
+    "category": "TypeScript",
+    "tags": [
+      "typescript",
+      "javascript",
+      "webdev"
+    ],
+    "image_url": "https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    "created_at": "2025-03-15 10:40:04.587519+00",
+    "updated_at": "2025-03-15 10:40:04.587519+00",
+    "published": true,
+    "category_id": "b7f10cc6-e0ce-4393-8df7-99530cf23ad0",
+    "status": "published"
+  },
+  {
+    "id": "f87a44fb-e3c5-4ced-80ce-da611ac6a626",
+    "title": "Optimizing Database Performance",
+    "excerpt": "Learn essential techniques for improving database query performance in high-traffic applications.",
+    "content": "<p>Database performance can make or break your application. As your user base grows, queries that once ran quickly can become bottlenecks.</p><p>In this comprehensive guide, we'll explore various strategies for optimizing database performance, from query tuning to indexing and beyond.</p><h2>Understanding Indexes</h2><p>Indexes are one of the most powerful tools for improving query performance. They work like the index of a book, allowing the database to quickly locate data without scanning every row.</p><p>However, indexes come with trade-offs. They speed up reads but can slow down writes, and they consume additional storage.</p><h2>Query Optimization</h2><p>Often, the way you write your queries can significantly impact performance. Consider this example of a query before and after optimization:</p><pre><code>-- Before optimization\\\\nSELECT * FROM users WHERE last_login > '2023-01-01';\\\\n\\\\n-- After optimization\\\\nSELECT id, username, email FROM users WHERE last_login > '2023-01-01';</code></pre>",
+    "author_id": null,
+    "category": "Node.js",
+    "tags": [
+      "database",
+      "performance",
+      "sql"
+    ],
+    "image_url": "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1356&q=80",
+    "created_at": "2025-03-15 10:40:04.587519+00",
+    "updated_at": "2025-03-15 10:40:04.587519+00",
+    "published": true,
+    "category_id": "9b821536-12d7-4daf-ac5c-5846116cd543",
+    "status": "published"
+  }
+]

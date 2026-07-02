@@ -1,0 +1,26 @@
+[
+  {
+    "id": "384a1379-60df-4565-8783-1ad6be47ba88",
+    "blog_post_id": "2cb43730-1487-47f4-9e5b-3779e7ae0b14",
+    "author_id": "3b97d02d-a53b-4cd8-af61-2432172656c6",
+    "content": "blablalalbla",
+    "created_at": "2025-03-17 13:40:49.524056+00",
+    "updated_at": "2025-03-17 13:40:49.524056+00"
+  },
+  {
+    "id": "2ef186e9-6c75-4f0d-b94b-b6784b9d642a",
+    "blog_post_id": "2cb43730-1487-47f4-9e5b-3779e7ae0b14",
+    "author_id": "3b97d02d-a53b-4cd8-af61-2432172656c6",
+    "content": "lorem testing ipsum",
+    "created_at": "2025-03-17 14:03:10.353046+00",
+    "updated_at": "2025-03-17 14:03:10.353046+00"
+  },
+  {
+    "id": "86639c5b-8d7c-42ab-8ce3-d4e5da9fd5a3",
+    "blog_post_id": "2cb43730-1487-47f4-9e5b-3779e7ae0b14",
+    "author_id": "3b97d02d-a53b-4cd8-af61-2432172656c6",
+    "content": "All the environment was amzaing",
+    "created_at": "2025-03-17 14:03:44.349126+00",
+    "updated_at": "2025-03-17 14:03:44.349126+00"
+  }
+]
