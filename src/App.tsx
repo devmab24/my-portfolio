@@ -13,6 +13,9 @@ const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const Contact = lazy(() => import("./pages/Contact"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+// Local admin: dev server only. In production builds import.meta.env.DEV is false,
+// so this import is dropped and /admin falls through to the 404 page.
+const Admin = import.meta.env.DEV ? lazy(() => import("./pages/Admin")) : null;
 
 const App = () => (
   <HelmetProvider>
@@ -28,6 +31,7 @@ const App = () => (
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/contact" element={<Contact />} />
+            {Admin && <Route path="/admin" element={<Admin />} />}
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

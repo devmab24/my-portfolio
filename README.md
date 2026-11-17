@@ -47,13 +47,21 @@ The content tests also catch common editing mistakes: a duplicated slug, a missi
 
 Publishing is: edit a file, push to `main`, Vercel deploys.
 
-**Projects:** `src/content/projects.ts`
+**Projects:** use the local admin, or edit `src/content/projects.json` by hand.
+
+1. Run `npm run dev` and open **http://localhost:8080/admin**.
+2. Add, edit, delete or reorder projects in any of the five categories. Each change is validated and saved straight to `src/content/projects.json`.
+3. Check the result on the site (still on localhost), then commit and push `projects.json` (and any uploaded image) to publish.
+
+The admin exists only on your computer while `npm run dev` runs. It isn't part of the deployed site, so it needs no login. It refuses requests from other devices on your network and from other websites.
+
+Project fields:
 
 - Each entry has a `slug` (its URL: `/projects/<slug>`), `title`, `description`, `tags` and `projectType` (`web`, `datascience`, `python`, `opensource` or `competition`).
 - Optional: `imageSrc`, `demoUrl`, `githubUrl`, `downloadUrl`, `timeline`, `role`, `challenges`, `keyFeatures`. Leave out anything you don't have; empty sections and buttons are hidden.
 - `featured: true` shows the project on the homepage.
 - `draft: true` hides the project everywhere until it's ready.
-- Images go in `public/project-images/` as WebP (about 1200 px wide).
+- Images go in `public/project-images/` as WebP (about 1200 px wide). The admin can upload WebP, PNG or JPG files there.
 - Downloadable files go in `public/downloads/`, linked as `downloadUrl: '/downloads/<file>'`.
 
 **Blog posts:** `src/content/posts.ts`
@@ -67,11 +75,12 @@ New pages, projects and posts are added to `sitemap.xml` automatically on the ne
 
 ```
 src/
-  content/      projects.ts, posts.ts — all site content
+  content/      projects.json (+ projects.ts helpers), posts.ts — all site content
+  pages/Admin   local admin (dev server only)
   pages/        one component per route (lazy-loaded except the homepage)
   components/   shared components; ui/ holds the shadcn components in use
   lib/          site.ts (SEO defaults), img.ts, utils.ts
-scripts/        generate-sitemap.ts (runs before every build)
+scripts/        generate-sitemap.ts (runs before every build), local-admin-plugin.ts (admin API)
 public/         static files: images, CV, favicon, og-image, robots.txt
 docs/           IMPLEMENTATION_GUIDE.md — record of the 2026 cleanup
 ```

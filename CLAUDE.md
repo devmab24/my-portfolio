@@ -33,9 +33,11 @@ Use npm only (`package-lock.json`). Do not add or regenerate `bun.lockb`.
 
 ## Architecture
 
-The site is **fully static**: there is no backend, database, login or admin area. `docs/IMPLEMENTATION_GUIDE.md` records how it got here; only its optional Phase 7 remains.
+The deployed site is **fully static**: no backend, database or login. `docs/IMPLEMENTATION_GUIDE.md` records how it got here.
 
-- **Content:** `src/content/projects.ts` and `src/content/posts.ts` are the single source of truth: typed arrays imported directly by pages, with no fetching, `useEffect` or loading states. Publishing = edit the file and push.
+- **Content:** `src/content/projects.json` (wrapped by `projects.ts`, which exports `allProjects`, `projects`, `featuredProjects`, `getProject`) and `src/content/posts.ts` are the single source of truth, imported directly by pages, with no fetching, `useEffect` or loading states. Publishing = change the file, commit, push.
+- **Local admin (dev only):** `npm run dev`, then `/admin` (`src/pages/Admin.tsx`). It reads and writes `projects.json` through the dev-server API in `scripts/local-admin-plugin.ts` (`apply: 'serve'`, so it isn't in builds), and the `/admin` route is only registered when `import.meta.env.DEV`. API guards: loopback clients only, `Host` must be localhost, and writes need `Origin` = same origin plus an `X-Local-Admin: 1` header. Uploads: WebP/PNG/JPG only, sanitised names, written into `public/project-images/`. Keep all of these guards if you change it, and keep admin code out of production (the build must not contain `__admin`).
+- **Validation:** `src/content/validateProjects.ts` is the single set of rules for project data (slug format, required fields, real https links, no placeholders, drafts may be incomplete). The admin form, the save endpoint and `content.test.ts` all use it; change the rules there, not in three places.
 - **URLs:** projects and posts are addressed by a human-readable `slug` (`/projects/:slug`, `/blog/:slug`).
 - **Drafts:** a project with `draft: true` is excluded from every page. Use it for entries whose details aren't known yet.
 - **Real data only:** never invent project details (timelines, roles, metrics, features) or use placeholder links. Leave optional fields out; the UI hides empty sections and buttons.

@@ -1,7 +1,8 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { featuredProjects, getProject, projects } from './projects';
+import { allProjects, featuredProjects, getProject, projects } from './projects';
+import { validateProjects } from './validateProjects';
 import { getPost, posts, readTime } from './posts';
 
 const PUBLIC_DIR = join(process.cwd(), 'public');
@@ -12,6 +13,10 @@ const PLACEHOLDER_LINK = /example\.com|^https?:\/\/(www\.)?github\.com\/?$|supab
 const publicFileExists = (url: string) => existsSync(join(PUBLIC_DIR, url));
 
 describe('projects content', () => {
+  it('projects.json passes the same validation the admin uses (drafts included)', () => {
+    expect(validateProjects(allProjects)).toEqual({});
+  });
+
   it('has at least one published and one featured project', () => {
     expect(projects.length).toBeGreaterThan(0);
     expect(featuredProjects.length).toBeGreaterThan(0);
