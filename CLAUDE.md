@@ -17,10 +17,17 @@ npm run dev        # http://localhost:8080
 npm run build      # sitemap + production build → dist/
 npm run lint       # ESLint (currently 0 problems; keep it that way)
 npm run typecheck  # strict TypeScript for src/ and the node-side files (vite/tailwind config, scripts/)
-npm run check      # lint + typecheck + build — exactly what CI runs
+npm test           # Vitest (jsdom), once; `npm run test:watch` to watch
+npm run check      # lint + typecheck + test + build — exactly what CI runs
 ```
 
-CI (`.github/workflows/ci.yml`) runs `npm run lint`, `npm run typecheck` and `npm run build` on every push to `main` and every PR. Dependabot opens grouped dependency PRs monthly.
+CI (`.github/workflows/ci.yml`) runs lint, typecheck, tests and build on every push to `main` and every PR.
+
+**Tests** (`src/**/*.test.ts(x)`, setup in `src/test/setup.ts`, config in the `test` block of `vite.config.ts`):
+- `src/content/content.test.ts` guards the content files: unique URL-safe slugs, image/download files exist in `public/`, no placeholder links (`example.com`, bare `github.com`), drafts stay hidden. When it fails after a content edit, fix the content, not the test.
+- `src/pages/pages.test.tsx` renders every route and checks project pages never show invented details or empty sections.
+- `src/components/ContactForm.test.tsx` checks the Web3Forms request (fetch is mocked; the key is a dummy from the test config) and that a failed send keeps the visitor's message.
+- Vitest is pinned to 3.x because Vitest 4+ requires Vite 6+. Dependabot opens grouped dependency PRs monthly.
 
 Use npm only (`package-lock.json`). Do not add or regenerate `bun.lockb`.
 
@@ -53,5 +60,5 @@ The site is **fully static**: there is no backend, database, login or admin area
 
 ## Before you say a change is done
 
-1. `npm run check` passes (lint, strict typecheck, build).
+1. `npm run check` passes (lint, strict typecheck, tests, build). New behaviour gets a test next to the code it covers.
 2. For UI changes, run `npm run dev` and check the affected pages in light and dark mode at phone width.

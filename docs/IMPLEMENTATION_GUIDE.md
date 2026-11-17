@@ -24,6 +24,8 @@ What we drop: the admin dashboard, the fake login, and blog comments. If comment
 - [x] Phase 5: Performance
 - [x] Phase 6: Code quality and CI
 - [ ] Phase 7 (optional): Pre-rendering, comments, tests
+  - [x] Tests (Vitest: content, page render, contact form; run in CI)
+  - [ ] Pre-rendering, Giscus comments, analytics: not chosen for now
 
 ---
 

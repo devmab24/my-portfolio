@@ -32,7 +32,10 @@ npm run dev                  # http://localhost:8080
 | `npm run preview` | Serve the production build locally |
 | `npm run lint` | ESLint |
 | `npm run typecheck` | TypeScript (strict) |
-| `npm run check` | Lint + typecheck + build — the same checks CI runs |
+| `npm test` | Vitest: content checks, page render tests, contact form tests |
+| `npm run check` | Lint + typecheck + tests + build — the same checks CI runs |
+
+The content tests also catch common editing mistakes: a duplicated slug, a missing image file, or a placeholder link fails the build with a message naming the project.
 
 ### Environment variables
 
