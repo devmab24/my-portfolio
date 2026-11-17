@@ -85,6 +85,12 @@ public/         static files: images, CV, favicon, og-image, robots.txt
 docs/           IMPLEMENTATION_GUIDE.md — record of the 2026 cleanup
 ```
 
+## License
+
+The **code** is released under the [MIT License](LICENSE). Feel free to use it for your own site.
+
+The **personal content** is **not** MIT-licensed and may not be reused: my photo, CV, project images, and the written project/biography text. See [CONTENT-NOTICE.md](CONTENT-NOTICE.md) for the exact list. If you build on this project, replace that content with your own.
+
 ## Contact
 
 - LinkedIn: https://linkedin.com/in/devmab/
