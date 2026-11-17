@@ -29,7 +29,9 @@ const Seo = ({
   const imageUrl = absolute(image);
 
   return (
-    <Helmet>
+    // defer={false}: apply head changes immediately instead of on the next animation
+    // frame, so titles/meta update even in background or throttled tabs.
+    <Helmet defer={false}>
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
       {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={url} />}

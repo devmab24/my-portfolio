@@ -7,6 +7,7 @@ import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
 import { formatDate, getPost, readTime } from '@/content/posts';
+import { highPriority } from '@/lib/img';
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -70,7 +71,14 @@ const BlogPost = () => {
 
             {post.imageUrl && (
               <div className="aspect-video bg-muted rounded-lg mb-8 overflow-hidden">
-                <img src={post.imageUrl} alt={post.title} className="w-full h-full object-cover" />
+                <img
+                  src={post.imageUrl}
+                  alt={post.title}
+                  width={1200}
+                  height={675}
+                  {...highPriority}
+                  className="w-full h-full object-cover"
+                />
               </div>
             )}
 

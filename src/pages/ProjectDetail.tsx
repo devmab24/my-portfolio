@@ -5,6 +5,7 @@ import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
 import { getProject } from '@/content/projects';
+import { highPriority } from '@/lib/img';
 
 const ProjectDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -108,7 +109,14 @@ const ProjectDetail = () => {
               <div className="rounded-xl overflow-hidden border border-border/40 shadow-lg">
                 <div className="aspect-video bg-muted flex items-center justify-center">
                   {project.imageSrc ? (
-                    <img src={project.imageSrc} alt={project.title} className="w-full h-full object-cover" />
+                    <img
+                      src={project.imageSrc}
+                      alt={project.title}
+                      width={1200}
+                      height={675}
+                      {...highPriority}
+                      className="w-full h-full object-cover"
+                    />
                   ) : (
                     <span className="text-6xl" aria-hidden="true">
                       🖥️

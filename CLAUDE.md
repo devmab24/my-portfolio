@@ -40,9 +40,9 @@ The site is **fully static**: there is no backend, database, login or admin area
 - **No secrets in the client bundle.** Anything prefixed `VITE_` is public. The Web3Forms *access key* is designed to be public; Web3Forms API keys, and any Supabase service or admin keys, must never be committed or bundled.
 - Do not add third-party `<script>` tags to `index.html` (the old `cdn.gpteng.co` script is being removed).
 - Remove `console.log` before committing. `console.error` inside a `catch` block is fine.
-- Images go in `public/images/` as WebP, ideally under 300 KB each. Give every `<img>` an `alt`, `width`/`height`, and `loading="lazy"` unless it is above the fold.
+- Images are WebP, at most 1200 px wide and ideally under 300 KB (project images in `public/project-images/`). Give every `<img>` an `alt` and `width`/`height`; use `loading="lazy"` below the fold, and `{...highPriority}` from `src/lib/img.ts` for the main above-the-fold image (React 18 doesn't accept the camelCase `fetchPriority` prop).
+- Routes other than `/` are lazy-loaded in `src/App.tsx`; add new pages the same way. Only add a shadcn component (`npx shadcn@latest add <name>`) when it is actually used; unused ones were removed.
 - Every page sets a title and description through the shared `<Seo>` component (added in Phase 4).
-- Don't hand-edit `src/components/ui/*` unless needed. Add new shadcn components with `npx shadcn@latest add <name>`, and only when they're used.
 - Keep changes small and phase-scoped. One phase = one branch/PR.
 
 ## Before you say a change is done

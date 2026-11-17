@@ -25,7 +25,10 @@ const BlogCard = ({ post, className, featured = false }: BlogCardProps) => {
               <img
                 src={post.imageUrl}
                 alt={post.title}
+                width={384}
+                height={192}
                 loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover transition-transform group-hover:scale-105"
               />
             ) : (

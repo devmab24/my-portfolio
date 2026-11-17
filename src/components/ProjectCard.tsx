@@ -69,8 +69,11 @@ const ProjectCard = ({ project, className }: ProjectCardProps) => {
               <img
                 src={project.imageSrc}
                 alt={project.title}
+                width={384}
+                height={192}
                 className="w-full h-full object-cover object-center rounded-lg"
                 loading="lazy"
+                decoding="async"
               />
             ) : (
               <span className="text-4xl" aria-hidden="true">
