@@ -53,10 +53,10 @@ const Hero = () => {
             <div className="glass-card rounded-2xl border border-border/40 shadow-xl overflow-hidden p-1 ">
               <div className="bg-muted rounded-xl h-full w-full flex items-center justify-center aspect-square">
                 <img
-                  src="/photo_bg.webp"
+                  src="/headshot.webp"
                   alt="Muhammad Ayuba Bello"
-                  width={277}
-                  height={370}
+                  width={600}
+                  height={800}
                   {...highPriority}
                   className="rounded-xl object-cover w-md h-md"
                 />
