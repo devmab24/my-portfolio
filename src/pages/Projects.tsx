@@ -5,7 +5,7 @@ import AnimatedSection from '@/components/AnimatedSection';
 import ProjectCard from '@/components/ProjectCard';
 import type { ProjectType } from '@/types/project';
 import { projects } from '@/content/projects';
-import { Helmet } from 'react-helmet-async';
+import Seo from '@/components/Seo';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const TABS: { type: ProjectType; label: string; empty: string }[] = [
@@ -46,10 +46,11 @@ const Projects = () => {
 
   return (
     <>
-      <Helmet>
-        <title>devmab | Projects</title>
-        <meta name="description" content="Projects page" />
-      </Helmet>
+      <Seo
+        title="Projects"
+        description="Web applications, data science and machine learning projects, and Python scripts by Muhammad Ayuba Bello."
+        path="/projects"
+      />
       <div className="flex flex-col min-h-screen">
         <NavBar />
 

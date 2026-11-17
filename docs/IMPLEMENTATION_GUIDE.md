@@ -20,7 +20,7 @@ What we drop: the admin dashboard, the fake login, and blog comments. If comment
 - [x] Phase 1: Quick security and hygiene fixes (owner still to do step 5: pause/delete the old Supabase project)
 - [x] Phase 2: Contact form that actually emails you (test message delivered, reply-to verified)
 - [x] Phase 3: Static content and removal of the fake backend (owner still to fill in the `draft: true` projects and real links in `src/content/projects.ts`)
-- [ ] Phase 4: SEO basics
+- [x] Phase 4: SEO basics
 - [ ] Phase 5: Performance
 - [ ] Phase 6: Code quality and CI
 - [ ] Phase 7 (optional): Pre-rendering, comments, tests

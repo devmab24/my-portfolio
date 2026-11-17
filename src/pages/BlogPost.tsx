@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import Seo from '@/components/Seo';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { ArrowLeft, Calendar, Clock, Tag } from 'lucide-react';
@@ -15,10 +15,7 @@ const BlogPost = () => {
   if (!post) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Helmet>
-          <title>devmab | Article not found</title>
-          <meta name="robots" content="noindex" />
-        </Helmet>
+        <Seo title="Article not found" path={`/blog/${slug ?? ''}`} noindex />
         <NavBar />
         <main className="flex-grow pt-24 pb-16">
           <div className="container max-w-3xl mx-auto px-4 text-center py-24">
@@ -37,10 +34,13 @@ const BlogPost = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Helmet>
-        <title>{`devmab | ${post.title}`}</title>
-        <meta name="description" content={post.excerpt} />
-      </Helmet>
+      <Seo
+        title={post.title}
+        description={post.excerpt}
+        path={`/blog/${post.slug}`}
+        image={post.imageUrl}
+        type="article"
+      />
       <NavBar />
 
       <main className="flex-grow pt-24 pb-16">

@@ -32,6 +32,7 @@ The site is **fully static**: there is no backend, database, login or admin area
 - **Blog:** bodies are Markdown rendered with `react-markdown` + `remark-gfm` (raw HTML is escaped). Never use `dangerouslySetInnerHTML` for content. While `posts` is empty, the Blog nav/footer links and the homepage articles section are hidden.
 - **Contact form:** posts to Web3Forms using `VITE_WEB3FORMS_KEY` (see `.env.example`).
 - **Images:** project images live in `public/project-images/` and are referenced by full path (`/project-images/foo.webp`).
+- **SEO:** every page renders `<Seo title description path />` (`src/components/Seo.tsx`); use `noindex` for not-found/empty pages. Site-wide defaults live in `src/lib/site.ts` and are mirrored as static tags in `index.html` (marked `data-static-seo`, removed at startup in `src/main.tsx`). `public/sitemap.xml` is generated from the content files by `npm run sitemap` (runs automatically as `prebuild`) and is git-ignored; don't edit it by hand.
 
 ## Rules
 

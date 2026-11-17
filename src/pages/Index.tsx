@@ -1,7 +1,7 @@
 
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import Seo from '@/components/Seo';
 import Hero from '@/components/Hero';
 import AnimatedSection from '@/components/AnimatedSection';
 import ProjectCard from '@/components/ProjectCard';
@@ -16,10 +16,7 @@ const recentPosts = publishedPosts.slice(0, 2);
 const Index = () => {
   return (
     <>
-      <Helmet>
-        <title>devmab | Home</title>
-        <meta name="description" content="Welcome to my portfolio homepage." />
-      </Helmet>
+      <Seo path="/" />
       <div className="flex flex-col min-h-screen">
         <NavBar />
         

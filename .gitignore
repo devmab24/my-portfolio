@@ -28,3 +28,6 @@ dist-ssr
 *.backup.gz
 *.zip
 
+
+# Generated at build time by scripts/generate-sitemap.ts
+public/sitemap.xml

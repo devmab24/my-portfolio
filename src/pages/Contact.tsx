@@ -1,16 +1,17 @@
 
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
-import { Helmet } from 'react-helmet-async';
+import Seo from '@/components/Seo';
 import ContactForm from "@/components/ContactForm";
 
 const Contact = () => {
   return (
     <>
-      <Helmet>
-        <title>devmab | Contact</title>
-        <meta name="description" content="Contact page" />
-      </Helmet>
+      <Seo
+        title="Contact"
+        description="Get in touch with Muhammad Ayuba Bello about projects, collaborations, or opportunities."
+        path="/contact"
+      />
       <div className="min-h-screen flex flex-col">
         <NavBar />
         

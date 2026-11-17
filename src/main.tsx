@@ -15,4 +15,8 @@ try {
   // Storage unavailable (private mode, blocked cookies): nothing to clean.
 }
 
+// index.html carries static SEO tags for crawlers that don't run JavaScript.
+// Once the app runs, <Seo> renders per-page tags, so drop the static copies to avoid duplicates.
+document.querySelectorAll('[data-static-seo]').forEach((el) => el.remove());
+
 createRoot(document.getElementById("root")!).render(<App />);

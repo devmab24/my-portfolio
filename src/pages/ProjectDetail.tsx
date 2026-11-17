@@ -1,6 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Download, ExternalLink, Github } from 'lucide-react';
-import { Helmet } from 'react-helmet-async';
+import Seo from '@/components/Seo';
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
@@ -13,10 +13,7 @@ const ProjectDetail = () => {
   if (!project) {
     return (
       <div className="flex flex-col min-h-screen">
-        <Helmet>
-          <title>devmab | Project not found</title>
-          <meta name="robots" content="noindex" />
-        </Helmet>
+        <Seo title="Project not found" path={`/projects/${slug ?? ''}`} noindex />
         <NavBar />
         <main className="flex-grow pt-24">
           <div className="container-custom py-24 text-center">
@@ -37,10 +34,12 @@ const ProjectDetail = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Helmet>
-        <title>{`devmab | ${project.title}`}</title>
-        <meta name="description" content={project.description} />
-      </Helmet>
+      <Seo
+        title={project.title}
+        description={project.description}
+        path={`/projects/${project.slug}`}
+        image={project.imageSrc}
+      />
       <NavBar />
 
       <main className="flex-grow pt-24">

@@ -2,15 +2,16 @@ import { Download, BookOpen, Briefcase, Award, ChevronRight, BarChart3, Brain } 
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
-import { Helmet } from 'react-helmet-async';
+import Seo from '@/components/Seo';
 
 const About = () => {
   return (
     <>
-      <Helmet>
-        <title>devmab | About</title>
-        <meta name="description" content="About page" />
-      </Helmet>
+      <Seo
+        title="About"
+        description="About Muhammad Ayuba Bello: background, skills, and experience in full-stack development and data science."
+        path="/about"
+      />
       <div className="flex flex-col min-h-screen">
         <NavBar />
         

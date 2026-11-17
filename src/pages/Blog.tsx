@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import Seo from '@/components/Seo';
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
@@ -31,11 +31,12 @@ const Blog = () => {
 
   return (
     <>
-      <Helmet>
-        <title>devmab | Blog</title>
-        <meta name="description" content="Articles on software development, data science, and machine learning." />
-        {publishedPosts.length === 0 && <meta name="robots" content="noindex" />}
-      </Helmet>
+      <Seo
+        title="Blog"
+        description="Articles on software development, data science, and machine learning."
+        path="/blog"
+        noindex={publishedPosts.length === 0}
+      />
       <div className="flex flex-col min-h-screen">
         <NavBar />
 
