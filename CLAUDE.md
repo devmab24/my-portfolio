@@ -21,22 +21,17 @@ npx tsc -p tsconfig.app.json --noEmit   # typecheck (add as `npm run typecheck`,
 
 Use npm only (`package-lock.json`). Do not add or regenerate `bun.lockb`.
 
-## Migration in progress
+## Architecture
 
-The site is being moved to a **fully static** setup. Follow `docs/IMPLEMENTATION_GUIDE.md` phase by phase, and tick its checklist when a phase is done. Until Phase 3 is finished, expect the legacy pieces below.
+The site is **fully static**: there is no backend, database, login or admin area. Remaining cleanup work is tracked in `docs/IMPLEMENTATION_GUIDE.md`; tick its checklist when a phase is done.
 
-**Legacy (being removed, do not extend):**
-- `src/integrations/supabase/mockClient.ts`: fake Supabase client backed by `localStorage`. All `supabase.from(...)` calls in pages hit this, not a real database. Its `update()`/`delete()` cannot be chained with `.eq()`, so admin edits fail.
-- `src/hooks/supabase/client.ts`: re-exports the mock.
-- `src/integrations/supabase/*.json`: unused copies of the mock's seed data.
-- Admin area (`AdminContext`, `ProtectedRoute`, `pages/Admin*`, `components/admin/*`) and comments (`components/Comment*`). Its login is not real security.
-- `supabase/`: config and a migration for a Supabase project that is no longer used.
-
-**Target architecture (after Phase 3):**
-- `src/content/projects.ts` and `src/content/posts.ts` are the single source of truth for content: typed arrays imported directly by pages, with no fetching, `useEffect` or loading states.
-- Projects and posts are addressed by a human-readable `slug` (`/projects/:slug`, `/blog/:slug`), not UUIDs.
-- Blog bodies are Markdown strings rendered with `react-markdown` (raw HTML is escaped). Never use `dangerouslySetInnerHTML` for content.
-- The contact form posts to Web3Forms using `VITE_WEB3FORMS_KEY`.
+- **Content:** `src/content/projects.ts` and `src/content/posts.ts` are the single source of truth: typed arrays imported directly by pages, with no fetching, `useEffect` or loading states. Publishing = edit the file and push.
+- **URLs:** projects and posts are addressed by a human-readable `slug` (`/projects/:slug`, `/blog/:slug`).
+- **Drafts:** a project with `draft: true` is excluded from every page. Use it for entries whose details aren't known yet.
+- **Real data only:** never invent project details (timelines, roles, metrics, features) or use placeholder links. Leave optional fields out; the UI hides empty sections and buttons.
+- **Blog:** bodies are Markdown rendered with `react-markdown` + `remark-gfm` (raw HTML is escaped). Never use `dangerouslySetInnerHTML` for content. While `posts` is empty, the Blog nav/footer links and the homepage articles section are hidden.
+- **Contact form:** posts to Web3Forms using `VITE_WEB3FORMS_KEY` (see `.env.example`).
+- **Images:** project images live in `public/project-images/` and are referenced by full path (`/project-images/foo.webp`).
 
 ## Rules
 

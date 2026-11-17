@@ -1,81 +1,48 @@
-
-import { useState, useEffect } from 'react';
-import { useToast } from '@/hooks/use-toast';
+import { useState } from 'react';
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
 import ProjectCard from '@/components/ProjectCard';
-import { Project } from '@/types/project';
-import { supabase } from '@/hooks/supabase/client';
+import type { ProjectType } from '@/types/project';
+import { projects } from '@/content/projects';
 import { Helmet } from 'react-helmet-async';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
- 
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+const TABS: { type: ProjectType; label: string; empty: string }[] = [
+  { type: 'web', label: 'Web Projects', empty: 'No web projects match your search criteria.' },
+  { type: 'datascience', label: 'Data Science & ML', empty: 'No data science projects match your search criteria.' },
+  { type: 'python', label: 'Python Scripts', empty: 'No Python scripts match your search criteria.' },
+  { type: 'opensource', label: 'Open Source', empty: 'No open source contributions found.' },
+  { type: 'competition', label: 'Competitions', empty: 'No competition projects found.' },
+];
+
+const allTags = Array.from(new Set(projects.flatMap((project) => project.tags))).sort();
+
 const Projects = () => {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const { toast } = useToast();
 
-  // Extract unique tags for filter
-  const allTags = Array.from(
-    new Set(projects.flatMap(project => project.tags))
-  ).sort();
+  const query = searchQuery.toLowerCase();
+  const filtered = (type: ProjectType) =>
+    projects.filter(
+      (project) =>
+        project.projectType === type &&
+        (!selectedTag || project.tags.includes(selectedTag)) &&
+        (project.title.toLowerCase().includes(query) ||
+          project.description.toLowerCase().includes(query)),
+    );
 
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        setIsLoading(true);
-        const { data, error } = await supabase
-          .from('projects')
-          .select('*');
-        
-        if (error) {
-          throw error;
-        }
-
-        // Transform data to match Project interface
-        const transformedProjects: Project[] = data.map((item: any) => ({
-          id: item.id,
-          title: item.title,
-          description: item.description,
-          imageSrc: item.image_url || '/placeholder.svg',
-          tags: item.tags,
-          demoUrl: item.demo_url,
-          githubUrl: item.github_url,
-          featured: item.featured,
-          projectType: item.project_type || 'web',
-          downloadUrl: item.download_url,
-          timeline: item.timeline || '',
-          role: item.role || '',
-        }));
-
-        setProjects(transformedProjects);
-      } catch (error) {
-        console.error('Error fetching projects:', error);
-        toast({
-          title: 'Error',
-          description: 'Failed to load projects. Please try again later.',
-          variant: 'destructive',
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchProjects();
-  }, [toast]);
-
-  // Filter projects based on selected tag, search query, and project type
-  const getFilteredProjects = (type: 'web' | 'python' | 'datascience' | 'opensource' | 'competition') => {
-    return projects.filter(project => {
-      const matchesTag = selectedTag ? project.tags.includes(selectedTag) : true;
-      const matchesSearch = project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          project.description.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesType = project.projectType === type;
-      return matchesTag && matchesSearch && matchesType;
-    });
+  const clearFilters = () => {
+    setSelectedTag(null);
+    setSearchQuery('');
   };
+
+  const tagButtonClass = (active: boolean) =>
+    `px-3 py-1 text-sm rounded-full transition-colors ${
+      active
+        ? 'bg-primary text-primary-foreground'
+        : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+    }`;
 
   return (
     <>
@@ -85,220 +52,81 @@ const Projects = () => {
       </Helmet>
       <div className="flex flex-col min-h-screen">
         <NavBar />
-        
+
         <main className="flex-grow pt-24">
           <section className="section-spacing">
             <div className="container-custom">
               <AnimatedSection className="space-y-4 mb-12 text-center">
                 <h1 className="text-4xl md:text-5xl font-bold">Projects</h1>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
-                  A showcase of my technical projects spanning web development, data science, machine learning, and software automation.
+                  A showcase of my technical projects spanning web development, data science, machine
+                  learning, and software automation.
                 </p>
               </AnimatedSection>
-              
+
               <AnimatedSection delay={200} className="mb-8 space-y-6">
-                {/* Search Input */}
                 <div className="max-w-md mx-auto">
                   <input
                     type="text"
                     placeholder="Search projects..."
+                    aria-label="Search projects"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full px-4 py-2 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                   />
                 </div>
-                
-                {/* Filter Tags */}
+
                 <div className="flex flex-wrap justify-center gap-2">
-                  <button
-                    onClick={() => setSelectedTag(null)}
-                    className={`px-3 py-1 text-sm rounded-full transition-colors ${
-                      selectedTag === null
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
-                    }`}
-                  >
+                  <button onClick={() => setSelectedTag(null)} className={tagButtonClass(selectedTag === null)}>
                     All
                   </button>
-                  {allTags.map(tag => (
-                    <button
-                      key={tag}
-                      onClick={() => setSelectedTag(tag)}
-                      className={`px-3 py-1 text-sm rounded-full transition-colors ${
-                        selectedTag === tag
-                          ? 'bg-primary text-primary-foreground'
-                          : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
-                      }`}
-                    >
+                  {allTags.map((tag) => (
+                    <button key={tag} onClick={() => setSelectedTag(tag)} className={tagButtonClass(selectedTag === tag)}>
                       {tag}
                     </button>
                   ))}
                 </div>
               </AnimatedSection>
-              
+
               <AnimatedSection delay={300}>
                 <Tabs defaultValue="web" className="w-full">
                   <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-2 md:grid-cols-5 mb-8">
-                    <TabsTrigger value="web">Web Projects</TabsTrigger>
-                    <TabsTrigger value="datascience">Data Science & ML</TabsTrigger>
-                    <TabsTrigger value="python">Python Scripts</TabsTrigger>
-                    <TabsTrigger value="opensource">Open Source</TabsTrigger>
-                    <TabsTrigger value="competition">Competitions</TabsTrigger>
+                    {TABS.map(({ type, label }) => (
+                      <TabsTrigger key={type} value={type}>
+                        {label}
+                      </TabsTrigger>
+                    ))}
                   </TabsList>
 
-                  <TabsContent value="web">
-                    {isLoading ? (
-                      <div className="flex justify-center items-center py-20">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-                      </div>
-                    ) : getFilteredProjects('web').length > 0 ? (
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {getFilteredProjects('web').map(project => (
-                          <ProjectCard key={project.id} project={project} />
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="text-center py-12">
-                        <p className="text-muted-foreground">No web projects match your search criteria.</p>
-                        <button
-                          onClick={() => {
-                            setSelectedTag(null);
-                            setSearchQuery('');
-                          }}
-                          className="mt-4 text-primary hover:underline"
-                        >
-                          Clear filters
-                        </button>
-                      </div>
-                    )}
-                  </TabsContent>
-
-                  <TabsContent value="datascience">
-                    {isLoading ? (
-                      <div className="flex justify-center items-center py-20">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-                      </div>
-                    ) : getFilteredProjects('datascience').length > 0 ? (
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {getFilteredProjects('datascience').map(project => (
-                          <ProjectCard key={project.id} project={project} />
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="text-center py-12">
-                        <div className="space-y-4">
-                          <div className="text-6xl">🧠</div>
-                          <h3 className="text-xl font-semibold">Data Science & ML Projects Coming Soon</h3>
-                          <p className="text-muted-foreground max-w-md mx-auto">
-                            I'm currently working on exciting data science and machine learning projects. 
-                            Check back soon to see predictive models, data visualizations, and AI-powered applications.
-                          </p>
-                          <div className="flex flex-wrap justify-center gap-2 pt-4">
-                            <span className="px-3 py-1 text-xs rounded-full bg-primary/10 text-primary">Machine Learning</span>
-                            <span className="px-3 py-1 text-xs rounded-full bg-primary/10 text-primary">Data Analysis</span>
-                            <span className="px-3 py-1 text-xs rounded-full bg-primary/10 text-primary">Predictive Modeling</span>
-                            <span className="px-3 py-1 text-xs rounded-full bg-primary/10 text-primary">Deep Learning</span>
+                  {TABS.map(({ type, empty }) => {
+                    const items = filtered(type);
+                    return (
+                      <TabsContent key={type} value={type}>
+                        {items.length > 0 ? (
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {items.map((project) => (
+                              <ProjectCard key={project.slug} project={project} />
+                            ))}
                           </div>
-                        </div>
-                        <button
-                          onClick={() => {
-                            setSelectedTag(null);
-                            setSearchQuery('');
-                          }}
-                          className="mt-4 text-primary hover:underline"
-                        >
-                          Clear filters
-                        </button>
-                      </div>
-                    )}
-                  </TabsContent>
-
-                  <TabsContent value="python">
-                    {isLoading ? (
-                      <div className="flex justify-center items-center py-20">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-                      </div>
-                    ) : getFilteredProjects('python').length > 0 ? (
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {getFilteredProjects('python').map(project => (
-                          <ProjectCard key={project.id} project={project} />
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="text-center py-12">
-                        <p className="text-muted-foreground">No Python scripts match your search criteria.</p>
-                        <button
-                          onClick={() => {
-                            setSelectedTag(null);
-                            setSearchQuery('');
-                          }}
-                          className="mt-4 text-primary hover:underline"
-                        >
-                          Clear filters
-                        </button>
-                      </div>
-                    )}
-                  </TabsContent>
-
-                 <TabsContent value="opensource">
-                    {isLoading ? (
-                      <div className="flex justify-center items-center py-20">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-                      </div>
-                     ) : getFilteredProjects('opensource').length > 0 ? (
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {getFilteredProjects('opensource').map(project => (
-                          <ProjectCard key={project.id} project={project} />
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="text-center py-12">
-                        <p className="text-muted-foreground">No Open Source contributions found.</p>
-                        <button
-                          onClick={() => {
-                            setSelectedTag(null);
-                            setSearchQuery('');
-                          }}
-                          className="mt-4 text-primary hover:underline"
-                        >
-                          Clear filters
-                        </button>
-                      </div>
-                    )}
-                  </TabsContent>
-
-                  <TabsContent value="competition">
-                    {isLoading ? (
-                      <div className="flex justify-center items-center py-20">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-                      </div>
-                    ) : getFilteredProjects('competition').length > 0 ? (
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {getFilteredProjects('competition').map(project => (
-                          <ProjectCard key={project.id} project={project} />
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="text-center py-12">
-                        <p className="text-muted-foreground">No competition projects found.</p>
-                        <button
-                          onClick={() => {
-                            setSelectedTag(null);
-                            setSearchQuery('');
-                          }}
-                          className="mt-4 text-primary hover:underline"
-                        >
-                          Clear filters
-                        </button>
-                      </div>
-                    )}
-                  </TabsContent>
+                        ) : (
+                          <div className="text-center py-12">
+                            <p className="text-muted-foreground">{empty}</p>
+                            {(selectedTag || searchQuery) && (
+                              <button onClick={clearFilters} className="mt-4 text-primary hover:underline">
+                                Clear filters
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </TabsContent>
+                    );
+                  })}
                 </Tabs>
               </AnimatedSection>
             </div>
           </section>
         </main>
-        
+
         <Footer />
       </div>
     </>

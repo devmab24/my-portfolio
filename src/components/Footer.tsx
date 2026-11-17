@@ -1,6 +1,7 @@
 
 import { Github, Linkedin, Mail, Twitter } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { hasPosts } from '@/content/posts';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -24,7 +25,9 @@ const Footer = () => {
               <Link to="/" className="text-muted-foreground hover:text-primary transition-colors">Home</Link>
               <Link to="/projects" className="text-muted-foreground hover:text-primary transition-colors">Projects</Link>
               <Link to="/about" className="text-muted-foreground hover:text-primary transition-colors">About</Link>
-              <Link to="/blog" className="text-muted-foreground hover:text-primary transition-colors">Blog</Link>
+              {hasPosts && (
+                <Link to="/blog" className="text-muted-foreground hover:text-primary transition-colors">Blog</Link>
+              )}
               <Link to="/contact" className="text-muted-foreground hover:text-primary transition-colors">Contact</Link>
             </div>
           </div>

@@ -1,10 +1,10 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Shield } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import ThemeToggle from './ThemeToggle';
-import { useAdmin } from '@/context/AdminContext';
+import { hasPosts } from '@/content/posts';
 
 type NavLink = {
   name: string;
@@ -12,25 +12,19 @@ type NavLink = {
   icon?: React.ReactNode;
 }
 
+const links: NavLink[] = [
+  { name: 'Home', path: '/' },
+  { name: 'Projects', path: '/projects' },
+  { name: 'About', path: '/about' },
+  ...(hasPosts ? [{ name: 'Blog', path: '/blog' }] : []),
+  { name: 'Contact', path: '/contact' },
+];
+
 const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const { isAdmin } = useAdmin();
 
-  const navLinks: NavLink[] = [
-    { name: 'Home', path: '/' },
-    { name: 'Projects', path: '/projects' },
-    { name: 'About', path: '/about' },
-    { name: 'Blog', path: '/blog' },
-    { name: 'Contact', path: '/contact' },
-  ];
-
-  // Only add Admin link if the user is logged in as admin
-  const links = isAdmin 
-    ? [...navLinks, { name: 'Admin', path: '/admin/dashboard', icon: <Shield className="h-4 w-4 mr-1" /> }]
-    : navLinks;
-    
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);

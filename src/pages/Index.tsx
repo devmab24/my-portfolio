@@ -1,109 +1,19 @@
 
-import { useState, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import Hero from '@/components/Hero';
 import AnimatedSection from '@/components/AnimatedSection';
 import ProjectCard from '@/components/ProjectCard';
-import { Project } from '@/types/project';
-import BlogCard, { BlogPost } from '@/components/BlogCard';
+import BlogCard from '@/components/BlogCard';
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
-import { supabase } from '@/hooks/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { Helmet } from "react-helmet-async";
+import { featuredProjects } from '@/content/projects';
+import { hasPosts, publishedPosts } from '@/content/posts';
 
-
-// Sample data for featured projects
-const featuredProjects: Project[] = [
-  {
-    id: 'project-1',
-    title: 'E-Commerce Platform',
-    description: 'A modern e-commerce platform built with React, Node.js, and MongoDB with full payment integration.',
-    imageSrc: '/E-commerce_platform.png',
-    tags: ['React', 'Node.js', 'MongoDB', 'Stripe'],
-    demoUrl: 'https://checkoutly.vercel.app',
-    githubUrl: 'https://github.com',
-    featured: true,
-    timeline: '3 months',
-    role: 'Full Stack Developer',
-  },
-  {
-    id: 'project-2',
-    title: 'AI Image Generator',
-    description: 'A productivity application for managing tasks and projects with collaborative features.',
-    imageSrc: '/tasks_management.png',
-    tags: ['React', 'Firebase', 'Tailwind CSS'],
-    demoUrl: 'https://imaginate-ai-phi.vercel.app',
-    githubUrl: 'https://github.com',
-    timeline: '2 months',
-    role: 'Frontend Developer',
-  },
-  {
-    id: 'project-3',
-    title: 'Recipe Sharing App',
-    description: "An application that generates images using OpenAI's DALL-E model.",
-    imageSrc: '/recipe-sharing-app.jpeg',
-    tags: ['Next.js', 'OpenAI API', 'Vercel'],
-    demoUrl: 'https://example.com',
-    githubUrl: 'https://github.com',
-    timeline: '1 month',
-    role: 'Frontend Developer',
-  },
-];
+const recentPosts = publishedPosts.slice(0, 2);
 
 const Index = () => {
-  const [recentPosts, setRecentPosts] = useState<BlogPost[]>([]);
-  const [isLoadingPosts, setIsLoadingPosts] = useState(true);
-  const { toast } = useToast();
-
-  useEffect(() => {
-    const fetchRecentPosts = async () => {
-      try {
-        setIsLoadingPosts(true);
-        const { data, error } = await supabase
-          .from('blog_posts')
-          .select('*, post_categories(name)')
-          .order('created_at', { ascending: false })
-          .limit(2);
-        
-        if (error) {
-          throw error;
-        }
-
-        // Transform data to match BlogPost interface
-        const transformedPosts: BlogPost[] = data.map((item: any) => ({
-          id: item.id,
-          title: item.title,
-          excerpt: item.excerpt,
-          date: new Date(item.created_at).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-          }),
-          author: 'John Doe', // This would ideally come from a profiles table
-          category: item.post_categories?.name || 'Uncategorized',
-          tags: item.tags || [],
-          readTime: `${Math.ceil(item.content.length / 1000)} min`,
-          imageUrl: item.image_url,
-        }));
-
-        setRecentPosts(transformedPosts);
-      } catch (error) {
-        console.error('Error fetching recent posts:', error);
-        toast({
-          title: 'Error',
-          description: 'Failed to load blog posts. Please try again later.',
-          variant: 'destructive',
-        });
-      } finally {
-        setIsLoadingPosts(false);
-      }
-    };
-
-    fetchRecentPosts();
-  }, [toast]);
-
   return (
     <>
       <Helmet>
@@ -130,7 +40,7 @@ const Index = () => {
               <AnimatedSection delay={200}>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {featuredProjects.map((project) => (
-                    <ProjectCard key={project.id} project={project} />
+                    <ProjectCard key={project.slug} project={project} />
                   ))}
                 </div>
                 
@@ -177,7 +87,8 @@ const Index = () => {
             </div>
           </section>
           
-          {/* Recent Blog Posts */}
+          {/* Recent Blog Posts (hidden until there is at least one post) */}
+          {hasPosts && (
           <section className="section-spacing bg-muted/30">
             <div className="container-custom">
               <AnimatedSection className="space-y-2 mb-12 text-center">
@@ -186,24 +97,14 @@ const Index = () => {
                   Thoughts, insights, and tutorials on software development and design.
                 </p>
               </AnimatedSection>
-              
+
               <AnimatedSection delay={200}>
-                {isLoadingPosts ? (
-                  <div className="flex justify-center items-center py-20">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-                  </div>
-                ) : recentPosts.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {recentPosts.map((post) => (
-                      <BlogCard key={post.id} post={post} />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-12">
-                    <p className="text-muted-foreground">No blog posts found. Check back later!</p>
-                  </div>
-                )}
-                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {recentPosts.map((post) => (
+                    <BlogCard key={post.slug} post={post} />
+                  ))}
+                </div>
+
                 <div className="mt-12 text-center">
                   <Link 
                     to="/blog"
@@ -216,6 +117,7 @@ const Index = () => {
               </AnimatedSection>
             </div>
           </section>
+          )}
           
           {/* Contact CTA */}
           <section className="section-spacing bg-gradient-to-b from-background to-muted/30">

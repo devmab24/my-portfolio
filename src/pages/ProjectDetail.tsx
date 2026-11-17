@@ -1,96 +1,29 @@
-
-import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, ExternalLink, Github } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { ArrowLeft, Download, ExternalLink, Github } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
-import ProjectCard from '@/components/ProjectCard';
-import { Project } from '@/types/project';
-import { supabase } from '@/hooks/supabase/client';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { getProject } from '@/content/projects';
 
 const ProjectDetail = () => {
-  const { id } = useParams<{ id: string }>();
-  const [project, setProject] = useState<Project | null>(null);
-  const [projectType, setProjectType] = useState<string>('web');
-  const [isLoading, setIsLoading] = useState(true);
-  const { toast } = useToast();
-
-  useEffect(() => {
-    const fetchProject = async () => {
-      if (!id) return;
-      
-      try {
-        setIsLoading(true);
-        const { data, error } = await supabase
-          .from('projects')
-          .select('*')
-          .eq('id', id)
-          .single();
-        
-        if (error) {
-          throw error;
-        }
-
-        if (data) {
-          // Transform data to match Project interface
-          const transformedProject: Project = {
-            id: data.id,
-            title: data.title,
-            description: data.description,
-            imageSrc: data.image_url || '/placeholder.svg',
-            tags: data.tags,
-            demoUrl: data.demo_url,
-            githubUrl: data.github_url,
-            featured: data.featured,
-            challenges: data.challenges,
-            key_feature: data.key_feature,
-            timeline: data.timeline,
-            role: data.role,
-          };
-          
-          setProject(transformedProject);
-          setProjectType((data as any).project_type || 'web');
-        }
-      } catch (error) {
-        console.error('Error fetching project:', error);
-        toast({
-          title: 'Error',
-          description: 'Failed to load project details. Please try again later.',
-          variant: 'destructive',
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchProject();
-  }, [id, toast]);
-
-  if (isLoading) {
-    return (
-      <div className="flex flex-col min-h-screen">
-        <NavBar />
-        <main className="flex-grow pt-24">
-          <div className="container-custom py-24 flex justify-center items-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
+  const { slug } = useParams<{ slug: string }>();
+  const project = getProject(slug);
 
   if (!project) {
     return (
       <div className="flex flex-col min-h-screen">
+        <Helmet>
+          <title>devmab | Project not found</title>
+          <meta name="robots" content="noindex" />
+        </Helmet>
         <NavBar />
         <main className="flex-grow pt-24">
           <div className="container-custom py-24 text-center">
             <h1 className="text-2xl font-bold mb-4">Project Not Found</h1>
-            <p className="text-muted-foreground mb-6">The project you're looking for doesn't exist or has been removed.</p>
+            <p className="text-muted-foreground mb-6">
+              The project you're looking for doesn't exist or has been removed.
+            </p>
             <Link to="/projects" className="text-primary hover:underline inline-flex items-center">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Projects
@@ -104,33 +37,37 @@ const ProjectDetail = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <Helmet>
+        <title>{`devmab | ${project.title}`}</title>
+        <meta name="description" content={project.description} />
+      </Helmet>
       <NavBar />
-      
+
       <main className="flex-grow pt-24">
         <article className="section-spacing">
           <div className="container-custom">
-            {/* Project Header */}
+            {/* Header */}
             <AnimatedSection className="mb-12">
-              <Link to="/projects" className="inline-flex items-center text-muted-foreground hover:text-foreground mb-4 transition-colors">
+              <Link
+                to="/projects"
+                className="inline-flex items-center text-muted-foreground hover:text-foreground mb-4 transition-colors"
+              >
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Projects
               </Link>
-              
+
               <div className="space-y-4">
                 <h1 className="text-3xl md:text-4xl font-bold">{project.title}</h1>
-                
+
                 <div className="flex flex-wrap gap-2">
-                  {project.tags.map((tag, index) => (
-                    <span 
-                      key={index}
-                      className="px-2 py-1 text-xs rounded-full bg-secondary text-secondary-foreground"
-                    >
+                  {project.tags.map((tag) => (
+                    <span key={tag} className="px-2 py-1 text-xs rounded-full bg-secondary text-secondary-foreground">
                       {tag}
                     </span>
                   ))}
                 </div>
-                
-                <div className="flex gap-4 pt-2">
+
+                <div className="flex flex-wrap gap-4 pt-2">
                   {project.demoUrl && (
                     <a
                       href={project.demoUrl}
@@ -142,7 +79,6 @@ const ProjectDetail = () => {
                       <ExternalLink className="ml-2 h-4 w-4" />
                     </a>
                   )}
-                  
                   {project.githubUrl && (
                     <a
                       href={project.githubUrl}
@@ -154,273 +90,95 @@ const ProjectDetail = () => {
                       <Github className="ml-2 h-4 w-4" />
                     </a>
                   )}
-                </div>
-              </div>
-            </AnimatedSection>
-            
-            {/* Project Image */}
-            <AnimatedSection delay={200} className="mb-12">
-              <div className="rounded-xl overflow-hidden border border-border/40 shadow-lg">
-                <div className="aspect-video bg-muted flex items-center justify-center">
-                  {project.imageSrc && project.imageSrc !== '/placeholder.svg' ? (
-                    <img 
-                      src={project.imageSrc.startsWith('http') || project.imageSrc.startsWith('/') 
-                        ? project.imageSrc 
-                        : `/project-images/${project.imageSrc}`} 
-                      alt={project.title} 
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <span className="text-6xl">🖥️</span>
+                  {project.downloadUrl && (
+                    <a
+                      href={project.downloadUrl}
+                      download
+                      className="inline-flex items-center px-4 py-2 bg-secondary text-secondary-foreground rounded-md text-sm font-medium transition-all hover:bg-secondary/80"
+                    >
+                      Download
+                      <Download className="ml-2 h-4 w-4" />
+                    </a>
                   )}
                 </div>
               </div>
             </AnimatedSection>
-            
-            {/* Project Content */}
+
+            {/* Image */}
+            <AnimatedSection delay={200} className="mb-12">
+              <div className="rounded-xl overflow-hidden border border-border/40 shadow-lg">
+                <div className="aspect-video bg-muted flex items-center justify-center">
+                  {project.imageSrc ? (
+                    <img src={project.imageSrc} alt={project.title} className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-6xl" aria-hidden="true">
+                      🖥️
+                    </span>
+                  )}
+                </div>
+              </div>
+            </AnimatedSection>
+
+            {/* Content */}
             <AnimatedSection delay={300} className="grid grid-cols-1 lg:grid-cols-3 gap-12">
               <div className="lg:col-span-2 space-y-8">
-                {projectType === 'opensource' ? (
-                  <Tabs defaultValue="contributions" className="w-full">
-                    <TabsList className="grid w-full grid-cols-3">
-                      <TabsTrigger value="contributions">My Contributions</TabsTrigger>
-                      <TabsTrigger value="impact">Impact & Metrics</TabsTrigger>
-                      <TabsTrigger value="technical">Technical Details</TabsTrigger>
-                    </TabsList>
-                    
-                    <TabsContent value="contributions" className="space-y-6">
-                      <section>
-                        <h2 className="text-2xl font-semibold mb-4">My Contributions</h2>
-                        <p className="text-muted-foreground mb-4">{project.description}</p>
-                        <div className="space-y-3">
-                          <h3 className="font-medium">Key Contributions:</h3>
-                          <ul className="list-disc list-inside space-y-2 text-muted-foreground">
-                            {(project.key_feature && project.key_feature.length > 0
-                              ? project.key_feature
-                              : [
-                                  "Implemented critical bug fixes improving stability by 40%",
-                                  "Added new features used by 10,000+ users monthly",
-                                  "Improved documentation reducing onboarding time by 60%",
-                                  "Optimized performance leading to 30% faster load times"
-                                ]
-                            ).map((feature, index) => (
-                              <li key={index}>{feature}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      </section>
-                    </TabsContent>
-                    
-                    <TabsContent value="impact" className="space-y-6">
-                      <section>
-                        <h2 className="text-2xl font-semibold mb-4">Quantified Impact</h2>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="p-4 rounded-lg border border-border/40 bg-card">
-                            <div className="text-3xl font-bold text-primary mb-1">500+</div>
-                            <div className="text-sm text-muted-foreground">Lines of Code</div>
-                          </div>
-                          <div className="p-4 rounded-lg border border-border/40 bg-card">
-                            <div className="text-3xl font-bold text-primary mb-1">15+</div>
-                            <div className="text-sm text-muted-foreground">Pull Requests</div>
-                          </div>
-                          <div className="p-4 rounded-lg border border-border/40 bg-card">
-                            <div className="text-3xl font-bold text-primary mb-1">95%</div>
-                            <div className="text-sm text-muted-foreground">Code Review Score</div>
-                          </div>
-                          <div className="p-4 rounded-lg border border-border/40 bg-card">
-                            <div className="text-3xl font-bold text-primary mb-1">10K+</div>
-                            <div className="text-sm text-muted-foreground">Users Impacted</div>
-                          </div>
-                        </div>
-                        <div className="mt-6">
-                          <h3 className="font-medium mb-3">Recognition & Collaboration</h3>
-                          <ul className="space-y-2 text-muted-foreground">
-                            <li>✓ Collaborated with core maintainers and international contributors</li>
-                            <li>✓ Received positive feedback on code quality and documentation</li>
-                            <li>✓ Active participant in community discussions and issue resolution</li>
-                          </ul>
-                        </div>
-                      </section>
-                    </TabsContent>
-                    
-                    <TabsContent value="technical" className="space-y-6">
-                      <section>
-                        <h2 className="text-2xl font-semibold mb-4">Technical Challenges</h2>
-                        <p className="text-muted-foreground">
-                          {project.challenges || "Navigated complex codebase architecture, implemented solutions following project conventions, and ensured backward compatibility while introducing new features."}
-                        </p>
-                      </section>
-                      <section>
-                        <h2 className="text-2xl font-semibold mb-4">Technologies & Tools</h2>
-                        <div className="flex flex-wrap gap-2">
-                          {project.tags.map((tag, index) => (
-                            <span key={index} className="px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-sm">
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      </section>
-                    </TabsContent>
-                  </Tabs>
-                ) : projectType === 'competition' ? (
-                  <Tabs defaultValue="overview" className="w-full">
-                    <TabsList className="grid w-full grid-cols-3">
-                      <TabsTrigger value="overview">Competition Details</TabsTrigger>
-                      <TabsTrigger value="approach">Approach & Solution</TabsTrigger>
-                      <TabsTrigger value="results">Results & Learnings</TabsTrigger>
-                    </TabsList>
-                    
-                    <TabsContent value="overview" className="space-y-6">
-                      <section>
-                        <h2 className="text-2xl font-semibold mb-4">Competition Overview</h2>
-                        <p className="text-muted-foreground mb-4">{project.description}</p>
-                        <div className="grid grid-cols-2 gap-4 mt-6">
-                          <div className="p-4 rounded-lg border border-border/40 bg-card">
-                            <div className="text-sm text-muted-foreground mb-1">Platform</div>
-                            <div className="font-semibold">Kaggle / LeetCode / CodeForces</div>
-                          </div>
-                          <div className="p-4 rounded-lg border border-border/40 bg-card">
-                            <div className="text-sm text-muted-foreground mb-1">Total Participants</div>
-                            <div className="font-semibold">2,500+ teams</div>
-                          </div>
-                          <div className="p-4 rounded-lg border border-border/40 bg-card">
-                            <div className="text-sm text-muted-foreground mb-1">Final Rank</div>
-                            <div className="font-semibold text-primary">Top 5%</div>
-                          </div>
-                          <div className="p-4 rounded-lg border border-border/40 bg-card">
-                            <div className="text-sm text-muted-foreground mb-1">Duration</div>
-                            <div className="font-semibold">{project.timeline || "2 months"}</div>
-                          </div>
-                        </div>
-                      </section>
-                    </TabsContent>
-                    
-                    <TabsContent value="approach" className="space-y-6">
-                      <section>
-                        <h2 className="text-2xl font-semibold mb-4">Technical Approach</h2>
-                        <p className="text-muted-foreground mb-4">
-                          {project.challenges || "Developed an ensemble model combining gradient boosting and neural networks, with extensive feature engineering and cross-validation strategies."}
-                        </p>
-                        <div className="space-y-3">
-                          <h3 className="font-medium">Key Techniques:</h3>
-                          <ul className="list-disc list-inside space-y-2 text-muted-foreground">
-                            {(project.key_feature && project.key_feature.length > 0
-                              ? project.key_feature
-                              : [
-                                  "Feature engineering with domain-specific transformations",
-                                  "Ensemble methods combining XGBoost, LightGBM, and Neural Networks",
-                                  "Advanced hyperparameter tuning using Bayesian optimization",
-                                  "Cross-validation strategy to prevent overfitting"
-                                ]
-                            ).map((feature, index) => (
-                              <li key={index}>{feature}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      </section>
-                    </TabsContent>
-                    
-                    <TabsContent value="results" className="space-y-6">
-                      <section>
-                        <h2 className="text-2xl font-semibold mb-4">Results & Impact</h2>
-                        <div className="space-y-4">
-                          <div className="p-4 rounded-lg border border-primary/20 bg-primary/5">
-                            <div className="text-3xl font-bold text-primary mb-2">🏆 Achievement</div>
-                            <p className="text-muted-foreground">
-                              Achieved top 5% ranking out of 2,500+ participants, demonstrating strong problem-solving and ML expertise.
-                            </p>
-                          </div>
-                          <div>
-                            <h3 className="font-medium mb-3">Key Learnings:</h3>
-                            <ul className="space-y-2 text-muted-foreground">
-                              <li>✓ Advanced understanding of model ensembling and stacking techniques</li>
-                              <li>✓ Importance of exploratory data analysis in feature creation</li>
-                              <li>✓ Efficient workflow management for iterative experimentation</li>
-                              <li>✓ Practical experience with production-level model optimization</li>
-                            </ul>
-                          </div>
-                        </div>
-                      </section>
-                    </TabsContent>
-                  </Tabs>
-                ) : (
-                  <>
-                    <section>
-                      <h2 className="text-2xl font-semibold mb-4">Project Overview</h2>
-                      <p className="text-muted-foreground">
-                        {project.description}
-                      </p>
-                    </section>
-                    
-                    <section>
-                      <h2 className="text-2xl font-semibold mb-4">Challenges & Solutions</h2>
-                      <p className="text-muted-foreground">
-                        {project.challenges
-                          ? project.challenges
-                          : "One of the main challenges was integrating third-party APIs with inconsistent documentation. To address this, I created custom middleware that standardized API responses and improved error handling. Another challenge was ensuring responsive design across devices, which I solved using Tailwind's utility classes and extensive cross-browser testing."}
-                      </p>
-                    </section>
-                    
-                    <section>
-                      <h2 className="text-2xl font-semibold mb-4">Key Features</h2>
-                      <ul className="list-disc list-inside space-y-2 text-muted-foreground">
-                        {(project.key_feature && project.key_feature.length > 0
-                          ? project.key_feature
-                          : [
-                              "Authentication & Authorization: Secure login and role-based access using NextAuth.js",
-                              "Real-time Data Fetching: Server-side rendering (SSR) and incremental static regeneration (ISR) for up-to-date dashboards.",
-                              "Database Integration: PostgreSQL as the main data store with optimized queries for analytics",
-                              "API Layer: REST/GraphQL endpoints built on Next.js API routes",
-                              "Interactive Dashboards: Data visualization with charts (Recharts/D3.js) for KPIs and metrics.",
-                              "Deployment & Hosting: Continuous deployment and scaling on Vercel.",
-                              "Responsive UI: Built with Tailwind CSS for seamless desktop and mobile experience.",
-                              "Error Handling & Logging: Centralized error tracking and API monitoring."
-                            ]
-                        ).map((feature, index) => (
-                          <li key={index}>{feature}</li>
-                        ))}
-                      </ul>
-                    </section>
-                  </>
+                <section>
+                  <h2 className="text-2xl font-semibold mb-4">Project Overview</h2>
+                  <p className="text-muted-foreground">{project.description}</p>
+                </section>
+
+                {project.challenges && (
+                  <section>
+                    <h2 className="text-2xl font-semibold mb-4">Challenges & Solutions</h2>
+                    <p className="text-muted-foreground">{project.challenges}</p>
+                  </section>
+                )}
+
+                {project.keyFeatures && project.keyFeatures.length > 0 && (
+                  <section>
+                    <h2 className="text-2xl font-semibold mb-4">Key Features</h2>
+                    <ul className="list-disc list-inside space-y-2 text-muted-foreground">
+                      {project.keyFeatures.map((feature) => (
+                        <li key={feature}>{feature}</li>
+                      ))}
+                    </ul>
+                  </section>
                 )}
               </div>
-              
+
               <div className="space-y-8">
                 <section className="p-6 rounded-xl border border-border/40 bg-card">
                   <h3 className="text-lg font-medium mb-4">Project Details</h3>
-                  
                   <div className="space-y-4">
-                    <div>
-                      <h4 className="text-sm font-medium text-muted-foreground">Timeline</h4>
-                      {project.timeline
-                        ? project.timeline
-                        : "3 months"
-                      }
-                    </div>
-                    
-                    <div>
-                      <h4 className="text-sm font-medium text-muted-foreground">Role</h4>
-                      {project.role
-                        ? project.role
-                        : "Full-stack Developer"
-                      }
-                    </div>
-                    
+                    {project.timeline && (
+                      <div>
+                        <h4 className="text-sm font-medium text-muted-foreground">Timeline</h4>
+                        {project.timeline}
+                      </div>
+                    )}
+                    {project.role && (
+                      <div>
+                        <h4 className="text-sm font-medium text-muted-foreground">Role</h4>
+                        {project.role}
+                      </div>
+                    )}
                     <div>
                       <h4 className="text-sm font-medium text-muted-foreground">Tech Stack</h4>
                       <div className="flex flex-wrap gap-2 mt-1">
-                        {project.tags.map((tag, index) => (
-                          <span key={index} className="text-sm">{tag}</span>
+                        {project.tags.map((tag) => (
+                          <span key={tag} className="text-sm">
+                            {tag}
+                          </span>
                         ))}
                       </div>
                     </div>
                   </div>
                 </section>
-                
+
                 <section className="p-6 rounded-xl border border-border/40 bg-card">
                   <h3 className="text-lg font-medium mb-4">Interested in a similar project?</h3>
                   <p className="text-muted-foreground mb-4">Let's discuss how I can help bring your ideas to life.</p>
-                  <Link 
+                  <Link
                     to="/contact"
                     className="inline-flex items-center justify-center w-full px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium transition-all hover:brightness-110"
                   >
@@ -432,7 +190,7 @@ const ProjectDetail = () => {
           </div>
         </article>
       </main>
-      
+
       <Footer />
     </div>
   );
