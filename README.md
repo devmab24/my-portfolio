@@ -1,146 +1,80 @@
+# devmab — Portfolio
 
-# 🚀 Portfolio Website - Full-Stack Developer & Data Scientist
+Personal portfolio of **Muhammad Ayuba Bello**, full-stack developer and data scientist: projects, an about page, and a contact form.
 
-> A modern, responsive portfolio website showcasing my expertise in web development, data science, and machine learning.
+**Live site:** https://devmab.vercel.app
 
-**Live Demo**: https://devmab.vercel.app/
+## Stack
 
-## 👨‍💻 About Me
+- React 18 + TypeScript, built with Vite
+- Tailwind CSS + shadcn/ui components
+- React Router (client-side routing), react-helmet-async (per-page SEO tags)
+- Content lives in typed files in the repo; there is no backend or database
+- Contact form delivered by email via [Web3Forms](https://web3forms.com)
+- Hosted on Vercel; CI on GitHub Actions
 
-I'm a passionate Full-Stack Developer and Data Scientist with expertise in building scalable web applications and developing intelligent data-driven solutions. I combine strong technical skills in modern web technologies with advanced knowledge in machine learning and data analysis to create impactful digital experiences.
+## Run locally
 
-## 🛠️ Technical Skills
-
-### Frontend Development
-- **Languages**: TypeScript, JavaScript, HTML5, CSS3
-- **Frameworks**: React, Next.js, Vue.js
-- **Styling**: Tailwind CSS, Styled Components, SCSS
-- **State Management**: Redux, Zustand, Context API
-- **Build Tools**: Vite, Webpack, Parcel
-
-### Backend Development
-- **Languages**: Node.js, Python, PHP
-- **Frameworks**: Express.js, FastAPI, Django, Laravel
-- **Databases**: PostgreSQL, MongoDB, MySQL, Supabase
-- **APIs**: REST, GraphQL, WebSocket
-- **Authentication**: JWT, OAuth, Passport.js
-
-### Data Science & Machine Learning
-- **Languages**: Python, R, SQL
-- **Libraries**: Pandas, NumPy, Scikit-learn, TensorFlow, PyTorch
-- **Visualization**: Matplotlib, Seaborn, Plotly, D3.js
-- **Tools**: Jupyter Notebooks, Google Colab, Anaconda
-- **Specialties**: Predictive Modeling, Deep Learning, NLP, Computer Vision
-
-### DevOps & Tools
-- **Cloud Platforms**: AWS, Google Cloud, Vercel, Netlify
-- **Version Control**: Git, GitHub, GitLab
-- **Containerization**: Docker, Kubernetes
-- **CI/CD**: GitHub Actions, Jenkins
-- **Monitoring**: Sentry, LogRocket
-
-## 🎯 What Makes Me Stand Out
-
-### 💡 **Unique Blend of Skills**
-- Rare combination of full-stack development and data science expertise
-- Ability to build end-to-end solutions from data collection to user-facing applications
-- Strong problem-solving skills across multiple domains
-
-### 🚀 **Modern Tech Stack**
-- Proficient in cutting-edge technologies and frameworks
-- Always learning and adapting to new tools and methodologies
-- Focus on performance, scalability, and user experience
-
-### 📊 **Data-Driven Approach**
-- Experience in transforming raw data into actionable insights
-- Building intelligent applications with ML integration
-- Statistical analysis and predictive modeling expertise
-
-### 🎨 **Design-Conscious Development**
-- Strong eye for UI/UX design principles
-- Responsive and accessible web development
-- Focus on clean, maintainable code architecture
-
-## 🏗️ Project Categories
-
-### 🌐 **Web Applications**
-Full-stack web applications built with modern frameworks, featuring responsive design, real-time functionality, and seamless user experiences.
-
-### 🤖 **Data Science & ML Projects**
-Machine learning models, data analysis projects, and AI-powered applications that solve real-world problems through intelligent automation.
-
-### 🐍 **Python Scripts & Automation**
-Utility scripts, automation tools, and data processing pipelines that streamline workflows and increase productivity.
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-### Installation
+Requires Node.js 20+ (CI uses 24).
 
 ```bash
-# Clone the repository
-git clone <YOUR_GIT_URL>
-
-# Navigate to the project directory
-cd <YOUR_PROJECT_NAME>
-
-# Install dependencies
-npm install
-
-# Start the development server
-npm run dev
+git clone https://github.com/devmab24/my-portfolio.git
+cd my-portfolio
+npm ci
+cp .env.example .env.local   # then add your Web3Forms access key
+npm run dev                  # http://localhost:8080
 ```
 
-## 🛠️ Built With
+| Command | What it does |
+|---|---|
+| `npm run dev` | Start the dev server |
+| `npm run build` | Generate `sitemap.xml`, then build to `dist/` |
+| `npm run preview` | Serve the production build locally |
+| `npm run lint` | ESLint |
+| `npm run typecheck` | TypeScript (strict) |
+| `npm run check` | Lint + typecheck + build — the same checks CI runs |
 
-This portfolio is built using modern web technologies:
+### Environment variables
 
-- **Frontend**: React 18 + TypeScript
-- **Styling**: Tailwind CSS + shadcn/ui components
-- **Build Tool**: Vite for fast development and optimized builds
-- **Backend**: Supabase for database and authentication
-- **Deployment**: Vercel for seamless hosting
-- **SEO**: React Helmet Async for meta management
+| Name | Where | Notes |
+|---|---|---|
+| `VITE_WEB3FORMS_KEY` | `.env.local` and Vercel (type **Config**) | Web3Forms *access key*. It is designed to be public: it can only submit to your form. Without it the form shows "Message not sent". |
 
-## 📈 Features
+## Editing content
 
-- ✅ **Responsive Design** - Works perfectly on all devices
-- ✅ **Dark/Light Mode** - Theme switching capability
-- ✅ **Fast Performance** - Optimized loading and rendering
-- ✅ **SEO Optimized** - Search engine friendly
-- ✅ **Contact Form** - Direct communication channel
-- ✅ **Project Filtering** - Easy navigation through work samples
-- ✅ **Admin Dashboard** - Content management system
-- ✅ **Blog System** - Thought leadership and tutorials
+Publishing is: edit a file, push to `main`, Vercel deploys.
 
+**Projects:** `src/content/projects.ts`
 
-### 🎯 Domain Deployment
-- **Vercel**
-- 
-## 📫 Let's Connect
+- Each entry has a `slug` (its URL: `/projects/<slug>`), `title`, `description`, `tags` and `projectType` (`web`, `datascience`, `python`, `opensource` or `competition`).
+- Optional: `imageSrc`, `demoUrl`, `githubUrl`, `downloadUrl`, `timeline`, `role`, `challenges`, `keyFeatures`. Leave out anything you don't have; empty sections and buttons are hidden.
+- `featured: true` shows the project on the homepage.
+- `draft: true` hides the project everywhere until it's ready.
+- Images go in `public/project-images/` as WebP (about 1200 px wide).
+- Downloadable files go in `public/downloads/`, linked as `downloadUrl: '/downloads/<file>'`.
 
-I'm always interested in discussing new opportunities, collaborations, or just talking about technology!
+**Blog posts:** `src/content/posts.ts`
 
-- 💼 **LinkedIn**: https://linkedin.com/in/devmab/
-- 🐙 **GitHub**: https://github.com/devmab24/
-- 📧 **Email**: talk2muhammadbello@gmail.com
-- 🌐 **Portfolio**: https://devmab.vercel.app/
+- Add an entry with `slug`, `title`, `excerpt`, `date` (`YYYY-MM-DD`), `category`, `tags`, and a Markdown `body`.
+- The Blog link and the homepage articles section appear automatically once there is at least one post.
 
-## 📊 GitHub Stats
+New pages, projects and posts are added to `sitemap.xml` automatically on the next build.
 
-![Your GitHub Stats](https://github-readme-stats.vercel.app/api?username=devmab24&show_icons=true&theme=radical)
+## Project structure
 
-## 🏆 Achievements
+```
+src/
+  content/      projects.ts, posts.ts — all site content
+  pages/        one component per route (lazy-loaded except the homepage)
+  components/   shared components; ui/ holds the shadcn components in use
+  lib/          site.ts (SEO defaults), img.ts, utils.ts
+scripts/        generate-sitemap.ts (runs before every build)
+public/         static files: images, CV, favicon, og-image, robots.txt
+docs/           IMPLEMENTATION_GUIDE.md — record of the 2026 cleanup
+```
 
-- 🎯 **Full-Stack Development**: 3+ years of experience
-- 📊 **Data Science Projects**: 15+ completed projects
-- 🚀 **Open Source Contributions**: Active contributor
-- 🎓 **Continuous Learning**: Always expanding skill set
+## Contact
 
----
-
-⭐ **Star this repository if you find it helpful!**
-
-*Last updated: December 2024*
+- LinkedIn: https://linkedin.com/in/devmab/
+- GitHub: https://github.com/devmab24
+- Email: talk2muhammadbello@gmail.com

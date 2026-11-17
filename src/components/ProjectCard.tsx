@@ -19,6 +19,8 @@ const actionButtonClass =
   'bg-background/80 backdrop-blur-sm hover:bg-primary hover:text-primary-foreground';
 
 const ProjectCard = ({ project, className }: ProjectCardProps) => {
+  const { downloadUrl, githubUrl, demoUrl } = project;
+
   return (
     <article
       className={cn(
@@ -30,34 +32,34 @@ const ProjectCard = ({ project, className }: ProjectCardProps) => {
         <div className="relative h-48 overflow-hidden">
           <div className="absolute inset-0 bg-primary/10" />
           <div className="absolute top-2 right-2 z-10 flex space-x-2">
-            {project.downloadUrl && (
+            {downloadUrl && (
               <Button
                 size="icon"
                 variant="secondary"
                 className={actionButtonClass}
-                onClick={(e) => openExternal(e, project.downloadUrl!)}
+                onClick={(e) => openExternal(e, downloadUrl)}
                 aria-label={`Download ${project.title}`}
               >
                 <Download className="h-4 w-4" />
               </Button>
             )}
-            {project.githubUrl && (
+            {githubUrl && (
               <Button
                 size="icon"
                 variant="secondary"
                 className={actionButtonClass}
-                onClick={(e) => openExternal(e, project.githubUrl!)}
+                onClick={(e) => openExternal(e, githubUrl)}
                 aria-label={`View ${project.title} on GitHub`}
               >
                 <Github className="h-4 w-4" />
               </Button>
             )}
-            {project.demoUrl && (
+            {demoUrl && (
               <Button
                 size="icon"
                 variant="secondary"
                 className={actionButtonClass}
-                onClick={(e) => openExternal(e, project.demoUrl!)}
+                onClick={(e) => openExternal(e, demoUrl)}
                 aria-label={`View ${project.title} live demo`}
               >
                 <ExternalLink className="h-4 w-4" />

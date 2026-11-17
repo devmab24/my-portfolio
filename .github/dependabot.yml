@@ -1,0 +1,23 @@
+version: 2
+updates:
+  # npm packages: one grouped PR per month for minor/patch updates;
+  # major updates still get their own PR so they can be reviewed separately.
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 5
+    groups:
+      minor-and-patch:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Keep the CI workflow's actions (checkout, setup-node) current.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"

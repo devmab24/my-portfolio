@@ -22,7 +22,7 @@ What we drop: the admin dashboard, the fake login, and blog comments. If comment
 - [x] Phase 3: Static content and removal of the fake backend (owner still to fill in the `draft: true` projects and real links in `src/content/projects.ts`)
 - [x] Phase 4: SEO basics
 - [x] Phase 5: Performance
-- [ ] Phase 6: Code quality and CI
+- [x] Phase 6: Code quality and CI
 - [ ] Phase 7 (optional): Pre-rendering, comments, tests
 
 ---
