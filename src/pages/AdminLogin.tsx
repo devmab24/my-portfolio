@@ -29,14 +29,10 @@ const AdminLogin = () => {
     setIsLoading(true);
     
     try {
-      console.log('Submitting login with:', { username, password });
       const success = await login(username, password);
-      
+
       if (success) {
-        console.log('Login successful, navigating to dashboard');
         navigate('/admin/dashboard');
-      } else {
-        console.log('Login failed');
       }
     } catch (error) {
       console.error('Login error:', error);

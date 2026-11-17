@@ -422,7 +422,6 @@ export function initializeLocalStorage() {
   for (const [table, rows] of Object.entries(SEEDS)) {
     if (!localStorage.getItem(table)) {
       localStorage.setItem(table, JSON.stringify(rows));
-      console.log(`[MockDB] Seeded table "${table}" with ${rows.length} rows.`);
     }
   }
 }
@@ -727,8 +726,7 @@ class MockAuth {
   }
 
   async signInWithOAuth(options: { provider: string; options?: any }) {
-    console.log(`[MockAuth] Simulating OAuth sign in with ${options.provider}`);
-    
+
     // Generate a mock user session matching Supabase User structure
     const mockUser = {
       id: "3b97d02d-a53b-4cd8-af61-2432172656c6", // Use recovered user profile ID

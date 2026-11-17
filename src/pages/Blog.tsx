@@ -19,7 +19,6 @@ const Blog = () => {
     const fetchBlogPosts = async () => {
       try {
         setIsLoading(true);
-        console.log('Fetching blog posts...');
         
         const { data, error } = await supabase
           .from('blog_posts')
@@ -32,7 +31,6 @@ const Blog = () => {
           throw error;
         }
 
-        console.log('Fetched blog posts:', data);
 
         // Transform data to match BlogPost interface
         const transformedPosts: BlogPost[] = data.map((item: any) => ({
@@ -51,7 +49,6 @@ const Blog = () => {
           imageUrl: item.image_url,
         }));
 
-        console.log('Transformed posts:', transformedPosts);
         setPosts(transformedPosts);
       } catch (error) {
         console.error('Error fetching blog posts:', error);

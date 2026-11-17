@@ -24,7 +24,6 @@ const BlogPost = () => {
 
       try {
         setLoading(true);
-        console.log("Looking for blog post with ID:", id);
         
         const { data, error } = await supabase
           .from('blog_posts')
@@ -38,7 +37,6 @@ const BlogPost = () => {
         }
 
         if (data) {
-          console.log("Found post:", data);
           
           const formattedPost: BlogPostType = {
             id: data.id,

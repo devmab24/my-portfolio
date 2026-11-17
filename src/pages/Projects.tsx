@@ -51,7 +51,6 @@ const Projects = () => {
         }));
 
         setProjects(transformedProjects);
-        console.log('Fetched Projects:', transformedProjects); // Log to console
       } catch (error) {
         console.error('Error fetching projects:', error);
         toast({
