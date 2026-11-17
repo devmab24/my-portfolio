@@ -48,7 +48,12 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-medium">Email</h3>
-                      <p className="text-muted-foreground">talk2muhammadbello@gmail.com</p>
+                      <a
+                        href="mailto:talk2muhammadbello@gmail.com"
+                        className="text-muted-foreground hover:text-primary underline-offset-4 hover:underline break-all"
+                      >
+                        talk2muhammadbello@gmail.com
+                      </a>
                     </div>
                   </div>
                   

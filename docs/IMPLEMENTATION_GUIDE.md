@@ -18,7 +18,7 @@ What we drop: the admin dashboard, the fake login, and blog comments. If comment
 
 - [x] Phase 0: Baseline
 - [x] Phase 1: Quick security and hygiene fixes (owner still to do step 5: pause/delete the old Supabase project)
-- [ ] Phase 2: Contact form that actually emails you
+- [ ] Phase 2: Contact form that actually emails you (code done; owner to add `VITE_WEB3FORMS_KEY` locally + in Vercel and send a test message)
 - [ ] Phase 3: Static content and removal of the fake backend
 - [ ] Phase 4: SEO basics
 - [ ] Phase 5: Performance

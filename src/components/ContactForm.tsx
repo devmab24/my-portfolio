@@ -2,16 +2,18 @@
 import { useState } from 'react';
 import { Send } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/hooks/supabase/client';
+
+const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
+const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY;
+const FALLBACK_EMAIL = 'talk2muhammadbello@gmail.com';
+
+const emptyForm = { name: '', email: '', subject: '', message: '' };
 
 const ContactForm = () => {
   const { toast } = useToast();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  });
+  const [formData, setFormData] = useState(emptyForm);
+  // Honeypot: hidden from people, bots tick it, Web3Forms then drops the submission.
+  const [botcheck, setBotcheck] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -24,31 +26,37 @@ const ContactForm = () => {
     setIsSubmitting(true);
     
     try {
-      const { error } = await supabase
-        .from('contact_submissions' as any)
-        .insert([formData]);
+      if (!WEB3FORMS_KEY) {
+        throw new Error('VITE_WEB3FORMS_KEY is not set');
+      }
 
-      if (error) {
-        console.error("Supabase error:", error);
-        throw error;
+      const response = await fetch(WEB3FORMS_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          ...formData, // `email` becomes the reply-to address
+          subject: `Portfolio: ${formData.subject}`,
+          from_name: 'Portfolio contact form',
+          botcheck,
+        }),
+      });
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.message || `Web3Forms error (HTTP ${response.status})`);
       }
 
       toast({
         title: "Message sent!",
         description: "Thank you for your message. I'll get back to you soon.",
       });
-      
-      setFormData({
-        name: '',
-        email: '',
-        subject: '',
-        message: '',
-      });
+      setFormData(emptyForm);
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error('Error submitting contact form:', error);
       toast({
-        title: "Error",
-        description: "There was a problem sending your message. Please try again.",
+        title: "Message not sent",
+        description: `Something went wrong. Please email me directly at ${FALLBACK_EMAIL}.`,
         variant: "destructive",
       });
     } finally {
@@ -58,6 +66,16 @@ const ContactForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      <input
+        type="checkbox"
+        name="botcheck"
+        className="hidden"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        checked={botcheck}
+        onChange={(e) => setBotcheck(e.target.checked)}
+      />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-2">
           <label htmlFor="name" className="text-sm font-medium">
