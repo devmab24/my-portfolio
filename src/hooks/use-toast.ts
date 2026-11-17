@@ -6,7 +6,9 @@ import type {
 } from "@/components/ui/toast"
 
 const TOAST_LIMIT = 1
-const TOAST_REMOVE_DELAY = 1000000
+// After a toast closes (its `duration` elapsed or it was dismissed), remove it from the DOM
+// once the close animation has finished. (The shadcn default kept it for ~17 minutes.)
+const TOAST_REMOVE_DELAY = 1000
 
 type ToasterToast = ToastProps & {
   id: string

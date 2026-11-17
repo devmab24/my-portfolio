@@ -50,14 +50,14 @@ Publishing is: edit a file, push to `main`, Vercel deploys.
 **Projects:** use the local admin, or edit `src/content/projects.json` by hand.
 
 1. Run `npm run dev` and open **http://localhost:8080/admin**.
-2. Add, edit, delete or reorder projects in any of the five categories. Each change is validated and saved straight to `src/content/projects.json`.
+2. Add, edit, delete or reorder projects in any of the seven categories. Each change is validated and saved straight to `src/content/projects.json`.
 3. Check the result on the site (still on localhost), then commit and push `projects.json` (and any uploaded image) to publish.
 
 The admin exists only on your computer while `npm run dev` runs. It isn't part of the deployed site, so it needs no login. It refuses requests from other devices on your network and from other websites.
 
 Project fields:
 
-- Each entry has a `slug` (its URL: `/projects/<slug>`), `title`, `description`, `tags` and `projectType` (`web`, `datascience`, `python`, `opensource` or `competition`).
+- Each entry has a `slug` (its URL: `/projects/<slug>`), `title`, `description`, `tags` and `projectType`: `web`, `datascience` (shown as "AI, Data Science & ML"), `agentic` ("Agentic Engineering": apps and projects built with AI), `python`, `opensource`, `competition`, or `mentorship` ("Mentorship & Trainings": teaching, mentorship and training engagements; use `role` and `timeline` for your role and dates).
 - Optional: `imageSrc`, `demoUrl`, `githubUrl`, `downloadUrl`, `timeline`, `role`, `challenges`, `keyFeatures`. Leave out anything you don't have; empty sections and buttons are hidden.
 - `featured: true` shows the project on the homepage.
 - `draft: true` hides the project everywhere until it's ready.

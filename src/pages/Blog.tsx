@@ -33,7 +33,7 @@ const Blog = () => {
     <>
       <Seo
         title="Blog"
-        description="Articles on software development, data science, and machine learning."
+        description="Articles on AI, machine learning, computer vision, and software engineering."
         path="/blog"
         noindex={publishedPosts.length === 0}
       />
@@ -46,7 +46,7 @@ const Blog = () => {
               <AnimatedSection className="space-y-4 mb-12 text-center">
                 <h1 className="text-4xl md:text-5xl font-bold">Blog</h1>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
-                  Thoughts, insights, and tutorials on software development and design.
+                  Thoughts, insights, and tutorials on AI, machine learning, and software engineering.
                 </p>
               </AnimatedSection>
 

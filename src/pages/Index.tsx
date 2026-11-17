@@ -30,7 +30,8 @@ const Index = () => {
               <AnimatedSection className="space-y-2 mb-12 text-center">
                 <h2 className="text-3xl md:text-4xl font-bold">Featured Projects</h2>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
-                  A selection of my recent work, showcasing my skills and expertise in software development.
+                  Selected machine learning and computer vision projects demonstrating practical experience in model
+                  development, training, and evaluation.
                 </p>
               </AnimatedSection>
               
@@ -58,19 +59,20 @@ const Index = () => {
           <section className="section-spacing">
             <div className="container-custom">
               <AnimatedSection className="space-y-2 mb-12 text-center">
-                <h2 className="text-3xl md:text-4xl font-bold">Technical Skills</h2>
+                <h2 className="text-3xl md:text-4xl font-bold">Technical Expertise</h2>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
-                  My toolbox of technologies and skills that I use to bring ideas to life.
+                  My work combines machine learning, computer vision, and software engineering, from model development
+                  and evaluation to building application interfaces and backend services.
                 </p>
               </AnimatedSection>
-              
+
               <AnimatedSection delay={200}>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {[
-                    'JavaScript', 'TypeScript', 'React', 'Next.js', 
-                    'Node.js', 'Express', 'MongoDB', 'PostgreSQL', 
-                    'GraphQL', 'Docker', 'Git', 'CI/CD',
-                    'TailwindCSS', 'AWS', 'Firebase', 'Redux'
+                    'Python', 'Scikit-learn', 'Pandas', 'NumPy',
+                    'TensorFlow', 'Keras', 'OpenCV', 'YOLO',
+                    'U-Net', 'FastAPI', 'JavaScript', 'React',
+                    'Next.js', 'PostgreSQL', 'SQL', 'Git & GitHub'
                   ].map((skill, index) => (
                     <div 
                       key={index}
@@ -91,7 +93,7 @@ const Index = () => {
               <AnimatedSection className="space-y-2 mb-12 text-center">
                 <h2 className="text-3xl md:text-4xl font-bold">Recent Articles</h2>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
-                  Thoughts, insights, and tutorials on software development and design.
+                  Thoughts, insights, and tutorials on AI, machine learning, and software engineering.
                 </p>
               </AnimatedSection>
 
@@ -120,10 +122,12 @@ const Index = () => {
           <section className="section-spacing bg-gradient-to-b from-background to-muted/30">
             <div className="container-custom">
               <AnimatedSection className="text-center space-y-6 max-w-2xl mx-auto">
-                <h2 className="text-3xl md:text-4xl font-bold">Let's Work Together</h2>
+                <h2 className="text-3xl md:text-4xl font-bold">Let's Build Something Intelligent</h2>
                 <p className="text-muted-foreground">
-                  Have a project in mind or interested in collaborating? Let's connect and bring your ideas to life.
+                  I am interested in AI engineering opportunities, machine learning projects, research collaborations,
+                  and software development initiatives that use technology to solve meaningful problems.
                 </p>
+                <p className="text-muted-foreground">Let's connect and build intelligent solutions.</p>
                 <div className="pt-4">
                   <Link 
                     to="/contact"

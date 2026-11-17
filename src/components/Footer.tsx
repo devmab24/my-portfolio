@@ -14,7 +14,8 @@ const Footer = () => {
           <div className="space-y-4">
             <Link to="/" className="text-xl font-bold">Portfolio</Link>
             <p className="text-muted-foreground max-w-xs">
-              A showcase of my projects, skills, and professional journey in software development.
+              AI Engineer working across machine learning, computer vision, and software engineering to build
+              practical intelligent systems.
             </p>
           </div>
 

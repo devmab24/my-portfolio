@@ -1,4 +1,11 @@
-export type ProjectType = 'web' | 'python' | 'datascience' | 'opensource' | 'competition';
+export type ProjectType =
+  | 'web'
+  | 'python'
+  | 'datascience'
+  | 'agentic'
+  | 'opensource'
+  | 'competition'
+  | 'mentorship';
 
 export interface Project {
   /** URL id: /projects/<slug>. Lowercase, hyphenated, unique. */

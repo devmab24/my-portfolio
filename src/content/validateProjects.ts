@@ -6,10 +6,12 @@ import type { Project, ProjectType } from '@/types/project';
  */
 export const PROJECT_TYPES: { value: ProjectType; label: string }[] = [
   { value: 'web', label: 'Web Projects' },
-  { value: 'datascience', label: 'Data Science & ML' },
+  { value: 'datascience', label: 'AI, Data Science & ML' },
+  { value: 'agentic', label: 'Agentic Engineering' },
   { value: 'python', label: 'Python Scripts' },
   { value: 'opensource', label: 'Open Source' },
   { value: 'competition', label: 'Competitions' },
+  { value: 'mentorship', label: 'Mentorship & Trainings' },
 ];
 
 export const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;

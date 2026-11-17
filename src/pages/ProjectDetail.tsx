@@ -6,6 +6,31 @@ import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
 import { getProject } from '@/content/projects';
 import { highPriority } from '@/lib/img';
+import type { ProjectType } from '@/types/project';
+
+// Section wording per category. Mentorship & training engagements are not software
+// products, so they get their own labels; ML projects list results, not features.
+const DEFAULT_LABELS = {
+  overview: 'Project Overview',
+  highlights: 'Key Features',
+  details: 'Project Details',
+  tags: 'Tech Stack',
+  ctaTitle: 'Interested in a similar project?',
+  ctaBody: "Let's discuss how I can help bring your ideas to life.",
+  placeholder: '🖥️',
+};
+const LABELS: Partial<Record<ProjectType, Partial<typeof DEFAULT_LABELS>>> = {
+  datascience: { highlights: 'Results & Details' },
+  mentorship: {
+    overview: 'Overview',
+    highlights: 'Responsibilities & Activities',
+    details: 'Engagement Details',
+    tags: 'Topics',
+    ctaTitle: 'Interested in working together?',
+    ctaBody: "Let's talk about training, mentorship, or collaboration opportunities.",
+    placeholder: '🎓',
+  },
+};
 
 const ProjectDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -32,6 +57,8 @@ const ProjectDetail = () => {
       </div>
     );
   }
+
+  const labels = { ...DEFAULT_LABELS, ...LABELS[project.projectType] };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -119,7 +146,7 @@ const ProjectDetail = () => {
                     />
                   ) : (
                     <span className="text-6xl" aria-hidden="true">
-                      🖥️
+                      {labels.placeholder}
                     </span>
                   )}
                 </div>
@@ -130,7 +157,7 @@ const ProjectDetail = () => {
             <AnimatedSection delay={300} className="grid grid-cols-1 lg:grid-cols-3 gap-12">
               <div className="lg:col-span-2 space-y-8">
                 <section>
-                  <h2 className="text-2xl font-semibold mb-4">Project Overview</h2>
+                  <h2 className="text-2xl font-semibold mb-4">{labels.overview}</h2>
                   <p className="text-muted-foreground">{project.description}</p>
                 </section>
 
@@ -143,7 +170,7 @@ const ProjectDetail = () => {
 
                 {project.keyFeatures && project.keyFeatures.length > 0 && (
                   <section>
-                    <h2 className="text-2xl font-semibold mb-4">Key Features</h2>
+                    <h2 className="text-2xl font-semibold mb-4">{labels.highlights}</h2>
                     <ul className="list-disc list-inside space-y-2 text-muted-foreground">
                       {project.keyFeatures.map((feature) => (
                         <li key={feature}>{feature}</li>
@@ -155,7 +182,7 @@ const ProjectDetail = () => {
 
               <div className="space-y-8">
                 <section className="p-6 rounded-xl border border-border/40 bg-card">
-                  <h3 className="text-lg font-medium mb-4">Project Details</h3>
+                  <h3 className="text-lg font-medium mb-4">{labels.details}</h3>
                   <div className="space-y-4">
                     {project.timeline && (
                       <div>
@@ -170,7 +197,7 @@ const ProjectDetail = () => {
                       </div>
                     )}
                     <div>
-                      <h4 className="text-sm font-medium text-muted-foreground">Tech Stack</h4>
+                      <h4 className="text-sm font-medium text-muted-foreground">{labels.tags}</h4>
                       <div className="flex flex-wrap gap-2 mt-1">
                         {project.tags.map((tag) => (
                           <span key={tag} className="text-sm">
@@ -183,8 +210,8 @@ const ProjectDetail = () => {
                 </section>
 
                 <section className="p-6 rounded-xl border border-border/40 bg-card">
-                  <h3 className="text-lg font-medium mb-4">Interested in a similar project?</h3>
-                  <p className="text-muted-foreground mb-4">Let's discuss how I can help bring your ideas to life.</p>
+                  <h3 className="text-lg font-medium mb-4">{labels.ctaTitle}</h3>
+                  <p className="text-muted-foreground mb-4">{labels.ctaBody}</p>
                   <Link
                     to="/contact"
                     className="inline-flex items-center justify-center w-full px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium transition-all hover:brightness-110"

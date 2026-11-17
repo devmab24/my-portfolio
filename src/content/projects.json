@@ -1,5 +1,153 @@
 [
   {
+    "slug": "uav-object-detection",
+    "title": "UAV-Based Object Detection",
+    "description": "Developed an object detection model using YOLOv8n to identify objects in unmanned aerial vehicle (UAV) imagery. The project involved working with a large image dataset, training the model, and evaluating its detection performance.",
+    "tags": [
+      "Computer Vision",
+      "Object Detection",
+      "YOLOv8"
+    ],
+    "projectType": "datascience",
+    "featured": true,
+    "keyFeatures": [
+      "Dataset: 14,471 UAV images",
+      "Model: YOLOv8n",
+      "Training: 50 epochs",
+      "Reported result: 86.15% mAP@50",
+      "Demonstrates: dataset preparation, object detection, model training, and evaluation using computer vision techniques."
+    ]
+  },
+  {
+    "slug": "crack-segmentation",
+    "title": "Automated Crack Segmentation",
+    "description": "Developed a U-Net-based image segmentation model to identify crack regions in images. The work focused on preparing image data, training a segmentation architecture, and assessing the quality of predicted segmentation masks.",
+    "tags": [
+      "Deep Learning",
+      "Computer Vision",
+      "U-Net"
+    ],
+    "projectType": "datascience",
+    "featured": true,
+    "keyFeatures": [
+      "Dataset: Approximately 800 images",
+      "Architecture: U-Net",
+      "Dice score: 0.8293",
+      "F1 score: 84%",
+      "Demonstrates: image preprocessing, semantic segmentation, deep learning model development, and segmentation evaluation."
+    ]
+  },
+  {
+    "slug": "breast-cancer-classification",
+    "title": "Breast Cancer Classification",
+    "description": "Built a breast cancer classification model using Logistic Regression to predict diagnostic outcomes from structured data. The project involved data preparation, model development, and evaluation using classification metrics.",
+    "tags": [
+      "Machine Learning",
+      "Healthcare AI",
+      "Scikit-learn"
+    ],
+    "projectType": "datascience",
+    "featured": true,
+    "timeline": "September – October 2025",
+    "role": "Machine Learning Intern, Codveda Technologies",
+    "keyFeatures": [
+      "Algorithm: Logistic Regression",
+      "Accuracy: 98.2%",
+      "F1 score: 98.6%",
+      "ROC-AUC: 0.995",
+      "Demonstrates: classification, data preprocessing, model evaluation, and the application of machine learning to a healthcare-related problem.",
+      "These are results on the project dataset, not evidence of clinical validation or readiness for medical use."
+    ]
+  },
+  {
+    "slug": "mnist-digit-recognition",
+    "title": "MNIST Handwritten Digit Recognition",
+    "description": "Implemented a feedforward neural network using TensorFlow/Keras to classify handwritten digits from the MNIST dataset. The project provided practical experience with neural network construction, model training, and image classification.",
+    "tags": [
+      "Deep Learning",
+      "Neural Networks",
+      "TensorFlow / Keras"
+    ],
+    "projectType": "datascience",
+    "timeline": "September – October 2025",
+    "role": "Machine Learning Intern, Codveda Technologies",
+    "keyFeatures": [
+      "Dataset: MNIST",
+      "Framework: TensorFlow / Keras",
+      "Architecture: Feedforward neural network",
+      "Demonstrates: neural network implementation, image classification, and deep learning fundamentals."
+    ]
+  },
+  {
+    "slug": "wqu-skills-hub",
+    "title": "WQU Skills Hub",
+    "description": "Founded WQU Skills Hub, a learning community with more than 100 members interested in developing practical technical skills.",
+    "tags": [
+      "Community Building",
+      "Peer Learning",
+      "AI/ML",
+      "Data Science",
+      "Career Development"
+    ],
+    "projectType": "mentorship",
+    "role": "Founder",
+    "keyFeatures": [
+      "Encourage collaborative learning and knowledge sharing.",
+      "Facilitate discussions around AI/ML, data science, and career development.",
+      "Support peer learning, mentorship, and technical growth."
+    ]
+  },
+  {
+    "slug": "ai-ml-instruction",
+    "title": "AI/ML Instruction",
+    "description": "AI/ML Instructor with 3Logy on a training programme sponsored by Seplat Energy and NCDMB, facilitating technical learning in artificial intelligence, machine learning, and data science through instruction and hands-on learning activities.",
+    "tags": [
+      "AI/ML",
+      "Data Science",
+      "Programming Fundamentals",
+      "Hands-on Learning"
+    ],
+    "projectType": "mentorship",
+    "timeline": "January 2026 – October 2026",
+    "role": "AI/ML Instructor",
+    "keyFeatures": [
+      "Introduce learners to AI/ML concepts, tools, and practical applications.",
+      "Facilitate hands-on sessions and project-based learning.",
+      "Explain programming, data science, and machine learning fundamentals.",
+      "Support technical mentorship and collaborative learning."
+    ]
+  },
+  {
+    "slug": "digital-tools-orientation",
+    "title": "Digital Tools Orientation",
+    "description": "Assistant Instructor with 3Logy on a Digital Tools Orientation programme sponsored by Seplat Energy and NCDMB, supporting the delivery of the training.",
+    "tags": [
+      "Digital Skills",
+      "Technical Training"
+    ],
+    "projectType": "mentorship",
+    "timeline": "October 2025 – December 2025",
+    "role": "Assistant Instructor"
+  },
+  {
+    "slug": "computer-science-teaching",
+    "title": "Computer Science Teaching",
+    "description": "Assistant Lecturer (NYSC) at Taraba State Polytechnic, Jalingo, contributing to computer science education for ND1 and ND2 students.",
+    "tags": [
+      "Computer Science",
+      "Programming Fundamentals",
+      "Teaching"
+    ],
+    "projectType": "mentorship",
+    "timeline": "February 2023 – January 2024",
+    "role": "Assistant Lecturer (NYSC), Taraba State Polytechnic, Jalingo",
+    "keyFeatures": [
+      "Supported the teaching of computer science concepts to ND1 and ND2 students.",
+      "Helped learners develop foundational programming, technical, and problem-solving skills.",
+      "Supported practical learning and the explanation of computing concepts."
+    ]
+  },
+  {
     "slug": "e-commerce-platform",
     "title": "E-Commerce Platform",
     "description": "A modern e-commerce platform built with React, Node.js, and MongoDB with full payment integration.",
@@ -11,8 +159,7 @@
       "Stripe"
     ],
     "projectType": "web",
-    "demoUrl": "https://checkoutly.vercel.app",
-    "featured": true
+    "demoUrl": "https://checkoutly.vercel.app"
   },
   {
     "slug": "ai-image-generator",
@@ -25,8 +172,7 @@
       "Vercel"
     ],
     "projectType": "web",
-    "demoUrl": "https://imaginate-ai-phi.vercel.app",
-    "featured": true
+    "demoUrl": "https://imaginate-ai-phi.vercel.app"
   },
   {
     "slug": "task-management-app",
@@ -38,8 +184,7 @@
       "Firebase",
       "Tailwind CSS"
     ],
-    "projectType": "web",
-    "featured": true
+    "projectType": "web"
   },
   {
     "slug": "personal-finance-dashboard",

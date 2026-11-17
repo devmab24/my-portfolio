@@ -6,6 +6,10 @@ import { useToast } from '@/hooks/use-toast';
 const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
 const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY;
 const FALLBACK_EMAIL = 'talk2muhammadbello@gmail.com';
+// How long the confirmation toasts stay on screen before closing by themselves.
+// Errors stay a little longer so there's time to read the fallback email address.
+const SUCCESS_TOAST_MS = 4000;
+const ERROR_TOAST_MS = 6000;
 
 const emptyForm = { name: '', email: '', subject: '', message: '' };
 
@@ -50,6 +54,7 @@ const ContactForm = () => {
       toast({
         title: "Message sent!",
         description: "Thank you for your message. I'll get back to you soon.",
+        duration: SUCCESS_TOAST_MS,
       });
       setFormData(emptyForm);
     } catch (error) {
@@ -58,6 +63,7 @@ const ContactForm = () => {
         title: "Message not sent",
         description: `Something went wrong. Please email me directly at ${FALLBACK_EMAIL}.`,
         variant: "destructive",
+        duration: ERROR_TOAST_MS,
       });
     } finally {
       setIsSubmitting(false);

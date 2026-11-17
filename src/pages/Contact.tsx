@@ -9,7 +9,7 @@ const Contact = () => {
     <>
       <Seo
         title="Contact"
-        description="Get in touch with Muhammad Ayuba Bello about projects, collaborations, or opportunities."
+        description="Get in touch with Muhammad Ayuba Bello about AI engineering opportunities, machine learning projects, research collaborations, and software development initiatives."
         path="/contact"
       />
       <div className="min-h-screen flex flex-col">
@@ -21,11 +21,16 @@ const Contact = () => {
             
             <div className="grid md:grid-cols-2 gap-10">
               <div>
-                <h2 className="text-2xl font-semibold mb-4">Get in Touch</h2>
-                <p className="mb-6 text-muted-foreground">
-                  Have a question or want to work together? Fill out the form 
-                  and I'll get back to you as soon as possible.
+                <h2 className="text-2xl font-semibold mb-4">Let's Build Something Intelligent</h2>
+                <p className="mb-4 text-muted-foreground">
+                  I am interested in AI engineering opportunities, machine learning projects, research collaborations,
+                  and software development initiatives that use technology to solve meaningful problems.
                 </p>
+                <p className="mb-4 text-muted-foreground">
+                  If you are building an AI-powered product, exploring a computer vision application, or looking for an
+                  engineer who understands both AI development and software engineering, I would be glad to connect.
+                </p>
+                <p className="mb-6 text-muted-foreground">Let's connect and build intelligent solutions.</p>
                 
                 <div className="space-y-4">
                   <div className="flex items-center">

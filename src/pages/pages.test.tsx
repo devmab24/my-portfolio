@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { HelmetProvider } from 'react-helmet-async';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, it } from 'vitest';
@@ -47,12 +47,59 @@ describe('pages render', () => {
     expect(screen.queryByRole('link', { name: 'Blog' })).toBeNull();
   });
 
-  it('projects: lists every published web project', () => {
+  it('projects: opens on the AI tab, and every web project is one click away', () => {
     renderAt('/projects');
     expect(screen.getByRole('heading', { level: 1, name: 'Projects' })).toBeTruthy();
+
+    const tabs = screen.getAllByRole('tab');
+    expect(tabs[0].textContent).toBe('AI, Data Science & ML');
+    expect(tabs[0].getAttribute('aria-selected')).toBe('true');
+    for (const project of projects.filter((p) => p.projectType === 'datascience')) {
+      expect(screen.getByRole('heading', { name: project.title })).toBeTruthy();
+    }
+
+    fireEvent.mouseDown(screen.getByRole('tab', { name: 'Web Projects' }), { button: 0 });
     for (const project of projects.filter((p) => p.projectType === 'web')) {
       expect(screen.getByRole('heading', { name: project.title })).toBeTruthy();
     }
+  });
+
+  it('projects: shows the renamed AI tab and the Mentorship & Trainings tab with their entries', () => {
+    renderAt('/projects');
+    expect(screen.queryByRole('tab', { name: 'Data Science & ML' })).toBeNull();
+
+    const tabEntries = (label: string, type: string) => {
+      // Radix tabs activate on mouse down (left button).
+      fireEvent.mouseDown(screen.getByRole('tab', { name: label }), { button: 0 });
+      const panel = screen.getByRole('tabpanel');
+      const titles = Array.from(panel.querySelectorAll('h3')).map((h) => h.textContent);
+      expect(titles).toEqual(projects.filter((p) => p.projectType === type).map((p) => p.title));
+      return titles;
+    };
+
+    expect(tabEntries('AI, Data Science & ML', 'datascience')).toContain('UAV-Based Object Detection');
+
+    // Agentic Engineering sits right after the AI tab and shows its empty state until projects are added.
+    const labels = screen.getAllByRole('tab').map((t) => t.textContent);
+    expect(labels.slice(0, 2)).toEqual(['AI, Data Science & ML', 'Agentic Engineering']);
+    tabEntries('Agentic Engineering', 'agentic');
+    if (!projects.some((p) => p.projectType === 'agentic')) {
+      expect(screen.getByText('Apps and projects built with AI will be listed here soon.')).toBeTruthy();
+    }
+    expect(tabEntries('Mentorship & Trainings', 'mentorship')).toEqual([
+      'WQU Skills Hub',
+      'AI/ML Instruction',
+      'Digital Tools Orientation',
+      'Computer Science Teaching',
+    ]);
+  });
+
+  it('mentorship entries use engagement wording, not product wording', () => {
+    renderAt('/projects/wqu-skills-hub');
+    expect(screen.getByRole('heading', { name: 'Responsibilities & Activities' })).toBeTruthy();
+    expect(screen.getByText('Topics')).toBeTruthy();
+    expect(screen.queryByText('Tech Stack')).toBeNull();
+    expect(screen.queryByText('Interested in a similar project?')).toBeNull();
   });
 
   it.each(projects.map((p) => [p.slug, p] as const))('project page %s shows only real data', (slug, project) => {

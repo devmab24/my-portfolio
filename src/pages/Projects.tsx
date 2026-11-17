@@ -8,13 +8,29 @@ import { projects } from '@/content/projects';
 import Seo from '@/components/Seo';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
+// The first tab is the one shown when the page opens (see DEFAULT_TAB).
 const TABS: { type: ProjectType; label: string; empty: string }[] = [
+  {
+    type: 'datascience',
+    label: 'AI, Data Science & ML',
+    empty: 'No AI, data science or machine learning projects match your search criteria.',
+  },
+  {
+    type: 'agentic',
+    label: 'Agentic Engineering',
+    empty: 'Apps and projects built with AI will be listed here soon.',
+  },
   { type: 'web', label: 'Web Projects', empty: 'No web projects match your search criteria.' },
-  { type: 'datascience', label: 'Data Science & ML', empty: 'No data science projects match your search criteria.' },
   { type: 'python', label: 'Python Scripts', empty: 'No Python scripts match your search criteria.' },
   { type: 'opensource', label: 'Open Source', empty: 'No open source contributions found.' },
   { type: 'competition', label: 'Competitions', empty: 'No competition projects found.' },
+  {
+    type: 'mentorship',
+    label: 'Mentorship & Trainings',
+    empty: 'No mentorship or training engagements match your search criteria.',
+  },
 ];
+const DEFAULT_TAB = TABS[0].type;
 
 const allTags = Array.from(new Set(projects.flatMap((project) => project.tags))).sort();
 
@@ -48,7 +64,7 @@ const Projects = () => {
     <>
       <Seo
         title="Projects"
-        description="Web applications, data science and machine learning projects, and Python scripts by Muhammad Ayuba Bello."
+        description="AI, machine learning and computer vision projects by Muhammad Ayuba Bello, alongside software engineering work and mentorship and training engagements."
         path="/projects"
       />
       <div className="flex flex-col min-h-screen">
@@ -60,8 +76,8 @@ const Projects = () => {
               <AnimatedSection className="space-y-4 mb-12 text-center">
                 <h1 className="text-4xl md:text-5xl font-bold">Projects</h1>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
-                  A showcase of my technical projects spanning web development, data science, machine
-                  learning, and software automation.
+                  Machine learning and computer vision projects, software engineering work, and the
+                  mentorship and technical training I contribute to.
                 </p>
               </AnimatedSection>
 
@@ -90,8 +106,8 @@ const Projects = () => {
               </AnimatedSection>
 
               <AnimatedSection delay={300}>
-                <Tabs defaultValue="web" className="w-full">
-                  <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-2 md:grid-cols-5 mb-8">
+                <Tabs defaultValue={DEFAULT_TAB} className="w-full">
+                  <TabsList className="grid h-auto w-full max-w-4xl mx-auto grid-cols-2 md:grid-cols-4 mb-8">
                     {TABS.map(({ type, label }) => (
                       <TabsTrigger key={type} value={type}>
                         {label}
@@ -102,7 +118,13 @@ const Projects = () => {
                   {TABS.map(({ type, empty }) => {
                     const items = filtered(type);
                     return (
-                      <TabsContent key={type} value={type}>
+                      // Radix mounts a tab's content when it becomes active; the fade-in plays on
+                      // each switch (disabled for users who prefer reduced motion).
+                      <TabsContent
+                        key={type}
+                        value={type}
+                        className="data-[state=active]:animate-fade-in motion-reduce:animate-none"
+                      >
                         {items.length > 0 ? (
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {items.map((project) => (

@@ -380,7 +380,7 @@ const Admin = () => {
 
         {projects && (
           <Tabs value={tab} onValueChange={(v) => setTab(v as ProjectType)}>
-            <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 h-auto">
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-auto">
               {PROJECT_TYPES.map((t) => (
                 <TabsTrigger key={t.value} value={t.value}>
                   {t.label} ({counts[t.value]})

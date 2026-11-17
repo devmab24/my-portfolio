@@ -79,7 +79,7 @@ const ProjectCard = ({ project, className }: ProjectCardProps) => {
               />
             ) : (
               <span className="text-4xl" aria-hidden="true">
-                🖥️
+                {project.projectType === 'mentorship' ? '🎓' : '🖥️'}
               </span>
             )}
           </div>
