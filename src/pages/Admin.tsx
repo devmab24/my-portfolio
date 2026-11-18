@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowDown, ArrowUp, ExternalLink, Pencil, Plus, Trash2 } from 'lucide-react';
 import Seo from '@/components/Seo';
@@ -87,6 +87,18 @@ const Admin = () => {
   const [slugTouched, setSlugTouched] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const [busy, setBusy] = useState(false);
+  // Bumped each time the form is opened, so it is scrolled into view even when it
+  // was already open (the form sits above the list, often off-screen).
+  const [formRequest, setFormRequest] = useState(0);
+  const formRef = useRef<HTMLFormElement>(null);
+  const titleRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!formRequest) return;
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    formRef.current?.scrollIntoView?.({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    titleRef.current?.focus({ preventScroll: true });
+  }, [formRequest]);
 
   const load = useCallback(async () => {
     try {
@@ -132,12 +144,14 @@ const Admin = () => {
     setEditing({ originalSlug: null, form: emptyForm(tab) });
     setSlugTouched(false);
     setErrors([]);
+    setFormRequest((n) => n + 1);
   };
 
   const startEdit = (p: Project) => {
     setEditing({ originalSlug: p.slug, form: toForm(p) });
     setSlugTouched(true);
     setErrors([]);
+    setFormRequest((n) => n + 1);
   };
 
   const update = <K extends keyof FormState>(key: K, value: FormState[K]) => {
@@ -172,7 +186,8 @@ const Admin = () => {
 
   const remove = async (p: Project) => {
     if (!projects || !window.confirm(`Delete "${p.title}"? This removes it from projects.json.`)) return;
-    await save(projects.filter((x) => x.slug !== p.slug), `Deleted "${p.title}"`);
+    const deleted = await save(projects.filter((x) => x.slug !== p.slug), `Deleted "${p.title}"`);
+    if (deleted && editing?.originalSlug === p.slug) setEditing(null);
   };
 
   const move = async (p: Project, dir: -1 | 1) => {
@@ -245,14 +260,25 @@ const Admin = () => {
         {!projects && !loadError && <p className="text-muted-foreground">Loading…</p>}
 
         {editing && (
-          <form onSubmit={submit} className="rounded-xl border border-border/60 bg-card p-6 space-y-5" aria-label="Project form">
+          <form
+            ref={formRef}
+            onSubmit={submit}
+            className="scroll-mt-6 rounded-xl border border-border/60 bg-card p-6 space-y-5"
+            aria-label="Project form"
+          >
             <h2 className="text-xl font-semibold">
               {editing.originalSlug === null ? 'New project' : `Edit "${editing.form.title || editing.originalSlug}"`}
             </h2>
 
             <div className="grid gap-4 md:grid-cols-2">
               <Field label="Title *">
-                <input className={inputClass} value={editing.form.title} onChange={(e) => update('title', e.target.value)} required />
+                <input
+                  ref={titleRef}
+                  className={inputClass}
+                  value={editing.form.title}
+                  onChange={(e) => update('title', e.target.value)}
+                  required
+                />
               </Field>
               <Field label="Slug (URL) *" hint={`/projects/${editing.form.slug || '…'}`}>
                 <input
@@ -397,7 +423,13 @@ const Admin = () => {
                   ) : (
                     <ul className="divide-y divide-border/60 rounded-xl border border-border/60">
                       {items.map((p, i) => (
-                        <li key={p.slug} className="flex flex-wrap items-center gap-3 p-4">
+                        <li
+                          key={p.slug}
+                          aria-current={editing?.originalSlug === p.slug ? 'true' : undefined}
+                          className={`flex flex-wrap items-center gap-3 p-4 ${
+                            editing?.originalSlug === p.slug ? 'bg-primary/5' : ''
+                          }`}
+                        >
                           {p.imageSrc ? (
                             <img src={p.imageSrc} alt="" width={64} height={40} className="h-10 w-16 rounded object-cover" />
                           ) : (

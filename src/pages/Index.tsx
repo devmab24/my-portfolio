@@ -9,6 +9,7 @@ import BlogCard from '@/components/BlogCard';
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import { featuredProjects } from '@/content/projects';
+import { FEATURED_GRID_CLASS, featuredItemClass } from '@/lib/featuredGrid';
 import { hasPosts, publishedPosts } from '@/content/posts';
 
 const recentPosts = publishedPosts.slice(0, 2);
@@ -36,9 +37,13 @@ const Index = () => {
               </AnimatedSection>
               
               <AnimatedSection delay={200}>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {featuredProjects.map((project) => (
-                    <ProjectCard key={project.slug} project={project} />
+                <div className={FEATURED_GRID_CLASS}>
+                  {featuredProjects.map((project, i) => (
+                    <ProjectCard
+                      key={project.slug}
+                      project={project}
+                      className={featuredItemClass(i, featuredProjects.length)}
+                    />
                   ))}
                 </div>
                 

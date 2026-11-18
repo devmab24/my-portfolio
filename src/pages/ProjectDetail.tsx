@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
 import { getProject } from '@/content/projects';
 import { highPriority } from '@/lib/img';
+import { LINE_LABEL, parseChallenges } from '@/lib/challenges';
 import type { ProjectType } from '@/types/project';
 
 // Section wording per category. Mentorship & training engagements are not software
@@ -59,6 +60,7 @@ const ProjectDetail = () => {
   }
 
   const labels = { ...DEFAULT_LABELS, ...LABELS[project.projectType] };
+  const challenges = parseChallenges(project.challenges);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -161,17 +163,38 @@ const ProjectDetail = () => {
                   <p className="text-muted-foreground">{project.description}</p>
                 </section>
 
-                {project.challenges && (
+                {challenges.length > 0 && (
                   <section>
                     <h2 className="text-2xl font-semibold mb-4">Challenges & Solutions</h2>
-                    <p className="text-muted-foreground">{project.challenges}</p>
+                    <ul className="list-disc pl-5 space-y-4 text-muted-foreground">
+                      {challenges.map((item, i) => (
+                        <li key={i} className="space-y-1">
+                          {item.title && <p className="font-medium text-foreground">{item.title}</p>}
+                          {item.lines.map((line, j) => {
+                            const label = LINE_LABEL.exec(line);
+                            return (
+                              <p key={j}>
+                                {label ? (
+                                  <>
+                                    <span className="font-medium text-foreground">{label[1]}:</span>{' '}
+                                    {line.slice(label[0].length)}
+                                  </>
+                                ) : (
+                                  line
+                                )}
+                              </p>
+                            );
+                          })}
+                        </li>
+                      ))}
+                    </ul>
                   </section>
                 )}
 
                 {project.keyFeatures && project.keyFeatures.length > 0 && (
                   <section>
                     <h2 className="text-2xl font-semibold mb-4">{labels.highlights}</h2>
-                    <ul className="list-disc list-inside space-y-2 text-muted-foreground">
+                    <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
                       {project.keyFeatures.map((feature) => (
                         <li key={feature}>{feature}</li>
                       ))}

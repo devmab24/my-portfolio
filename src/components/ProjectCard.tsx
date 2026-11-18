@@ -15,11 +15,15 @@ const openExternal = (e: React.MouseEvent, url: string) => {
   window.open(url, '_blank', 'noopener,noreferrer');
 };
 
+const MAX_CARD_TAGS = 4;
+
 const actionButtonClass =
   'bg-background/80 backdrop-blur-sm hover:bg-primary hover:text-primary-foreground';
 
 const ProjectCard = ({ project, className }: ProjectCardProps) => {
   const { downloadUrl, githubUrl, demoUrl } = project;
+  // The full list is on the project page; cards stay compact.
+  const extraTags = Math.max(0, project.tags.length - MAX_CARD_TAGS);
 
   return (
     <article
@@ -93,7 +97,7 @@ const ProjectCard = ({ project, className }: ProjectCardProps) => {
           <p className="text-muted-foreground text-sm line-clamp-2">{project.description}</p>
 
           <div className="flex flex-wrap gap-2 pt-2">
-            {project.tags.map((tag) => (
+            {project.tags.slice(0, MAX_CARD_TAGS).map((tag) => (
               <span
                 key={tag}
                 className="px-2 py-1 text-xs rounded-full bg-secondary text-secondary-foreground"
@@ -101,6 +105,11 @@ const ProjectCard = ({ project, className }: ProjectCardProps) => {
                 {tag}
               </span>
             ))}
+            {extraTags > 0 && (
+              <span className="px-2 py-1 text-xs rounded-full border border-border text-muted-foreground">
+                +{extraTags} more
+              </span>
+            )}
           </div>
         </div>
       </Link>
