@@ -319,5 +319,51 @@
     "demoUrl": "https://devmab.vercel.app",
     "githubUrl": "https://github.com/devmab24/my-portfolio",
     "draft": true
+  },
+  {
+    "slug": "battleground-ai-powered-fighter-showdown",
+    "title": "Battleground — AI-Powered Fighter Showdown",
+    "description": "Battleground is an interactive AI-powered web application that lets users compare two fighters, receive an AI-generated fight verdict, and view unique 16-bit pixel-art illustrations of each contender.\n\nI built the application using Claude Code, applying an AI-assisted engineering workflow guided by Test-Driven Development (TDD) and structured implementation stages.\n\nThe application combines a lightweight Vanilla JavaScript frontend with Node.js serverless functions, integrating AI-powered decision-making, image generation, input validation, rate limiting, and browser-based data persistence.\n\nA key part of the development process was using Claude Code as an engineering agent while maintaining control over architecture, implementation decisions, testing, and quality assurance.\n\nThe project demonstrates how AI coding agents can be used to build functional, full-stack web applications while applying established software engineering principles.",
+    "imageSrc": "/project-images/battleground-preview.png",
+    "tags": [
+      "AI-Assisted Development",
+      "Claude Code",
+      "Agentic Engineering",
+      "Test-Driven Development (TDD)",
+      "Full-Stack Development",
+      "Web Application Development",
+      "HTML5",
+      "CSS3",
+      "Vanilla JavaScript",
+      "Node.js",
+      "Vercel Serverless Functions",
+      "Anthropic Claude API",
+      "REST API",
+      "Zod",
+      "Upstash",
+      "Redis",
+      "localStorage",
+      "Pollinations AI"
+    ],
+    "projectType": "agentic",
+    "demoUrl": "https://battleground-ai.vercel.app/",
+    "githubUrl": "https://github.com/devmab24/battleground",
+    "featured": true,
+    "timeline": "2 Days",
+    "role": "Full-Stack Developer, AI-assisted development using Claude Code.",
+    "challenges": "Challenge 1: Building a reliable AI-powered decision system\n\nAI-generated responses can be unpredictable, malformed, or inconsistent. The application needed to guarantee that every valid fight produced a clear winner, including unusual comparisons such as identical fighters.\n\nSolution: Implemented a structured AI judging system using Claude, with a Zod validation schema to enforce the expected response format. Winner identification is based on fighter position (A or B), rather than fighter name, allowing identical names to be handled correctly. A mock judging mode also allows the application to operate without an Anthropic API key.\n\nChallenge 2: Protecting the AI system against prompt injection\n\nSince users can enter arbitrary fighter names, malicious input could attempt to manipulate the AI judge's instructions.\n\nSolution: Implemented input cleaning and validation, treating fighter names as data rather than instructions. Names are wrapped in dedicated tags, and the judge's system prompt explicitly instructs the model not to follow instructions embedded in fighter names.\n\nChallenge 3: Managing external API failures without breaking the application\n\nThe application depends on external services for AI verdicts and image generation. A failure in image generation should not prevent users from receiving a fight result.\n\nSolution: Designed the verdict and image-generation operations to run in parallel. Image failures are handled independently, with placeholder artwork displayed when an image cannot be generated. This allows the core fight experience to remain functional.\n\nChallenge 4: Implementing reliable rate limiting in a serverless environment\n\nServerless functions can run on different instances, making in-memory rate limiting unreliable across requests.\n\nSolution: Integrated Upstash Redis to enforce a limit of five fights per minute per visitor across serverless instances. Rate limiting is checked before making AI calls to prevent unnecessary API usage and reduce abuse.\n\nChallenge 5: Efficiently storing fighter collections in the browser\n\nSaving generated fighter images directly in browser storage could consume significant space.\n\nSolution: Implemented the BattleDex collection using browser localStorage, compressing images into WebP format at approximately 5 KB per image before saving.",
+    "keyFeatures": [
+      "AI-Powered Fight Verdicts: Compares two fighters and produces a winner with 2–4 sentences of playful reasoning using the Claude judging integration.",
+      "Mock Judging Mode: Keeps the application usable without an Anthropic API key through a built-in mock verdict system.",
+      "AI-Generated Fighter Artwork: Generates distinctive 16-bit pixel-art illustrations through the Pollinations API.",
+      "BattleDex Collection: Allows users to save and revisit favourite fighters using browser localStorage.",
+      "Image Compression: Compresses generated artwork into lightweight WebP images before storage.",
+      "Rate Limiting: Uses Upstash Redis to enforce five fights per minute per visitor.",
+      "Input Validation and Protection: Validates fighter names, handles identical fighters, and protects the AI judging prompt against prompt injection.",
+      "Parallel API Processing: Runs the fight verdict and fighter image-generation operations concurrently.",
+      "Responsive Design: Supports screens as narrow as 360px.",
+      "Accessibility: Respects reduced-motion preferences.",
+      "Graceful Error Handling: Provides dedicated feedback for rate limits, offline states, timeouts, invalid input, and failed verdicts."
+    ]
   }
 ]
