@@ -365,5 +365,50 @@
       "Accessibility: Respects reduced-motion preferences.",
       "Graceful Error Handling: Provides dedicated feedback for rate limits, offline states, timeouts, invalid input, and failed verdicts."
     ]
+  },
+  {
+    "slug": "can-small-language-models-plan-hospital-workflows-under-operational-constraints",
+    "title": "Can Small Language Models Plan Hospital Workflows Under Operational Constraints?",
+    "description": "Can a small language model generate practical hospital workflow plans when faced with real-world operational constraints?\n\nThis independent research project investigates whether small language models can produce feasible non-clinical hospital workflow plans when resources are limited or operational conditions are disrupted.\n\nUsing Qwen3-4B, I designed a pilot evaluation involving 15 fictional hospital scenarios covering power interruptions, software failures, limited computer availability, staff guidance, and incomplete records.\n\nI compared the model's responses under two prompting conditions: standard prompting and constraint-aware prompting. The responses were assessed using a manually applied evaluation rubric covering constraint adherence, feasibility, assumption control, and adaptation specificity.\n\nThe experiment explores an important gap in AI evaluation: a response may sound reasonable while still proposing actions that are impractical under the conditions in which a person must actually work.\n\nThe project also proposes a path towards more reliable AI systems through targeted evaluation datasets, constraint-aware training examples, and explicit verification of generated plans.\nResearch Questions\n\nCan a small language model recognise and respect operational constraints when planning non-clinical hospital workflows?\n\nDoes constraint-aware prompting improve the feasibility and reliability of its responses?\n\nHow could data curation, fine-tuning, and constraint verification improve performance?\n\nResearch Methodology\n\nSelected Qwen3-4B as the open-weight model for evaluation.\n\nDeveloped 15 fictional scenarios representing operational constraints in hospital environments.\n\nEvaluated the model under standard and constraint-aware prompting conditions.\n\nCollected and compared 30 model responses.\n\nApplied a four-dimensional manual scoring rubric, with a maximum score of 8.\n\nAnalysed response quality and recorded constraint violations.\n\nDeveloped recommendations for future dataset curation, model improvement, and verification.\n\nKey Research Contributions\n\nProblem Identification: Formulated an applied AI evaluation problem based on operational challenges in resource-constrained healthcare environments.\n\nEvaluation Dataset: Designed a collection of 15 fictional scenarios for assessing operational reasoning.\n\nComparative Experiment: Evaluated model behaviour under two prompting conditions.\n\nManual Evaluation Framework: Developed a rubric covering constraint adherence, feasibility, assumption control, and adaptation specificity.\n\nImprovement Proposal: Proposed constraint-focused data curation and explicit verification as directions for improving model reliability.",
+    "imageSrc": "/project-images/research-summary-preview.png",
+    "tags": [
+      "Comparative Model Evaluation",
+      "Manual Scoring Rubric",
+      "JSONL Evaluation Dataset",
+      "Model Output Analysis",
+      "Artificial Intelligence",
+      "Large Language Models (LLMs)",
+      "Small Language Models (SLMs)",
+      "AI Research",
+      "Model Evaluation",
+      "Qwen3",
+      "Natural Language Processing",
+      "Prompt Engineering",
+      "Experimental Design",
+      "Responsible AI",
+      "Healthcare AI",
+      "Hugging Face",
+      "Python",
+      "PyTorch",
+      "Transformers"
+    ],
+    "projectType": "datascience",
+    "demoUrl": "https://huggingface.co/datasets/devmab/small-model-hospital-workflow-evaluation",
+    "githubUrl": "https://huggingface.co/datasets/devmab/small-model-hospital-workflow-evaluation/blob/main/README.md",
+    "timeline": "October 2026",
+    "role": "Independent AI Researcher",
+    "challenges": "Challenge 1: Translating a real-world problem into an evaluable research question\n\nHospital workflows involve multiple operational dependencies. A model might generate a plausible recommendation without considering whether the required resources are available.\n\nApproach: Narrowed the investigation to non-clinical workflow planning and translated operational constraints into fictional, structured evaluation scenarios.\n\nChallenge 2: Designing scenarios that test different types of constraints\n\nA single scenario would not adequately test how the model responds to different operational disruptions.\n\nApproach: Developed scenarios across five categories: power interruptions, software failures, computer availability, staff guidance, and incomplete records. Included a combined-constraint scenario.\n\nChallenge 3: Evaluating responses beyond whether they sound convincing\n\nFluent language does not necessarily indicate that a proposed workflow is feasible.\n\nApproach: Created a four-dimensional manual scoring rubric and separately tracked constraint violations to distinguish response quality from operational compliance.\n\nChallenge 4: Interpreting results from a small pilot\n\nA small evaluation cannot establish general model capability or support broad claims about all hospital environments.\n\nApproach: Treated the experiment as an exploratory pilot, documented its limitations, and identified larger held-out evaluations as a necessary next step.",
+    "keyFeatures": [
+      "Key Findings",
+      "This project is an exploratory evaluation, not a clinical validation study. Its results are limited to the selected model, scenarios, prompts, and manual scoring procedure.",
+      "The final published findings should include the verified comparison of both prompting conditions, the constraint-violation analysis, and the limitations of the experiment.",
+      "Proposed Future Work",
+      "Expand the evaluation dataset with more diverse and challenging operational scenarios.",
+      "Develop expert-reviewed reference plans and evaluation criteria.",
+      "Investigate supervised fine-tuning using constraint-aware examples.",
+      "Introduce an explicit constraint-verification stage after plan generation.",
+      "Evaluate improvements using held-out scenarios and additional models."
+    ],
+    "draft": true
   }
 ]
