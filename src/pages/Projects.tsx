@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
@@ -32,11 +33,24 @@ const TABS: { type: ProjectType; label: string; empty: string }[] = [
 ];
 const DEFAULT_TAB = TABS[0].type;
 
-const allTags = Array.from(new Set(projects.flatMap((project) => project.tags))).sort();
+// Most-used tags first (ties alphabetical), so the collapsed list shows the most useful filters.
+const tagCounts = new Map<string, number>();
+projects.forEach((project) => project.tags.forEach((tag) => tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1)));
+const allTags =Array.from(tagCounts.keys()).sort(
+  (a, b) => (tagCounts.get(b) ?? 0) - (tagCounts.get(a) ?? 0) || a.localeCompare(b),
+);
+/** Tags shown before "View more" is pressed. */
+const COLLAPSED_TAG_COUNT = 12;
 
 const Projects = () => {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showAllTags, setShowAllTags] = useState(false);
+
+  const hiddenTagCount = Math.max(0, allTags.length - COLLAPSED_TAG_COUNT);
+  const visibleTags = showAllTags ? allTags : allTags.slice(0, COLLAPSED_TAG_COUNT);
+  // Keep the active filter visible after collapsing the list.
+  if (selectedTag && !visibleTags.includes(selectedTag)) visibleTags.push(selectedTag);
 
   const query = searchQuery.toLowerCase();
   const filtered = (type: ProjectType) =>
@@ -93,23 +107,56 @@ const Projects = () => {
                   />
                 </div>
 
-                <div className="flex flex-wrap justify-center gap-2">
-                  <button onClick={() => setSelectedTag(null)} className={tagButtonClass(selectedTag === null)}>
+                <div
+                  id="project-tag-filters"
+                  role="group"
+                  aria-label="Filter projects by tag"
+                  className="flex flex-wrap justify-center gap-2 max-w-4xl mx-auto"
+                >
+                  <button
+                    onClick={() => setSelectedTag(null)}
+                    aria-pressed={selectedTag === null}
+                    className={tagButtonClass(selectedTag === null)}
+                  >
                     All
                   </button>
-                  {allTags.map((tag) => (
-                    <button key={tag} onClick={() => setSelectedTag(tag)} className={tagButtonClass(selectedTag === tag)}>
+                  {visibleTags.map((tag) => (
+                    <button
+                      key={tag}
+                      onClick={() => setSelectedTag(tag)}
+                      aria-pressed={selectedTag === tag}
+                      className={tagButtonClass(selectedTag === tag)}
+                    >
                       {tag}
                     </button>
                   ))}
+                  {hiddenTagCount > 0 && (
+                    <button
+                      onClick={() => setShowAllTags((v) => !v)}
+                      aria-expanded={showAllTags}
+                      aria-controls="project-tag-filters"
+                      className="inline-flex items-center gap-1 px-3 py-1 text-sm font-medium rounded-full border border-primary/40 text-primary transition-colors hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                    >
+                      {showAllTags ? 'View less' : 'View more'}
+                      {!showAllTags && <span className="text-xs opacity-80">(+{hiddenTagCount})</span>}
+                      <ChevronDown
+                        aria-hidden="true"
+                        className={`h-3.5 w-3.5 transition-transform ${showAllTags ? 'rotate-180' : ''}`}
+                      />
+                    </button>
+                  )}
                 </div>
               </AnimatedSection>
 
               <AnimatedSection delay={300}>
                 <Tabs defaultValue={DEFAULT_TAB} className="w-full">
-                  <TabsList className="grid h-auto w-full max-w-4xl mx-auto grid-cols-2 md:grid-cols-4 mb-8">
+                  <TabsList className="flex flex-wrap justify-center gap-2 h-auto w-full max-w-5xl mx-auto mb-8 bg-transparent p-0">
                     {TABS.map(({ type, label }) => (
-                      <TabsTrigger key={type} value={type}>
+                      <TabsTrigger
+                        key={type}
+                        value={type}
+                        className="rounded-full px-4 py-2 text-muted-foreground hover:text-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm"
+                      >
                         {label}
                       </TabsTrigger>
                     ))}

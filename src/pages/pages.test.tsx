@@ -94,6 +94,54 @@ describe('pages render', () => {
     ]);
   });
 
+  it('projects: tag filters collapse behind "View more" and keep the active tag visible', () => {
+    renderAt('/projects');
+    const group = screen.getByRole('group', { name: 'Filter projects by tag' });
+    const tagButtons = () => Array.from(group.querySelectorAll('button[aria-pressed]'));
+    const uniqueTags = new Set(projects.flatMap((p) => p.tags)).size;
+    if (uniqueTags <= 12) return;
+
+    const toggle = screen.getByRole('button', { name: /View more/ });
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
+    expect(tagButtons()).toHaveLength(12 + 1); // + "All"
+
+    fireEvent.click(toggle);
+    expect(tagButtons()).toHaveLength(uniqueTags + 1);
+    const lastTag = tagButtons()[tagButtons().length - 1];
+    fireEvent.click(lastTag);
+
+    fireEvent.click(screen.getByRole('button', { name: 'View less' }));
+    expect(tagButtons()).toHaveLength(12 + 2);
+    expect(lastTag.getAttribute('aria-pressed')).toBe('true');
+  });
+
+  it('projects: category tabs are centred and only the active one is filled', () => {
+    renderAt('/projects');
+    const list = screen.getByRole('tablist');
+    expect(list.className).toContain('justify-center');
+    expect(list.className).toContain('bg-transparent');
+    for (const tab of screen.getAllByRole('tab')) {
+      expect(tab.className).toContain('data-[state=active]:bg-primary');
+    }
+  });
+
+  it('home: featured projects fill every row of the grid', () => {
+    const { container } = renderAt('/');
+    const cards = container.querySelectorAll('section article');
+    expect(cards.length).toBe(featuredProjects.length);
+    const lgSpans = Array.from(cards).map((c) => Number(/lg:col-span-(\d)/.exec(c.className)?.[1]));
+    expect(lgSpans.reduce((a, b) => a + b, 0) % 6).toBe(0);
+  });
+
+  it('project page lists challenges as bullet items, like key features', () => {
+    const project = projects.find((p) => p.challenges);
+    if (!project) return;
+    renderAt(`/projects/${project.slug}`);
+    const heading = screen.getByRole('heading', { name: 'Challenges & Solutions' });
+    const items = heading.parentElement?.querySelectorAll('ul > li') ?? [];
+    expect(items.length).toBeGreaterThan(1);
+  });
+
   it('mentorship entries use engagement wording, not product wording', () => {
     renderAt('/projects/wqu-skills-hub');
     expect(screen.getByRole('heading', { name: 'Responsibilities & Activities' })).toBeTruthy();
